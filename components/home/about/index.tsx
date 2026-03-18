@@ -29,7 +29,7 @@ export default function About() {
             <div className="relative z-10 max-w-7xl max-lg:px-4 mx-auto">
                 {/* Header */}
                 <div className="text-center mb-10 sm:mb-14">
-                 
+
                     <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
                         About the Teacher
                     </span>
@@ -48,7 +48,7 @@ export default function About() {
                     {/* Teacher Photo */}
                     <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm h-72 w-full">
                         <Image
-                            src="/teacher.jpg"
+                            src="/images/about/vikash-bhatt-about.webp"
                             alt="Vikash Bhutt"
                             fill
                             className="object-cover object-top"
@@ -109,7 +109,7 @@ export default function About() {
                     {/* Row 1: photo + quote side by side */}
                     <div className="grid grid-cols-2 gap-4 h-72">
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm">
-                            <Image src="/teacher.jpg" alt="Vikash Bhutt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhutt" fill className="object-cover object-top" />
                         </div>
                         <div className="bg-primary rounded-3xl p-7 flex flex-col justify-between shadow-sm">
                             <Quote className="w-8 h-8 text-white/40" />
@@ -167,10 +167,10 @@ export default function About() {
                     {/* Left column — 2 stacked photos */}
                     <div className="flex flex-col gap-4 row-span-2">
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm flex-1">
-                            <Image src="/teacher.jpg" alt="Vikash Bhutt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhutt" fill className="object-cover object-end" />
                         </div>
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm flex-1">
-                            <Image src="/teacher.jpg" alt="Vikash Bhutt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikash-bhatt-about2.webp" alt="Vikash Bhutt" fill className="object-cover object-top" />
                         </div>
                     </div>
 

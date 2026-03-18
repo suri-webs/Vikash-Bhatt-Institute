@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, Home, Info, BookOpen, Star, MessageSquare, Phone, ChevronRight, GraduationCap } from "lucide-react";
 import {
     Sheet,
@@ -16,22 +16,28 @@ import Pop from "@/components/ui/common/pop";
 const navLinks = [
     { label: "Home", href: "/", icon: Home },
     { label: "About", href: "/about", icon: Info },
-    { label: "Courses", href: "/courses", icon: BookOpen },
-    { label: "Why Us", href: "/why-us", icon: Star },
-    { label: "Testimonials", href: "/testimonials", icon: MessageSquare },
-    { label: "Contact", href: "/contact", icon: Phone },
+    { label: "Courses", href: "#courses", icon: BookOpen },
+    { label: "Why Choose Us", href: "#whychooseus", icon: Star },
+    { label: "Testimonials", href: "#testimonials", icon: MessageSquare },
+    { label: "Contact", href: "#contact", icon: Phone },
 ];
 
 export default function Navbar() {
     const [activeLink, setActiveLink] = useState("/");
     const [enquiryOpen, setEnquiryOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 10);
+        window.addEventListener("scroll", onScroll);
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     return (
         <>
-            <nav className="w-full max-sm:px-4 absolute top-0 z-50 bg-white shadow rounded-b-2xl border-gray-200">
+            <nav className={`w-full max-sm:px-4 top-0 z-50 bg-white shadow rounded-b-2xl border-gray-200 transition-all duration-300 ${scrolled ? "sticky" : "absolute"}`}>
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="h-19 flex items-center justify-between">
-
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
@@ -81,7 +87,7 @@ export default function Navbar() {
                         {/* Mobile Hamburger */}
                         <div className="flex md:hidden">
                             <Sheet>
-                                <SheetTrigger>
+                                <SheetTrigger >
                                     <Menu size={20} />
                                 </SheetTrigger>
 
@@ -115,10 +121,12 @@ export default function Navbar() {
                                             const Icon = link.icon;
                                             const isActive = activeLink === link.href;
                                             return (
-                                                <SheetClose key={link.label}>
+                                                <SheetClose
+                                                    key={link.label}
+                                                    onClick={() => setActiveLink(link.href)} >
                                                     <Link
                                                         href={link.href}
-                                                        onClick={() => setActiveLink(link.href)}
+
                                                         className={`
                                                             flex items-center justify-between gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150
                                                             ${isActive
@@ -140,7 +148,7 @@ export default function Navbar() {
 
                                     <Separator />
 
-                                    {/* Drawer Footer — Get Started opens Pop */}
+                                    {/* Drawer Footer */}
                                     <div className="px-4 absolute bottom-3 right-0 py-4 space-y-2">
                                         <SheetClose >
                                             <Button

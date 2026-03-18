@@ -31,7 +31,7 @@ const advantages = [
 
 export default function WhyChooseUs() {
     return (
-        <section id="courses" className="w-full py-24 ">
+        <section id="whychooseus" className="w-full py-24 ">
             <div className=" max-w-7xl max-sm:w-[95%] mx-auto">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-14">

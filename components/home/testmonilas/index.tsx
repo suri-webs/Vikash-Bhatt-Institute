@@ -16,7 +16,7 @@ export default function Testimonials() {
 
     return (
         <section className="w-full overflow-hidden">
-            <div className=" max-w-7xl max-lg:px-4 mx-auto">
+            <div id='testimonials' className=" max-w-7xl max-lg:px-4 mx-auto">
 
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-10">
