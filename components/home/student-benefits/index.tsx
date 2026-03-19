@@ -1,34 +1,33 @@
-'use client';
+"use client";
 
 import { Button } from '@/components/ui/button';
 import Pop from '@/components/ui/common/pop';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, BookOpen, Clock, Target, Users, Award } from 'lucide-react';
 import { useState } from 'react';
 
 const benefits = [
-    'Strong conceptual clarity in mathematics',
-    'Confidence to tackle any exam question',
-    'Improved problem-solving speed and accuracy',
-    'Excellent board exam and entrance results',
-    'Lifelong analytical thinking skills',
-    'A supportive learning community',
+    'Conceptual clarity across all subjects',
+    'Confidence to attempt any exam question',
+    'Improved speed and accuracy in problem-solving',
+    'Excellent board and entrance exam results',
+    'Lifelong analytical and study skills',
+    'Strong time management for competitive exams',
+    'A supportive and motivating learning community',
 ];
 
 export default function StudentBenefits() {
-
     const [enquiryOpen, setEnquiryOpen] = useState(false);
 
     return (
         <section className="w-full py-24 bg-white overflow-hidden">
             <div className="max-w-7xl max-lg:px-4 mx-auto">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
-
                     {/* Left */}
                     <div className="flex-1 w-full">
                         <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
-                            Student Benefits
+                            STUDENT RESULTS
                         </span>
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-[1.1] mb-5 tracking-tight">
+                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-5 tracking-tight">
                             What Students{' '}
                             <span className="relative inline-block">
                                 <span className="relative z-10 text-primary">Gain</span>
@@ -50,9 +49,8 @@ export default function StudentBenefits() {
                             </span>
                         </h2>
 
-                        <p className="text-gray-500 text-[15px] leading-relaxed mb-10 max-w-md">
-                            Our students don&apos;t just learn formulas — they develop the
-                            mindset to excel in exams and beyond.
+                        <p className="text-slate-500 text-[15px] leading-relaxed mb-10 max-w-md">
+                            Our students don't just learn formulas — they develop the mindset to excel in exams and beyond.
                         </p>
 
                         <ul className="flex flex-col gap-3.5">
@@ -61,14 +59,14 @@ export default function StudentBenefits() {
                                     key={benefit}
                                     className="flex items-center gap-3.5 group"
                                 >
-                                    <div className="w-6 h-6 shrink-0 rounded-full bg-[#e8f4fc] flex items-center justify-center group-hover:bg-[#2d9cdb] transition-colors duration-200">
+                                    <div className="w-6 h-6 shrink-0 rounded-full bg-[#e8f4fc] flex items-center justify-center group-hover:bg-primary transition-colors duration-200">
                                         <CheckCircle2
                                             size={14}
-                                            className="text-[#2d9cdb] group-hover:text-white transition-colors duration-200"
+                                            className="text-primary group-hover:text-white transition-colors duration-200"
                                             strokeWidth={2.5}
                                         />
                                     </div>
-                                    <span className="text-gray-700 text-[14.5px] font-medium group-hover:text-gray-900 transition-colors duration-200">
+                                    <span className="text-slate-700 text-[14.5px] font-medium group-hover:text-slate-900 transition-colors duration-200">
                                         {benefit}
                                     </span>
                                 </li>
@@ -87,44 +85,36 @@ export default function StudentBenefits() {
                             }}
                         >
                             {/* Decorative blobs */}
-                            <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-[#2d9cdb]/10 pointer-events-none" />
-                            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[#2d9cdb]/10 pointer-events-none" />
+                            <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-primary/10 pointer-events-none" />
+                            <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-primary/10 pointer-events-none" />
 
                             {/* Big number */}
-                            <span
-                                className="relative text-primary text-7xl font-black leading-none tracking-tight"
-                              
-                            >
+                            <span className="relative text-primary text-7xl font-black leading-none tracking-tight">
                                 95%
                             </span>
 
                             <div className="relative flex flex-col gap-2">
-                                <p className="text-gray-900 font-bold text-xl tracking-tight">
+                                <p className="text-slate-900 font-bold text-xl tracking-tight">
                                     Success Rate
                                 </p>
-                                <p className="text-gray-500 text-[13.5px] leading-relaxed max-w-60 mx-auto">
-                                    of our students score above 90% in board exams and clear
-                                    competitive entrances.
+                                <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-60 mx-auto">
+                                    Of our students score above 90% in board exams and crack competitive entrance tests
                                 </p>
                             </div>
 
                             {/* Divider */}
-                            <div className="w-16 h-px bg-[#2d9cdb]/25" />
+                            <div className="w-16 h-px bg-primary/25" />
 
                             <Button
-                                className="relative w-full max-w-65 py-6 rounded-2xl text-white font-bold text-[14px] tracking-wide transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-
+                                className="relative w-full max-w-65 py-6 rounded-2xl text-white font-bold text-[14px] tracking-wide transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] bg-primary hover:bg-primary/90"
                                 onClick={() => setEnquiryOpen(true)}
-
                             >
                                 Start Your Journey →
                             </Button>
                         </div>
                     </div>
-
                 </div>
                 <Pop open={enquiryOpen} onOpenChange={setEnquiryOpen} />
-
             </div>
         </section>
     );

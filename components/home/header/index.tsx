@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Users, TrendingUp, ArrowRightIcon, } from "lucide-react";
+import { ArrowRight, BookOpen, Users, TrendingUp, ArrowRightIcon } from "lucide-react";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -27,14 +27,14 @@ export default function Header() {
                                 "group w-fit rounded-full border border-cyan-200 bg-cyan-50 text-base text-cyan-900 transition-all ease-in hover:cursor-pointer hover:bg-cyan-100 mb-6"
                             )}
                         >
-                            <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-cyan-700 hover:duration-300">
-                                <span>✨ Introducing Magic UI</span>
+                            <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-cyan-700 hover:duration-300 max-sm:text-[10px]">
+                                <span>⭐ Trusted by 5000+ Students Across India</span>
                                 <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                             </AnimatedShinyText>
                         </div>
                         {/* Heading */}
                         <h1 className="font-extrabold text-2xl md:text-5xl lg:text-6xl leading-tight text-slate-900 mb-6 tracking-tight">
-                            Master Mathematics{" "}
+                            Learn Every Subject{" "}
                             <br className="hidden sm:block" />
                             with{" "}
                             <span className="relative inline-block text-primary">
@@ -59,9 +59,7 @@ export default function Header() {
 
                         {/* Body */}
                         <p className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-lg mb-8">
-                            Build a strong foundation in mathematics with personalized
-                            teaching, regular practice, and proven techniques for exam
-                            success.
+                            From Class 1 to 12, JEE, NEET, B.Com & beyond — personalised teaching, structured practice, and proven results across all subjects.
                         </p>
 
                         {/* Stats row */}
@@ -69,7 +67,8 @@ export default function Header() {
                             {[
                                 { icon: Users, num: "5000+", label: "Students Taught" },
                                 { icon: TrendingUp, num: "98%", label: "Pass Rate" },
-                                { icon: BookOpen, num: "12+", label: "Years Experience" },
+                                { icon: BookOpen, num: "10+", label: "Years Experience" },
+                                { icon: BookOpen, num: "15+", label: "Subjects Covered" },
                             ].map(({ icon: Icon, num, label }) => (
                                 <div key={label} className="flex items-center gap-2.5">
                                     <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink">
@@ -89,7 +88,6 @@ export default function Header() {
 
                         {/* CTA buttons */}
                         <div className="flex flex-wrap gap-4">
-
                             <Button
                                 onClick={() => setEnquiryOpen(true)}
                                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-6 font-semibold text-white  shadow-lg shadow-blue-100"
@@ -109,11 +107,10 @@ export default function Header() {
                         </div>
                     </motion.div>
                     <div className=" h-125 max-md:h-82 max-md:rounded-2xl relative  flex  overflow-hidden">
-                        <Image src={'/images/vikash-bhatt.png'} alt="" className="absolute mx-auto max-md:left-0 left-20" width={500} height={400} />
+                        <Image src={'/images/vikash-bhatt.png'} alt="Vikash Bhatt - Expert Tutor" className="absolute mx-auto max-md:left-0 left-20" width={500} height={400} />
                     </div>
                 </div>
                 <Pop open={enquiryOpen} onOpenChange={setEnquiryOpen} />
-
             </div>
         </section>
     );

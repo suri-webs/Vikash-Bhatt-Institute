@@ -1,4 +1,4 @@
-import { GraduationCap, Linkedin, Instagram, Facebook } from "lucide-react";
+import { GraduationCap, Linkedin, Instagram, Facebook, Github } from "lucide-react";
 import Link from "next/link";
 
 const WhatsAppIcon = ({ size = 15 }: { size?: number }) => (
@@ -15,7 +15,34 @@ export default function Footer() {
         { name: "Contact", href: "#contact" },
     ];
 
+    const courses = [
+        { name: "Class 1–8", href: "#class1-8" },
+        { name: "Class 9–10", href: "#class9-10" },
+        { name: "Class 11–12", href: "#class11-12" },
+        { name: "JEE / NEET", href: "#jee-neet" },
+        { name: "B.Com", href: "#bcom" },
+    ];
+
+    const contactInfo = [
+        {
+            label: "+91 98765 43210",
+            href: "tel:+919876543210",
+            iconPath: "M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"
+        },
+        {
+            label: "info@vikashbhattclasses.com",
+            href: "mailto:info@vikashbhattclasses.com",
+            iconPath: "M2 4v16a2 2 0 002 2h16a2 2 0 002-2V4a2 2 0 00-2-2H4a2 2 0 00-2 2z M2 7l10 7 10-7"
+        },
+        {
+            label: "New Delhi, India",
+            href: "https://maps.google.com/?q=New+Delhi,India",
+            iconPath: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z M12 10a3 3 0 100-6 3 3 0 000 6z"
+        }
+    ];
+
     const socialLinks = [
+
         { name: "LinkedIn", href: "https://linkedin.com/in/vikashbhatt", icon: <Linkedin size={16} />, hoverColor: "hover:text-[#0A66C2]" },
         { name: "Instagram", href: "https://instagram.com/vikashbhattclasses", icon: <Instagram size={16} />, hoverColor: "hover:text-[#E1306C]" },
         { name: "Facebook", href: "https://facebook.com/vikashbhattclasses", icon: <Facebook size={16} />, hoverColor: "hover:text-[#1877F2]" },
@@ -24,10 +51,8 @@ export default function Footer() {
 
     return (
         <footer className="bg-[#0f1623] text-[#c9d1d9] font-sans w-full">
-
             {/* Main grid — max-width centered */}
-            <div className="w-full max-lg:px-4 max-w-7xl mx-auto pt-12 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-
+            <div className="w-full max-lg:px-4 max-w-7xl mx-auto pt-12 pb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                 {/* Brand Column */}
                 <div className="sm:col-span-2 lg:col-span-1">
                     <Link href="/" className="flex mb-3 items-center gap-2.5">
@@ -40,11 +65,11 @@ export default function Footer() {
                         </div>
                     </Link>
                     <p className="text-sm leading-relaxed text-[#8b96a5] max-w-70 m-0 mb-5">
-                        Empowering students to master mathematics with expert guidance, personal attention, and proven methods.
+                        Empowering students to achieve excellence with expert guidance, personal attention, and proven methods — from Class 1 to Graduation.
                     </p>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-wrap">
                         {socialLinks.map((social) => (
-                            <a
+                            <Link
                                 key={social.name}
                                 href={social.href}
                                 target="_blank"
@@ -53,7 +78,7 @@ export default function Footer() {
                                 className={`w-8 h-8 rounded-lg bg-[#1a2332] border border-[#1e2a3a] flex items-center justify-center text-[#8b96a5] transition-all duration-200 ${social.hoverColor} hover:border-current hover:scale-110`}
                             >
                                 {social.icon}
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -72,41 +97,78 @@ export default function Footer() {
                     </ul>
                 </div>
 
+                {/* Courses */}
+                <div>
+                    <h4 className="text-white font-bold text-[15px] mb-4 mt-0 tracking-wide">Courses</h4>
+                    <ul className="list-none p-0 m-0 flex flex-col gap-2.5">
+                        {courses.map((course) => (
+                            <li key={course.name}>
+                                <Link href={course.href} className="text-[#8b96a5] no-underline text-sm transition-colors duration-200 hover:text-white">
+                                    {course.name}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
                 {/* Contact Info */}
                 <div>
                     <h4 className="text-white font-bold text-[15px] mb-4 mt-0 tracking-wide">Contact Info</h4>
                     <div className="flex flex-col gap-3">
-                        <a href="tel:+919876543210" className="flex items-center gap-2.5 no-underline group">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b96a5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" />
-                            </svg>
-                            <span className="text-sm text-[#8b96a5] transition-colors duration-200 group-hover:text-white break-all">+91 98765 43210</span>
-                        </a>
-                        <a href="mailto:info@vikashbhattClasses.com" className="flex items-center gap-2.5 no-underline group">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b96a5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                                <rect x="2" y="4" width="20" height="16" rx="2" />
-                                <path d="M2 7l10 7 10-7" />
-                            </svg>
-                            <span className="text-sm text-[#8b96a5] transition-colors duration-200 group-hover:text-white break-all">info@vikashbhattClasses.com</span>
-                        </a>
-                        <a href="https://maps.google.com/?q=New+Delhi,India" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 no-underline group">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b96a5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" />
-                                <circle cx="12" cy="10" r="3" />
-                            </svg>
-                            <span className="text-sm text-[#8b96a5] transition-colors duration-200 group-hover:text-white">New Delhi, India</span>
-                        </a>
+                        {contactInfo.map(({ label, href, iconPath }, index) => (
+                            <Link
+                                key={index}
+                                href={href}
+                                target={href.includes('http') ? "_blank" : "_self"}
+                                rel={href.includes('http') ? "noopener noreferrer" : ""}
+                                className="flex items-center gap-2.5 no-underline group"
+                            >
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b96a5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 group-hover:stroke-white transition-colors duration-200">
+                                    <path d={iconPath} />
+                                </svg>
+                                <span className="text-sm text-[#8b96a5] transition-colors duration-200 group-hover:text-white break-all">
+                                    {label}
+                                </span>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>
 
             {/* Divider + Copyright — full bleed */}
-            <div className="w-full border-t border-[#1e2a3a] py-5 text-center px-6">
+            <div className="max-w-7xl max-sm:flex-col mx-auto border-t flex justify-between border-[#1e2a3a] py-5 text-center max-sm:px-6">
                 <p className="m-0 text-[13px] text-[#5a6478]">
-                    © 2026 Vikas Bhatt Classes. All rights reserved.
-                </p>
-            </div>
+                    © 2026 Vikash Bhatt Classes. All rights reserved.
 
+                </p>
+                <div className="flex gap-2 items-center">
+                    <Link
+                        href="https://github.com/surajshakya"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#8b96a5] hover:text-white transition-colors duration-200 underline decoration-[#1e2a3a] hover:decoration-white font-medium text-xs ml-1"
+                    >
+                        Built by Suraj Shakya
+                    </Link>
+                    <Link
+                        href={'https://surajshakya.dev'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-8 h-8 rounded-lg bg-[#1a2332] border border-[#1e2a3a] flex items-center justify-center text-[#8b96a5] transition-all duration-200 hover:text-[#00D4AA] hover:border-current hover:scale-110`}
+                    >
+                        <GraduationCap size={16} />
+                    </Link>
+                    <Link
+                        href={'https://github.com/surajshakya'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-8 h-8 rounded-lg bg-[#1a2332] border border-[#1e2a3a] flex items-center justify-center text-[#8b96a5] transition-all duration-200 hover:text-white hover:border-current hover:scale-110`}
+                    >
+                        <Github size={16} />
+                    </Link>
+
+                </div>
+            </div>
         </footer>
     );
 }

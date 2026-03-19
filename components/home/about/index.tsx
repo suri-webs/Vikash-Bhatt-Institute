@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { BookOpen, Users, TrendingUp, Award, Quote, Star } from "lucide-react";
+import { BookOpen, Users, TrendingUp, Award, Quote, Star, GraduationCap, CheckCircle, ClipboardList, Users2 } from "lucide-react";
 import Image from "next/image";
 
 const stats = [
-    { value: "10+", label: "Years Teaching", icon: BookOpen },
-    { value: "2000+", label: "Students Taught", icon: Users },
+    { value: "10+", label: "Years Experience", icon: GraduationCap },
+    { value: "2000+", label: "Students Mentored", icon: Users2 },
     { value: "95%", label: "Success Rate", icon: TrendingUp },
-    { value: "150+", label: "Exam Toppers", icon: Award },
+    { value: "150+", label: "Batches Co", icon: Users },
 ];
 
 export default function About() {
@@ -29,27 +29,24 @@ export default function About() {
             <div className="relative z-10 max-w-7xl max-lg:px-4 mx-auto">
                 {/* Header */}
                 <div className="text-center mb-10 sm:mb-14">
-
                     <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
-                        About the Teacher
+                        ABOUT THE TEACHER
                     </span>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
                         Meet <span className="text-primary">Vikash Bhatt</span>
                     </h2>
                     <p className="text-slate-500 text-sm sm:text-base leading-relaxed w-full sm:w-[80%] md:w-[70%] mx-auto font-light">
-                        With over a decade of dedicated teaching experience, Vikash Bhutt has helped thousands of
-                        students master mathematics — from foundational concepts to competitive exam preparation.
+                        With over a decade of dedicated teaching experience, Vikash Bhatt has helped thousands of students build strong academic foundations — from Class 1 basics to competitive exam success — across Science, Commerce, and Arts streams.
                     </p>
                 </div>
 
                 {/* ── MOBILE layout (< md) ── */}
                 <div className="flex flex-col gap-4 md:hidden">
-
                     {/* Teacher Photo */}
                     <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm h-72 w-full">
                         <Image
                             src="/images/about/vikash-bhatt-about.webp"
-                            alt="Vikash Bhutt"
+                            alt="Vikash Bhatt"
                             fill
                             className="object-cover object-top"
                         />
@@ -59,7 +56,7 @@ export default function About() {
                     <div className="bg-primary rounded-3xl p-6 flex flex-col justify-between shadow-sm">
                         <Quote className="w-7 h-7 text-white/40 mb-3" />
                         <p className="text-white text-base font-medium leading-relaxed">
-                            "Every student can excel in mathematics with the right guidance, practice, and belief in themselves."
+                            "Every student can excel with the right guidance, practice, and belief in themselves."
                         </p>
                         <div className="flex gap-0.5 mt-4">
                             {[...Array(5)].map((_, i) => (
@@ -73,12 +70,12 @@ export default function About() {
                         <p className="text-xs font-semibold tracking-widest uppercase text-slate-400 mb-4">Teaching Style</p>
                         <div className="space-y-3">
                             {[
-                                { label: "Clear Explanations", desc: "Concepts explained step-by-step with simple real-life examples." },
-                                { label: "Regular Practice", desc: "Daily exercises to build speed, accuracy, and confidence." },
-                                { label: "Personal Mentorship", desc: "Individual guidance with progress tracking and personalized strategies." },
+                                { icon: CheckCircle, label: "Multi-Subject Expertise", desc: "Proficient in teaching Maths, Science, Commerce, and Humanities subjects across all levels." },
+                                { icon: ClipboardList, label: "Structured & Regular Practice", desc: "Weekly tests, assignments, and doubt sessions keep students consistently prepared." },
+                                { icon: Users2, label: "Personal Mentorship", desc: "Individual attention to each student's learning pace, strengths, and improvement areas." },
                             ].map((item) => (
                                 <div key={item.label} className="flex items-start gap-3">
-                                    <span className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5" />
+                                    <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                                     <div>
                                         <p className="text-sm font-medium text-slate-700">{item.label}</p>
                                         <p className="text-xs text-slate-400">{item.desc}</p>
@@ -105,17 +102,16 @@ export default function About() {
 
                 {/* ── TABLET layout (md) ── */}
                 <div className="hidden md:flex lg:hidden flex-col gap-4">
-
                     {/* Row 1: photo + quote side by side */}
                     <div className="grid grid-cols-2 gap-4 h-72">
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm">
-                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhutt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhatt" fill className="object-cover object-top" />
                         </div>
                         <div className="bg-primary rounded-3xl p-7 flex flex-col justify-between shadow-sm">
                             <Quote className="w-8 h-8 text-white/40" />
                             <div>
                                 <p className="text-white text-base font-medium leading-relaxed">
-                                    "Every student can excel in mathematics with the right guidance, practice, and belief in themselves."
+                                    "Every student can excel with the right guidance, practice, and belief in themselves."
                                 </p>
                                 <div className="flex gap-0.5 mt-4">
                                     {[...Array(5)].map((_, i) => (
@@ -132,12 +128,12 @@ export default function About() {
                             <p className="text-xs font-semibold tracking-widest uppercase text-slate-400 mb-4">Teaching Style</p>
                             <div className="space-y-3">
                                 {[
-                                    { label: "Clear Explanations", desc: "Concepts explained step-by-step with simple real-life examples." },
-                                    { label: "Regular Practice", desc: "Daily exercises to build speed, accuracy, and confidence." },
-                                    { label: "Personal Mentorship", desc: "Individual guidance with progress tracking and personalized strategies." },
+                                    { icon: CheckCircle, label: "Multi-Subject Expertise", desc: "Proficient in teaching Maths, Science, Commerce, and Humanities subjects across all levels." },
+                                    { icon: ClipboardList, label: "Structured & Regular Practice", desc: "Weekly tests, assignments, and doubt sessions keep students consistently prepared." },
+                                    { icon: Users2, label: "Personal Mentorship", desc: "Individual attention to each student's learning pace, strengths, and improvement areas." },
                                 ].map((item) => (
                                     <div key={item.label} className="flex items-start gap-3">
-                                        <span className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5" />
+                                        <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                                         <div>
                                             <p className="text-sm font-medium text-slate-700">{item.label}</p>
                                             <p className="text-xs text-slate-400">{item.desc}</p>
@@ -163,14 +159,13 @@ export default function About() {
 
                 {/* ── DESKTOP layout (lg+) — original bento grid ── */}
                 <div className="hidden lg:grid grid-cols-3 grid-rows-2 gap-4 h-140">
-
                     {/* Left column — 2 stacked photos */}
                     <div className="flex flex-col gap-4 row-span-2">
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm flex-1">
-                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhutt" fill className="object-cover object-end" />
+                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhatt" fill className="object-cover object-end" />
                         </div>
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm flex-1">
-                            <Image src="/images/about/vikash-bhatt-about2.webp" alt="Vikash Bhutt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikash-bhatt-about2.webp" alt="Vikash Bhatt" fill className="object-cover object-top" />
                         </div>
                     </div>
 
@@ -179,7 +174,7 @@ export default function About() {
                         <Quote className="w-8 h-8 text-white/40" />
                         <div>
                             <p className="text-white text-lg font-medium leading-relaxed">
-                                "Every student can excel in mathematics with the right guidance, practice, and belief in themselves."
+                                "Every student can excel with the right guidance, practice, and belief in themselves."
                             </p>
                             <div className="flex gap-0.5 mt-4">
                                 {[...Array(5)].map((_, i) => (
@@ -194,12 +189,12 @@ export default function About() {
                         <p className="text-xs font-semibold tracking-widest uppercase text-slate-400 mb-4">Teaching Style</p>
                         <div className="space-y-3">
                             {[
-                                { label: "Clear Explanations", desc: "Concepts explained step-by-step with simple real-life examples." },
-                                { label: "Regular Practice", desc: "Daily exercises to build speed, accuracy, and confidence." },
-                                { label: "Personal Mentorship", desc: "Individual guidance with progress tracking and personalized strategies." },
+                                { icon: CheckCircle, label: "Multi-Subject Expertise", desc: "Proficient in teaching Maths, Science, Commerce, and Humanities subjects across all levels." },
+                                { icon: ClipboardList, label: "Structured & Regular Practice", desc: "Weekly tests, assignments, and doubt sessions keep students consistently prepared." },
+                                { icon: Users2, label: "Personal Mentorship", desc: "Individual attention to each student's learning pace, strengths, and improvement areas." },
                             ].map((item) => (
                                 <div key={item.label} className="flex items-start gap-3">
-                                    <span className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5" />
+                                    <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                                     <div>
                                         <p className="text-sm font-medium text-slate-700">{item.label}</p>
                                         <p className="text-xs text-slate-400">{item.desc}</p>
@@ -223,7 +218,6 @@ export default function About() {
                         ))}
                     </div>
                 </div>
-
             </div>
         </section>
     );
