@@ -29,14 +29,12 @@ export default function Navbar() {
     const [enquiryOpen, setEnquiryOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
-    // Scroll detection
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 10);
         window.addEventListener("scroll", onScroll);
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    // Route change pe active link set karo
     useEffect(() => {
         if (pathname === "/about") {
             setActiveLink("/about");
@@ -45,9 +43,8 @@ export default function Navbar() {
         }
     }, [pathname]);
 
-    // Section visibility detect karo IntersectionObserver se
     useEffect(() => {
-        if (pathname !== "/") return; // Sirf home page par
+        if (pathname !== "/") return; 
 
         const sectionIds = navLinks
             .filter((l) => l.sectionId)
