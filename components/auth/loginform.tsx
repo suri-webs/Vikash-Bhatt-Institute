@@ -42,8 +42,7 @@ export default function Login() {
 
             const { user } = response.data
             login(user)
-
-            router.push("/dashboard")
+            router.push("/profile")
         } catch (err) {
             setError("Invalid email or password. Please try again.")
         } finally {
@@ -59,7 +58,7 @@ export default function Login() {
             <div className="w-[85%] mt-20 gap-10 flex justify-end items-center h-full ">
                 <div className="min-w-sm flex flex-col justify-center py-12">
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
-                        <div className="h-1 w-full bg-gradient-to-r from-cyan-400 to-teal-500" />
+                        <div className="h-1 w-full bg-linear-to-r from-cyan-400 to-teal-500" />
 
                         <div className="px-7 pt-6 pb-7">
                             <div className="mb-6">

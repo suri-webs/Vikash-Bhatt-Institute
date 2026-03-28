@@ -20,7 +20,7 @@ interface FormData {
 function MobileLogo() {
     return (
         <div className="flex md:hidden items-center gap-2.5 mb-6">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0891b2] to-[#06b6d4]">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-linear-to-br from-[#0891b2] to-[#06b6d4]">
                 <GraduationCap size={15} color="#fff" strokeWidth={2.2} />
             </div>
             <div>
@@ -50,7 +50,7 @@ function FormHeader() {
 function InputWrapper({ label, children }: { label: string; children: React.ReactNode }) {
     return (
         <div>
-            <label className="block text-[11px] font-semibold text-slate-600 mb-[5px] tracking-[0.04em] uppercase">
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1.25 tracking-[0.04em] uppercase">
                 {label}
             </label>
             <div className="relative">{children}</div>
@@ -120,7 +120,7 @@ function RollNumberField({ value, onChange }: { value: string; onChange: (e: Rea
 
 function ErrorBanner({ message }: { message: string }) {
     return (
-        <div className="flex items-center gap-2 bg-rose-50 border-[1.5px] border-rose-200 rounded-[10px] px-3 py-[9px]">
+        <div className="flex items-center gap-2 bg-rose-50 border-[1.5px] border-rose-200 rounded-[10px] px-3 py-2.25">
             <AlertCircle size={13} className="text-rose-500 shrink-0" />
             <p className="text-rose-500 text-xs">{message}</p>
         </div>
@@ -133,7 +133,7 @@ function SubmitButton({ loading }: { loading: boolean }) {
             className={`w-full font-bold text-sm text-white py-3 rounded-[10px] border-0 flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(8,145,178,0.3)] transition-all duration-200
                 ${loading
                     ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-gradient-to-br from-[#0891b2] to-[#06b6d4] cursor-pointer"
+                    : "bg-linear-to-br from-[#0891b2] to-[#06b6d4] cursor-pointer"
                 }`}>
             {loading
                 ? <><Loader2 size={14} className="animate-spin" /> Creating Account...</>
@@ -146,7 +146,7 @@ function SubmitButton({ loading }: { loading: boolean }) {
 function SuccessScreen() {
     return (
         <div className="flex flex-col items-center gap-4 py-10 text-center">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-50 to-cyan-100">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-linear-to-br from-cyan-50 to-cyan-100">
                 <CheckCircle2 size={30} className="text-[#0891b2]" />
             </div>
             <div>
@@ -212,7 +212,7 @@ export default function RegistrationForm() {
         }
     }
     return (
-        <div className="flex-1 flex flex-col  justify-center px-9 py-8 bg-white md:px-9 px-6">
+        <div className="flex-1 flex flex-col  justify-center px-9 py-8 bg-white md:px-9">
             {success ? (
                 <SuccessScreen />
             ) : (
