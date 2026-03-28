@@ -44,7 +44,7 @@ export default function Navbar() {
     }, [pathname]);
 
     useEffect(() => {
-        if (pathname !== "/") return; 
+        if (pathname !== "/") return;
 
         const sectionIds = navLinks
             .filter((l) => l.sectionId)
@@ -125,7 +125,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Desktop CTA */}
-                        <div className="hidden md:flex items-center gap-2">
+                        <div className="hidden md:flex items-center gap-5">
                             <Button
                                 size="sm"
                                 onClick={() => setEnquiryOpen(true)}
@@ -133,6 +133,10 @@ export default function Navbar() {
                             >
                                 Get Started
                             </Button>
+                            <Button variant={"outline"} className={'px-6 py-5'}>
+                                <Link href={'/login'} >Login</Link>
+                            </Button>
+
                         </div>
 
                         {/* Mobile Hamburger */}

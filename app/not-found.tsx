@@ -50,7 +50,7 @@ export default function NotFound() {
                             Go to Home
                         </Button>
                     </Link>
-                    <Link href="/courses">
+                    <Link href="/#courses">
                         <Button variant="outline" className="text-gray-600 border-gray-200 hover:bg-gray-50 font-medium px-6 rounded-lg gap-2">
                             <ArrowLeft size={15} />
                             Browse Courses
