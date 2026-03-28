@@ -70,7 +70,7 @@ export default function WhyChooseUs() {
                             className="bg-white rounded-2xl p-8 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow duration-300 group"
                         >
                             {/* Icon circle */}
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#e8f4fc] to-[#d1ecf1] flex items-center justify-center mb-6 group-hover:scale-105 transition-all duration-300 shadow-sm">
+                            <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#e8f4fc] to-[#d1ecf1] flex items-center justify-center mb-6 group-hover:scale-105 transition-all duration-300 shadow-sm">
                                 <Icon size={28} className="text-primary group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
                             </div>
 
