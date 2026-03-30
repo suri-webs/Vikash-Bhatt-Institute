@@ -55,7 +55,7 @@ export default function WhyChooseUs() {
                         WHY CHOOSE US
                     </span>
                     <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 leading-tight">
-                        The <span className='text-primary'>Vikash Bhatt</span> Advantage
+                        The <span className='text-primary'>VBC</span> Advantage
                     </h2>
                     <p className="text-slate-500 text-lg max-w-xl mx-auto leading-relaxed mt-4">
                         What makes learning here different — and results-driven.

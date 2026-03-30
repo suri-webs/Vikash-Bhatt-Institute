@@ -59,7 +59,7 @@ export function NavMobileDrawer({
                                 <GraduationCap size={16} className="text-white" />
                             </div>
                             <div className="flex flex-col leading-none">
-                                <span className="text-gray-900 font-bold text-sm">Vikash Bhatt</span>
+                                <span className="text-gray-900 font-bold text-sm">vikas Bhatt</span>
                                 <span className="text-cyan-500 font-medium text-[10px] tracking-widest uppercase">
                                     Classes
                                 </span>

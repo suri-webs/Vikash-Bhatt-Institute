@@ -18,19 +18,18 @@ export async function POST(request: Request) {
         await connectDB();
 
         const formData = await request.formData();
-        const username   = formData.get("username");
-        const gmail      = formData.get("gmail");
-        const password   = formData.get("password");
-        const rollNumber = formData.get("rollNumber");
+        const username = formData.get("username");
+        const gmail = formData.get("gmail");
+        const password = formData.get("password");
 
-        if (!username || !gmail || !password || !rollNumber) {
+        if (!username || !gmail || !password) {
             return Response.json(
                 { success: false, message: "All fields required" },
                 { status: 400 }
             );
         }
 
-        const user = new UserModel({ username, gmail, password, rollNumber, role: "student" });
+        const user = new UserModel({ username, gmail, password, role: "student" });
         await user.save();
 
         return Response.json({ success: true, user });
@@ -50,7 +49,7 @@ export async function PUT(request: Request) {
         const body = await request.json();
         const {
             id,
-            username, gmail, password, rollNumber,
+            username, gmail, password,
             firstName, lastName,
             phone, dob, bio, avatar,
             // ✅ location fields as separate keys from frontend
@@ -67,32 +66,31 @@ export async function PUT(request: Request) {
         if (firstName !== undefined || lastName !== undefined) {
             const current = await UserModel.findById(id);
             const currentFirst = current?.username?.split(" ")[0] ?? "";
-            const currentLast  = current?.username?.split(" ").slice(1).join(" ") ?? "";
+            const currentLast = current?.username?.split(" ").slice(1).join(" ") ?? "";
             updateData.username = `${firstName ?? currentFirst} ${lastName ?? currentLast}`.trim();
         } else if (username !== undefined) {
             updateData.username = username;
         }
 
-        if (gmail      !== undefined) updateData.gmail      = gmail;
-        if (password   !== undefined) updateData.password   = password;
-        if (rollNumber !== undefined) updateData.rollNumber = rollNumber;
-        if (phone      !== undefined) updateData.phone      = phone;
-        if (dob        !== undefined) updateData.dob        = dob;
-        if (bio        !== undefined) updateData.bio        = bio;
-        if (avatar     !== undefined) updateData.avatar     = avatar;
+        if (gmail !== undefined) updateData.gmail = gmail;
+        if (password !== undefined) updateData.password = password;
+        if (phone !== undefined) updateData.phone = phone;
+        if (dob !== undefined) updateData.dob = dob;
+        if (bio !== undefined) updateData.bio = bio;
+        if (avatar !== undefined) updateData.avatar = avatar;
 
         // ✅ Build location object only if any location field was sent
         if (
-            country !== undefined || state   !== undefined ||
-            city    !== undefined || pincode !== undefined ||
+            country !== undefined || state !== undefined ||
+            city !== undefined || pincode !== undefined ||
             address !== undefined
         ) {
             const current = await UserModel.findById(id);
             const existing = current?.location ?? {};
             updateData.location = {
                 country: country ?? existing.country ?? "",
-                state:   state   ?? existing.state   ?? "",
-                city:    city    ?? existing.city    ?? "",
+                state: state ?? existing.state ?? "",
+                city: city ?? existing.city ?? "",
                 pincode: pincode ?? existing.pincode ?? "",
                 address: address ?? existing.address ?? "",
             };

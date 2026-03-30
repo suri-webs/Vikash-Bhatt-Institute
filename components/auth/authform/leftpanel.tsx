@@ -76,7 +76,7 @@ function LeftLogo() {
                 <GraduationCap size={18} color="#fff" strokeWidth={2.2} />
             </div>
             <div>
-                <p className="text-white font-semibold text-sm leading-none">Vikash Bhatt</p>
+                <p className="text-white font-semibold text-sm leading-none">vikas Bhatt</p>
                 <p className="text-[9px] font-semibold tracking-[0.2em] uppercase mt-0.5 text-[#38bdf8]">Classes</p>
             </div>
         </div>

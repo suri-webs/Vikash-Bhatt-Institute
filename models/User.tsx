@@ -17,7 +17,6 @@ const userSchema = new Schema({
     },
     rollNumber: {
         type: String,
-        required: true,
         unique: true,
     },
     role: {

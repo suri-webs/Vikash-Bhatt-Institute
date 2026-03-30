@@ -33,10 +33,10 @@ export default function About() {
                         ABOUT THE TEACHER
                     </span>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                        Meet <span className="text-primary">Vikash Bhatt</span>
+                        Meet <span className="text-primary">vikas Bhatt</span>
                     </h2>
                     <p className="text-slate-500 text-sm sm:text-base leading-relaxed w-full sm:w-[80%] md:w-[70%] mx-auto font-light">
-                        With over a decade of dedicated teaching experience, Vikash Bhatt has helped thousands of students build strong academic foundations — from Class 1 basics to competitive exam success — across Science, Commerce, and Arts streams.
+                        With over a decade of dedicated teaching experience, vikas Bhatt has helped thousands of students build strong academic foundations — from Class 1 basics to competitive exam success — across Science, Commerce, and Arts streams.
                     </p>
                 </div>
 
@@ -45,8 +45,8 @@ export default function About() {
                     {/* Teacher Photo */}
                     <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm h-72 w-full">
                         <Image
-                            src="/images/about/vikash-bhatt-about.webp"
-                            alt="Vikash Bhatt"
+                            src="/images/about/vikas-bhatt-about.webp"
+                            alt="vikas Bhatt"
                             fill
                             className="object-cover object-top"
                         />
@@ -105,7 +105,7 @@ export default function About() {
                     {/* Row 1: photo + quote side by side */}
                     <div className="grid grid-cols-2 gap-4 h-72">
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm">
-                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhatt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikas-bhatt-about.webp" alt="vikas Bhatt" fill className="object-cover object-top" />
                         </div>
                         <div className="bg-primary rounded-3xl p-7 flex flex-col justify-between shadow-sm">
                             <Quote className="w-8 h-8 text-white/40" />
@@ -162,10 +162,10 @@ export default function About() {
                     {/* Left column — 2 stacked photos */}
                     <div className="flex flex-col gap-4 row-span-2">
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm flex-1">
-                            <Image src="/images/about/vikash-bhatt-about.webp" alt="Vikash Bhatt" fill className="object-cover object-end" />
+                            <Image src="/images/about/vikas-bhatt-about.webp" alt="vikas Bhatt" fill className="object-cover object-end" />
                         </div>
                         <div className="relative rounded-3xl overflow-hidden bg-slate-100 shadow-sm flex-1">
-                            <Image src="/images/about/vikash-bhatt-about2.webp" alt="Vikash Bhatt" fill className="object-cover object-top" />
+                            <Image src="/images/about/vikas-bhatt-about2.webp" alt="vikas Bhatt" fill className="object-cover object-top" />
                         </div>
                     </div>
 

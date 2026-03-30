@@ -79,10 +79,10 @@ export default function Header() {
                         {/* Stats row */}
                         <div className="flex flex-wrap gap-8 mb-10">
                             {[
-                                { icon: Users, num: "5000+", label: "Students Taught" },
+                                { icon: Users, num: "8500+", label: "Students Taught" },
                                 { icon: TrendingUp, num: "98%", label: "Pass Rate" },
-                                { icon: Clock, num: "10+", label: "Years Experience" },
-                                { icon: LayoutGrid, num: "15+", label: "Subjects Covered" },
+                                { icon: Clock, num: "21+", label: "Years Experience" },
+                                { icon: LayoutGrid, num: "12+", label: "Subjects Covered" },
                             ].map(({ icon: Icon, num, label }) => (
                                 <div key={label} className="flex items-center gap-2.5">
                                     <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
@@ -128,7 +128,7 @@ export default function Header() {
                     <div className="h-full  justify-center items-center max-md:h-82 max-md:rounded-2xl relative flex overflow-hidden">
                         <Image
                             src="/images/Vikas-bhatt-image.png"
-                            alt="Vikash Bhatt - Expert Tutor"
+                            alt="vikas Bhatt - Expert Tutor"
                             className="absolute  mx-auto  max-sm:left-0 left-40"
                             width={410}
                             height={400}

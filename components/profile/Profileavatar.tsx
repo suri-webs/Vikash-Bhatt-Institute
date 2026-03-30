@@ -2,16 +2,16 @@
 
 import { useRef } from "react";
 import { User, Camera } from "lucide-react";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import Image from "next/image";
 
 interface ProfileAvatarProps {
     avatarSrc: string | null;
+    editing: boolean;
     onAvatarChange: (src: string) => void;
 }
 
-export function ProfileAvatar({ avatarSrc, onAvatarChange }: ProfileAvatarProps) {
+export function ProfileAvatar({ avatarSrc, editing, onAvatarChange }: ProfileAvatarProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,33 +22,48 @@ export function ProfileAvatar({ avatarSrc, onAvatarChange }: ProfileAvatarProps)
         reader.readAsDataURL(file);
     };
 
+    const hasAvatar = avatarSrc && avatarSrc.trim().length > 0;
+
     return (
         <div className="relative shrink-0">
-            <Avatar className="w-18 h-18 overflow-hidden  rounded-xl border border-gray-200">
-                {avatarSrc ? (
-                    <AvatarImage src={avatarSrc} alt="User avatar" className="object-cover rounded-none" />
+            {/* Native img — works reliably with base64 data URLs unlike Shadcn AvatarImage */}
+            <div
+                className="rounded-lg relative shadow-sm border-2 overflow-hidden bg-gray-100 flex items-center justify-center"
+                style={{ width: 72, height: 72 }}
+            >
+                {hasAvatar ? (
+                    <Image
+                        src={avatarSrc!}
+                        alt="User avatar"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                        fill
+                    />
                 ) : (
-                    <AvatarFallback className="rounded-xl bg-gray-100">
-                        <User size={28} className="text-gray-400" />
-                    </AvatarFallback>
+                    <User size={28} className="text-gray-400" />
                 )}
-            </Avatar>
+            </div>
 
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger >
-                        <span
-                            onClick={() => fileInputRef.current?.click()}
-                            className="absolute flex justify-center items-center bg-white bottom-3.5 -right-1.5 w-6 h-6 rounded-full p-0 shadow-sm"
-                        >
-                            <Camera size={11} className="text-gray-400" />
-                        </span>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                        <p className="text-xs">Change photo</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
+            {/* Camera button — only visible in edit mode */}
+            {editing && (
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger >
+                            <span
+                                onClick={() => fileInputRef.current?.click()}
+                                className="absolute flex justify-center items-center bg-white bottom-3 -right-1.5 w-6 h-6 rounded-full p-0 shadow-sm cursor-pointer border border-gray-100"
+                            >
+                                <Camera size={11} className="text-gray-400" />
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom">
+                            <p className="text-xs">Change photo</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            )}
 
             <input
                 ref={fileInputRef}

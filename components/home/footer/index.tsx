@@ -30,8 +30,8 @@ export default function Footer() {
             iconPath: "M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"
         },
         {
-            label: "info@vikashbhattclasses.com",
-            href: "mailto:info@vikashbhattclasses.com",
+            label: "info@vikasbhattclasses.com",
+            href: "mailto:info@vikasbhattclasses.com",
             iconPath: "M2 4v16a2 2 0 002 2h16a2 2 0 002-2V4a2 2 0 00-2-2H4a2 2 0 00-2 2z M2 7l10 7 10-7"
         },
         {
@@ -43,9 +43,9 @@ export default function Footer() {
 
     const socialLinks = [
 
-        { name: "LinkedIn", href: "https://linkedin.com/in/vikashbhatt", icon: <Linkedin size={16} />, hoverColor: "hover:text-[#0A66C2]" },
-        { name: "Instagram", href: "https://instagram.com/vikashbhattclasses", icon: <Instagram size={16} />, hoverColor: "hover:text-[#E1306C]" },
-        { name: "Facebook", href: "https://facebook.com/vikashbhattclasses", icon: <Facebook size={16} />, hoverColor: "hover:text-[#1877F2]" },
+        { name: "LinkedIn", href: "https://linkedin.com/in/vikasbhatt", icon: <Linkedin size={16} />, hoverColor: "hover:text-[#0A66C2]" },
+        { name: "Instagram", href: "https://instagram.com/vikasbhattclasses", icon: <Instagram size={16} />, hoverColor: "hover:text-[#E1306C]" },
+        { name: "Facebook", href: "https://facebook.com/vikasbhattclasses", icon: <Facebook size={16} />, hoverColor: "hover:text-[#1877F2]" },
         { name: "WhatsApp", href: "https://wa.me/919876543210", icon: <WhatsAppIcon size={16} />, hoverColor: "hover:text-[#25D366]" },
     ];
 
@@ -60,7 +60,7 @@ export default function Footer() {
                             <GraduationCap size={16} className="text-white" />
                         </div>
                         <div className="flex flex-col leading-none">
-                            <span className="text-white font-bold text-sm tracking-tight">Vikash Bhatt</span>
+                            <span className="text-white font-bold text-sm tracking-tight">vikas Bhatt</span>
                             <span className="text-cyan-500 font-medium text-[10px] tracking-widest uppercase">Classes</span>
                         </div>
                     </Link>
@@ -138,7 +138,7 @@ export default function Footer() {
             {/* Divider + Copyright — full bleed */}
             <div className="max-w-7xl max-sm:flex-col mx-auto border-t flex justify-between border-[#1e2a3a] py-5 text-center max-sm:px-6">
                 <p className="m-0 text-[13px] text-[#5a6478]">
-                    © 2026 Vikash Bhatt Classes. All rights reserved.
+                    © 2026 vikas Bhatt Classes. All rights reserved.
 
                 </p>
                 <div className="flex gap-2 items-center">

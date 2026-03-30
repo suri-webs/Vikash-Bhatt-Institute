@@ -43,13 +43,14 @@ export function ProfileCard({
         <Card className="border-gray-100 shadow-sm rounded-2xl">
             <CardContent className="p-2 px-4">
                 <div className="flex items-center gap-4">
-                    <ProfileAvatar avatarSrc={avatarSrc} onAvatarChange={onAvatarChange} />
+                    {/* ✅ Pass editing so camera icon only shows in edit mode */}
+                    <ProfileAvatar avatarSrc={avatarSrc} editing={editing} onAvatarChange={onAvatarChange} />
 
                     <div className="flex-1 min-w-0">
                         <h2 className="text-lg font-bold text-gray-900 leading-tight truncate">{displayName}</h2>
                         <p className="text-sm text-gray-500 truncate mt-0.5">{email}</p>
 
-                        <div className="flex items-center justify-between mt-2.5">
+                        <div className="flex items-center justify-between">
                             <Badge
                                 variant="outline"
                                 className="bg-emerald-50 border-emerald-200 text-emerald-600 text-xs font-medium px-2.5 py-1 rounded-full gap-1.5"
@@ -73,8 +74,7 @@ export function ProfileCard({
                                         size="sm"
                                         onClick={onSave}
                                         disabled={saving}
-                                        className="px-4 py-1.5 h-auto rounded-lg bg-primary text-white hover:bg-primary/90
-                                         text-xs gap-1.5"
+                                        className="px-4 py-1.5 h-auto rounded-lg bg-primary text-white hover:bg-primary/90 text-xs gap-1.5"
                                     >
                                         <SaveIcon />
                                         {saving ? "Saving..." : "Save"}
@@ -87,7 +87,6 @@ export function ProfileCard({
                                     onClick={onEdit}
                                     className="px-3 py-1.5 h-auto rounded-lg text-xs gap-1.5"
                                 >
-                                    {/* Pencil icon inline to avoid extra import */}
                                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />

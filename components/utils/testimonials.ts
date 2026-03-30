@@ -5,7 +5,7 @@ export const testimonials = [
         role: 'Class 12',
         score: '97%',
         subject: 'Boards',
-        quote: "Vikash Sir's teaching completely changed how I look at mathematics. I scored 97% in my boards — something I never imagined!",
+        quote: "vikas Sir's teaching completely changed how I look at mathematics. I scored 97% in my boards — something I never imagined!",
         bg: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
         image: '/images/student-testmonilas/data-scientist-person.webp'
     },

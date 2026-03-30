@@ -12,7 +12,6 @@ interface FormData {
     username: string
     gmail: string
     password: string
-    rollNumber: string
 }
 
 /* ── Sub-components ── */
@@ -24,7 +23,7 @@ function MobileLogo() {
                 <GraduationCap size={15} color="#fff" strokeWidth={2.2} />
             </div>
             <div>
-                <p className="font-semibold text-sm leading-none text-slate-900">Vikash Bhatt</p>
+                <p className="font-semibold text-sm leading-none text-slate-900">vikas Bhatt</p>
                 <p className="text-[9px] font-semibold tracking-widest uppercase mt-0.5 text-[#0891b2]">Classes</p>
             </div>
         </div>
@@ -108,15 +107,6 @@ function PasswordField({ value, onChange, showPassword, togglePassword }: {
     )
 }
 
-function RollNumberField({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
-    return (
-        <InputWrapper label="Roll Number">
-            <InputIcon><FileText size={13} /></InputIcon>
-            <input type="text" name="rollNumber" placeholder="VBC-001"
-                value={value} onChange={onChange} required className={inputBase} />
-        </InputWrapper>
-    )
-}
 
 function ErrorBanner({ message }: { message: string }) {
     return (
@@ -163,14 +153,14 @@ function SuccessScreen() {
 function FormFooter() {
     return (
         <div className="border-t border-slate-100 mt-5 pt-3.5 text-center">
-            <p className="text-[10px] text-slate-300">© 2026 Vikash Bhatt Classes · All rights reserved</p>
+            <p className="text-[10px] text-slate-300">© 2026 vikas Bhatt Classes · All rights reserved</p>
         </div>
     )
 }
 
 /* ── Main ── */
 export default function RegistrationForm() {
-    const [formData, setFormData] = useState<FormData>({ username: "", gmail: "", password: "", rollNumber: "" })
+    const [formData, setFormData] = useState<FormData>({ username: "", gmail: "", password: "" })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState(false)
@@ -224,14 +214,13 @@ export default function RegistrationForm() {
                         <UsernameField value={formData.username} onChange={handleChange} />
                         <EmailField value={formData.gmail} onChange={handleChange} />
 
-                        <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3">
+                        <div className="grid grid-cols-1 gap-3">
                             <PasswordField
                                 value={formData.password}
                                 onChange={handleChange}
                                 showPassword={showPassword}
                                 togglePassword={() => setShowPassword(p => !p)}
                             />
-                            <RollNumberField value={formData.rollNumber} onChange={handleChange} />
                         </div>
 
                         {error && <ErrorBanner message={error} />}

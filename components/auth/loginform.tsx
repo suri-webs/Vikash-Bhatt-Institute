@@ -262,7 +262,7 @@ export default function Login() {
                     </div>
 
                     <p className="text-center text-slate-400 text-[11px] mt-4">
-                        © 2026 Vikash Bhatt Classes · New Delhi, India
+                        © 2026 vikas Bhatt Classes · New Delhi, India
                     </p>
                 </div>
             </div>
