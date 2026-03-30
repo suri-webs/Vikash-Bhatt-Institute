@@ -10,6 +10,7 @@ import { NavDesktopLinks } from "./Navdesktoplinks";
 import { NavDesktopActions } from "./Navdesktopactions";
 import { NavMobileDrawer } from "./Navmobiledrawer";
 import { LogoutDialog } from "./Logoutdialog";
+import { SearchBar } from "./Searchbar";
 
 
 export default function Navbar() {
@@ -78,17 +79,22 @@ export default function Navbar() {
 
                         <NavLogo onClick={() => setActiveLink("/")} />
 
-                        <NavDesktopLinks
-                            activeLink={activeLink}
-                            onLinkClick={setActiveLink}
-                        />
+                        {/* Search bar — hidden on max-sm, visible sm and above */}
+                        <SearchBar placeholder="Search courses, subjects..." />
 
-                        <NavDesktopActions
-                            isLoggedIn={isLoggedIn}
-                            user={user}
-                            onEnquiryOpen={() => setEnquiryOpen(true)}
-                            onLogoutOpen={() => setLogoutOpen(true)}
-                        />
+                        <div className="flex gap-3">
+                            <NavDesktopLinks
+                                activeLink={activeLink}
+                                onLinkClick={setActiveLink}
+                            />
+
+                            <NavDesktopActions
+                                isLoggedIn={isLoggedIn}
+                                user={user}
+                                onEnquiryOpen={() => setEnquiryOpen(true)}
+                                onLogoutOpen={() => setLogoutOpen(true)}
+                            />
+                        </div>
 
                         <NavMobileDrawer
                             isLoggedIn={isLoggedIn}

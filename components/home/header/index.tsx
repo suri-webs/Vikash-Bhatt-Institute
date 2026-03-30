@@ -40,7 +40,7 @@ export default function Header() {
                             )}
                         >
                             <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-cyan-700 hover:duration-300 max-sm:text-[10px]">
-                                <span>⭐ Trusted by 5000+ Students Across India</span>
+                                <span className="text-sm">⭐ Trusted by 5000+ Students Across India</span>
                                 <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                             </AnimatedShinyText>
                         </div>
@@ -79,10 +79,10 @@ export default function Header() {
                         {/* Stats row */}
                         <div className="flex flex-wrap gap-8 mb-10">
                             {[
-                                { icon: Users,      num: "5000+", label: "Students Taught"  },
-                                { icon: TrendingUp, num: "98%",   label: "Pass Rate"         },
-                                { icon: Clock,      num: "10+",   label: "Years Experience"  },
-                                { icon: LayoutGrid, num: "15+",   label: "Subjects Covered"  },
+                                { icon: Users, num: "5000+", label: "Students Taught" },
+                                { icon: TrendingUp, num: "98%", label: "Pass Rate" },
+                                { icon: Clock, num: "10+", label: "Years Experience" },
+                                { icon: LayoutGrid, num: "15+", label: "Subjects Covered" },
                             ].map(({ icon: Icon, num, label }) => (
                                 <div key={label} className="flex items-center gap-2.5">
                                     <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">

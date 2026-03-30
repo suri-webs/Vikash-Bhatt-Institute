@@ -26,10 +26,10 @@ export function LogoutDialog({ open, onOpenChange, onConfirm }: LogoutDialogProp
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel className={'px-6 py-5'}>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                         onClick={onConfirm}
-                        className="bg-red-500 hover:bg-red-600 text-white"
+                        className="bg-primary px-6 py-5 hover:bg-primary/60 text-white"
                     >
                         Logout
                     </AlertDialogAction>

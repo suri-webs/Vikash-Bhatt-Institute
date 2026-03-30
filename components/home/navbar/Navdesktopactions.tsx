@@ -21,14 +21,6 @@ export function NavDesktopActions({ isLoggedIn, user, onEnquiryOpen, onLogoutOpe
 
     return (
         <div className="hidden md:flex items-center gap-5">
-            <Button
-                size="sm"
-                onClick={onEnquiryOpen}
-                className="bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-medium px-4 rounded-lg py-5"
-            >
-                Get Started
-            </Button>
-
             {isLoggedIn && user ? (
                 <AvatarDropdown user={user} onLogout={onLogoutOpen} />
             ) : (

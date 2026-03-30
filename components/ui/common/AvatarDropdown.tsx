@@ -1,15 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // 👈 add this
 import { ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../dropdown-menu";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../dropdown-menu";
 
 interface User {
     id: string;
     username: string;
     gmail: string;
     role: string;
+    avatar?: string;
 }
 
 function getInitials(username: string) {
@@ -21,28 +28,48 @@ function getInitials(username: string) {
         .slice(0, 2);
 }
 
-export function AvatarDropdown({ user, onLogout }: { user: User; onLogout: () => void }) {
+export function AvatarDropdown({
+    user,
+    onLogout,
+}: {
+    user: User;
+    onLogout: () => void;
+}) {
     const [open, setOpen] = useState(false);
+    const router = useRouter(); // 👈 initialize router
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
                 <Avatar className="h-9 w-9">
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarImage src={user.avatar || ""} />
+
                     <AvatarFallback className="bg-cyan-500 text-white font-semibold text-sm">
                         {getInitials(user.username)}
                     </AvatarFallback>
                 </Avatar>
-                {/* Rotate icon based on open state */}
+
                 <ChevronDown
                     size={22}
-                    className={`text-gray-500 transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"}`}
+                    className={`text-gray-500 transition-transform duration-200 ${open ? "rotate-180" : "rotate-0"
+                        }`}
                 />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" >
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                <DropdownMenuItem onClick={onLogout} className="text-red-500">
+
+            <DropdownMenuContent align="end">
+                {/* 👇 Add navigation */}
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                    Profile
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                    Dashboard
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                    onClick={onLogout}
+                    className="hover:text-white hover:bg-primary"
+                >
                     Logout
                 </DropdownMenuItem>
             </DropdownMenuContent>
