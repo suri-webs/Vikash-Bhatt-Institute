@@ -78,9 +78,14 @@ export default function Profile() {
         setSaving(true);
         setSaveError(null);
         try {
-            const res = await fetch("/api/users", {
+            const token = localStorage.getItem("token");  // ← get token
+
+            const res = await fetch("https://vikas-bhatt-classes-server.onrender.com/api/users", {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,  // ← add this
+                },
                 body: JSON.stringify({
                     id: (user as any).id ?? (user as any)._id,
                     firstName: form.firstName,
@@ -161,7 +166,7 @@ export default function Profile() {
                     </div>
 
                     {/* ── Right column ── */}
-                    <Card className="flex-1 min-w-0 border-gray-100 shadow-sm rounded-2xl">
+                    <Card className="flex-1 w-full max-w-full border-gray-100 shadow-sm rounded-2xl">
                         <CardContent className="p-6 lg:p-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
 

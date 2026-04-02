@@ -43,7 +43,7 @@ export default function Login() {
         setError("")
 
         try {
-            const response = await axios.post("/api/login", formData)
+            const response = await axios.post("https://vikas-bhatt-classes-server.onrender.com/api/login", formData)
             const { user } = response.data
             login(user)
             router.push("/profile")

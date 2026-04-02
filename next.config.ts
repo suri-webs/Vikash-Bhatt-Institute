@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'export',        // ← adds this for static build
   images: {
-    unoptimized: true
+    unoptimized: true      // ← already correct, required for static
   }
 };
 

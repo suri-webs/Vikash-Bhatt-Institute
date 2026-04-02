@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import axios from "axios"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/hooks/useAuth"
 import {
     User, Mail, Lock, Eye, EyeOff, FileText,
     ArrowRight, Loader2, AlertCircle, CheckCircle2, GraduationCap,
@@ -107,7 +109,6 @@ function PasswordField({ value, onChange, showPassword, togglePassword }: {
     )
 }
 
-
 function ErrorBanner({ message }: { message: string }) {
     return (
         <div className="flex items-center gap-2 bg-rose-50 border-[1.5px] border-rose-200 rounded-[10px] px-3 py-2.25">
@@ -160,6 +161,9 @@ function FormFooter() {
 
 /* ── Main ── */
 export default function RegistrationForm() {
+    const router = useRouter()
+    const { setUser } = useAuth()
+
     const [formData, setFormData] = useState<FormData>({ username: "", gmail: "", password: "" })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -176,17 +180,30 @@ export default function RegistrationForm() {
         setError("")
 
         try {
-            const data = new FormData()
-            Object.entries(formData).forEach(([k, v]) => data.append(k, v))
-            data.append("role", "student")
-
-            const res = await axios.post("/api/users", data, {
-                headers: { "Content-Type": "multipart/form-data" }
-            })
+            const res = await axios.post(
+                "https://vikas-bhatt-classes-server.onrender.com/api/users",
+                { ...formData, role: "student" },
+                { headers: { "Content-Type": "application/json" } }
+            )
 
             if (res.data.success) {
                 toast.success("Registration successful 🎉")
-                setSuccess(true)
+
+                // ✅ Auto-login after registration
+                const loginRes = await axios.post(
+                    "https://vikas-bhatt-classes-server.onrender.com/api/login",
+                    { gmail: formData.gmail, password: formData.password },
+                    { headers: { "Content-Type": "application/json" } }
+                )
+
+                if (loginRes.data.success) {
+                    localStorage.setItem("token", loginRes.data.token)
+                    if (setUser) setUser(loginRes.data.user)
+                    router.push("/")
+                } else {
+                    setSuccess(true)  // fallback: show success screen
+                }
+
             } else {
                 toast.error(res.data.error || "Something went wrong")
             }
@@ -201,8 +218,9 @@ export default function RegistrationForm() {
             setLoading(false)
         }
     }
+
     return (
-        <div className="flex-1 flex flex-col  justify-center px-9 py-8 bg-white md:px-9">
+        <div className="flex-1 flex flex-col justify-center px-9 py-8 bg-white md:px-9">
             {success ? (
                 <SuccessScreen />
             ) : (

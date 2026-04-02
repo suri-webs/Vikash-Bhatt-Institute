@@ -88,7 +88,7 @@ export default function Pop({ open, onOpenChange }: PopProps) {
         setError(null);
 
         try {
-            const res = await fetch("/api/enquiry", {
+            const res = await fetch("https://vikas-bhatt-classes-server.onrender.com/api/enquiry", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, source: "popup" }),
