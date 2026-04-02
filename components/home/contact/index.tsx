@@ -30,9 +30,9 @@ const emptyForm: FormData = {
 // ── Static data ────────────────────────────────────────────────────────────
 
 const contactInfo = [
-    { icon: Phone, label: 'Phone', value: '+91 98765 43210' },
-    { icon: MapPin, label: 'Location', value: 'New Delhi, India' },
+    { icon: Phone, label: 'Phone', value: '+91 98183 48878' },
     { icon: Clock, label: 'Hours', value: 'Mon–Sat, 9–6 PM' },
+    { icon: MapPin, label: 'Location', value: 'B-4196/109 Sant Nagar, Burari, New Delhi, Delhi 110084' },
 ];
 
 const classLevels = [
@@ -138,10 +138,15 @@ export default function Contact() {
                             </CardContent>
                         </Card>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-2 gap-3">
                             {contactInfo.map(({ icon: Icon, label, value }, index) => (
-                                <Card key={index} className="rounded-2xl border border-gray-100 shadow-sm">
-                                    <CardContent className="p-4 flex items-start gap-3">
+                                <Card
+                                    key={index}
+                                    className={`rounded-2xl border border-gray-100 shadow-sm
+                ${index === contactInfo.length - 1 ? 'col-span-2' : 'max-sm:col-span-2'}
+            `}
+                                >
+                                    <CardContent className="px-4 flex items-start gap-3">
                                         <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                                             <Icon size={14} className="text-primary" />
                                         </div>
@@ -149,7 +154,7 @@ export default function Contact() {
                                             <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">
                                                 {label}
                                             </p>
-                                            <p className="text-[13px] font-medium text-gray-800">{value}</p>
+                                            <p className="text-[13px] font-medium text-gray-800 wrap-break-word">{value}</p>
                                         </div>
                                     </CardContent>
                                 </Card>

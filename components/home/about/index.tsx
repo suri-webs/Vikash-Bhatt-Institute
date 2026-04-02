@@ -75,7 +75,7 @@ export default function About() {
                                 { icon: Users2, label: "Personal Mentorship", desc: "Individual attention to each student's learning pace, strengths, and improvement areas." },
                             ].map((item) => (
                                 <div key={item.label} className="flex items-start gap-3">
-                                    <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                    <item.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                                     <div>
                                         <p className="text-sm font-medium text-slate-700">{item.label}</p>
                                         <p className="text-xs text-slate-400">{item.desc}</p>
@@ -133,7 +133,7 @@ export default function About() {
                                     { icon: Users2, label: "Personal Mentorship", desc: "Individual attention to each student's learning pace, strengths, and improvement areas." },
                                 ].map((item) => (
                                     <div key={item.label} className="flex items-start gap-3">
-                                        <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                        <item.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                                         <div>
                                             <p className="text-sm font-medium text-slate-700">{item.label}</p>
                                             <p className="text-xs text-slate-400">{item.desc}</p>
@@ -194,7 +194,7 @@ export default function About() {
                                 { icon: Users2, label: "Personal Mentorship", desc: "Individual attention to each student's learning pace, strengths, and improvement areas." },
                             ].map((item) => (
                                 <div key={item.label} className="flex items-start gap-3">
-                                    <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                    <item.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                                     <div>
                                         <p className="text-sm font-medium text-slate-700">{item.label}</p>
                                         <p className="text-xs text-slate-400">{item.desc}</p>

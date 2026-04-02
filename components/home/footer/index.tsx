@@ -25,18 +25,18 @@ export default function Footer() {
 
     const contactInfo = [
         {
-            label: "+91 98765 43210",
-            href: "tel:+919876543210",
+            label: "+91 98183 48878",
+            href: "tel:+919818348878",
             iconPath: "M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"
         },
         {
-            label: "info@vikasbhattclasses.com",
-            href: "mailto:info@vikasbhattclasses.com",
+            label: "vikasbhattnco@gmail.com",
+            href: "mailto:vikasbhattnco@gmail.com",
             iconPath: "M2 4v16a2 2 0 002 2h16a2 2 0 002-2V4a2 2 0 00-2-2H4a2 2 0 00-2 2z M2 7l10 7 10-7"
         },
         {
-            label: "New Delhi, India",
-            href: "https://maps.google.com/?q=New+Delhi,India",
+            label: "B-4196/109 Sant Nagar, Burari, New Delhi, Delhi 110084",
+            href: "https://www.google.com/local/place/fid/0x390cff722a24d77d:0x8b756a580badb8c1/photosphere?iu=https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid%3DFj5vgv_ApnCDBwrDl8PGlw%26cb_client%3Dsearch.gws-prod.gps%26yaw%3D167.13863%26pitch%3D0%26thumbfov%3D100%26w%3D0%26h%3D0&ik=CAISFkZqNXZndl9BcG5DREJ3ckRsOFBHbHc%3D&sa=X&ved=2ahUKEwi-nsOP1cmTAxWpTGwGHY91EwAQpx96BAgbEBI",
             iconPath: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z M12 10a3 3 0 100-6 3 3 0 000 6z"
         }
     ];
@@ -44,9 +44,9 @@ export default function Footer() {
     const socialLinks = [
 
         { name: "LinkedIn", href: "https://linkedin.com/in/vikasbhatt", icon: <Linkedin size={16} />, hoverColor: "hover:text-[#0A66C2]" },
-        { name: "Instagram", href: "https://instagram.com/vikasbhattclasses", icon: <Instagram size={16} />, hoverColor: "hover:text-[#E1306C]" },
+        { name: "Instagram", href: "https://www.instagram.com/vikas_bhatt_uk?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", icon: <Instagram size={16} />, hoverColor: "hover:text-[#E1306C]" },
         { name: "Facebook", href: "https://facebook.com/vikasbhattclasses", icon: <Facebook size={16} />, hoverColor: "hover:text-[#1877F2]" },
-        { name: "WhatsApp", href: "https://wa.me/919876543210", icon: <WhatsAppIcon size={16} />, hoverColor: "hover:text-[#25D366]" },
+        { name: "WhatsApp", href: "https://wa.me/+919818348878", icon: <WhatsAppIcon size={16} />, hoverColor: "hover:text-[#25D366]" },
     ];
 
     return (
@@ -139,7 +139,6 @@ export default function Footer() {
             <div className="max-w-7xl max-sm:flex-col mx-auto border-t flex justify-between border-[#1e2a3a] py-5 text-center max-sm:px-6">
                 <p className="m-0 text-[13px] text-[#5a6478]">
                     © 2026 vikas Bhatt Classes. All rights reserved.
-
                 </p>
                 <div className="flex gap-2 items-center">
                     <Link

@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useState, useEffect, PropsWithChildren } from "react";
 
-// ✅ Location is now a structured object
 export interface UserLocation {
   country: string;
   state: string;
