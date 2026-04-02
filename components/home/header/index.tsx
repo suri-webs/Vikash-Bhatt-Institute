@@ -71,8 +71,8 @@ export default function Header() {
                         </h1>
 
                         {/* Body */}
-                        <p className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-lg mb-8">
-                            From Class 1 to 12, JEE, NEET, B.Com & beyond — personalised
+                        <p className="text-slate-500 text-m md:text-xl leading-relaxed max-w-lg mb-8">
+                            From Class 1 to 12, JEE, NEET, B.Com & beyond personalised
                             teaching, structured practice, and proven results across all subjects.
                         </p>
 

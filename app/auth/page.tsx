@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify'
 export default function Home() {
     return (
         <div>
-            <ToastContainer position="top-right" />
+            <ToastContainer position="top-center" />
             <Navbar />
             <Form />
             <Footer />

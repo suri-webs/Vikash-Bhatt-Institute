@@ -5,7 +5,7 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import {
-    User, Mail, Lock, Eye, EyeOff, FileText,
+    User, Mail, Lock, Eye, EyeOff,
     ArrowRight, Loader2, AlertCircle, CheckCircle2, GraduationCap,
 } from "lucide-react"
 import { toast } from "react-toastify"
