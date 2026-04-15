@@ -9,6 +9,7 @@ import {
     ArrowRight, Loader2, AlertCircle, CheckCircle2, GraduationCap,
 } from "lucide-react"
 import { toast } from "react-toastify"
+import { getServerUrl } from "@/components/utils/config"
 
 interface FormData {
     username: string
@@ -181,7 +182,7 @@ export default function RegistrationForm() {
 
         try {
             const res = await axios.post(
-                "https://vikas-bhatt-classes-server.onrender.com/api/users",
+                `${getServerUrl()}/users`,
                 { ...formData, role: "student" },
                 { headers: { "Content-Type": "application/json" } }
             )
@@ -191,7 +192,7 @@ export default function RegistrationForm() {
 
                 // ✅ Auto-login after registration
                 const loginRes = await axios.post(
-                    "https://vikas-bhatt-classes-server.onrender.com/api/login",
+                    `${getServerUrl()}/login`,
                     { gmail: formData.gmail, password: formData.password },
                     { headers: { "Content-Type": "application/json" } }
                 )

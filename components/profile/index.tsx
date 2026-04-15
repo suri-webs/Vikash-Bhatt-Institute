@@ -83,11 +83,6 @@ export default function Profile() {
         setSaveError(null);
         try {
             const token = localStorage.getItem("token");
-
-
-           console.log(`${getServerUrl()}/users`);
-           
-
             const res = await axios.put(`${getServerUrl()}/users`, {
                 id: (user as any).id ?? (user as any)._id,
                 fullName: form.fullName,

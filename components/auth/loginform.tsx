@@ -19,6 +19,7 @@ import {
     CheckCircle2,
 } from "lucide-react"
 import Link from "next/link"
+import { getServerUrl } from "../utils/config"
 
 export default function Login() {
     const router = useRouter()
@@ -35,15 +36,16 @@ export default function Login() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+
     }
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
         setError("")
-        
+
         try {
-            const response = await axios.post(`http://localhost:3001/api/login`, formData)
+            const response = await axios.post(`${getServerUrl()}/login`, formData)
             const { user } = response.data
             login(user)
             console.log(user);

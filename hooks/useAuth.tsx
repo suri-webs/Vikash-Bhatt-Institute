@@ -19,7 +19,7 @@ export interface User {
   phone?: string;
   dob?: string;
   location?: UserLocation;
-  classIn:string;
+  classIn: string;
   rollNumber?: number;
   bio?: string;
   avatar?: string;
@@ -56,7 +56,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const setUser = (userData: User) => {
     setUserState(userData);
-    console.log(user);
     localStorage.setItem("user", JSON.stringify(userData));
   };
 

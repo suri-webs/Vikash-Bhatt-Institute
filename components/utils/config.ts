@@ -1,4 +1,4 @@
-const DEVELOPMENT_SERVER_URL = 'http://localhost:3001/api';
+const DEVELOPMENT_SERVER_URL = 'http://localhost:8080/api';
 const PROD_SERVER_URL = 'https://vikas-bhatt-classes-server.onrender.com/api';
 const BETA_SERVER_URL = 'https://vikas-bhatt-classes-server-beta.onrender.com/api';
 

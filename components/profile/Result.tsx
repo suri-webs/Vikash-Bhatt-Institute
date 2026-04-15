@@ -13,6 +13,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { getServerUrl } from "../utils/config";
 
 interface Result {
     rollNumber: string;
@@ -88,7 +89,7 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
         setError(null);
         try {
             const res = await fetch(
-                `http://localhost:3001/api/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`,
+                `${getServerUrl()}results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`,
                 { method: "GET", headers: { "Content-Type": "application/json" } }
             );
             const data = await res.json();
