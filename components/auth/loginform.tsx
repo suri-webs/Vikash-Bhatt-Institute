@@ -41,11 +41,12 @@ export default function Login() {
         e.preventDefault()
         setLoading(true)
         setError("")
-
+        
         try {
-            const response = await axios.post("https://vikas-bhatt-classes-server.onrender.com/api/login", formData)
+            const response = await axios.post(`http://localhost:3001/api/login`, formData)
             const { user } = response.data
             login(user)
+            console.log(user);
             router.push("/profile")
         } catch (err) {
             setError("Invalid email or password. Please try again.")

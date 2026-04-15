@@ -81,7 +81,7 @@ export default function Contact() {
         setError(null);
 
         try {
-            const res = await fetch("https://vikas-bhatt-classes-server.onrender.com/api/enquiry", {
+            const res = await fetch("http://localhost:3001/api/enquiry", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, source: "contact-page" }),

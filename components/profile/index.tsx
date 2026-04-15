@@ -9,6 +9,11 @@ import { PersonalInfoSection } from "./Personalinfosection";
 import { AdditionalInfoSection } from "./Additionalinfosection";
 import { LocationState, ProfileFormState } from "../utils/types/profile";
 import { ProfileSkeleton } from "./Profileskeleton";
+import { ResultCard } from "./Result";
+import { number } from "framer-motion";
+import { StudentDetails } from "./StudentDetails";
+import { getServerUrl } from "../utils/config";
+import axios from "axios";
 
 
 
@@ -17,7 +22,8 @@ const emptyLocation: LocationState = {
 };
 
 const emptyForm: ProfileFormState = {
-    firstName: "", lastName: "", gmail: "",
+    classIn: "", rollNumber: 0,
+    fullName: "", gmail: "",
     phone: "", dob: "", bio: "",
     location: { ...emptyLocation },
 };
@@ -41,12 +47,13 @@ export default function Profile() {
     // ── Populate form from user context ──
     useEffect(() => {
         if (!mounted || !user) return;
-        const firstName = user.username?.split(" ")[0] ?? "";
-        const lastName = user.username?.split(" ").slice(1).join(" ") ?? "";
+        const fullName = user.username;
         const loc = (user as any).location;
 
         const updated: ProfileFormState = {
-            firstName, lastName,
+            fullName,
+            classIn: user.classIn ?? "",
+            rollNumber: user.rollNumber ?? "",
             gmail: user.gmail ?? "",
             phone: (user as any).phone ?? "",
             dob: (user as any).dob ?? "",
@@ -67,7 +74,7 @@ export default function Profile() {
 
     // ── Handlers ──────────────────────────────────────────────────────────────
 
-    const handleChange = (field: string, value: string) =>
+    const handleChange = (field: string, value: string | number) =>
         setForm((prev) => ({ ...prev, [field]: value }));
 
     const handleLocationChange = (field: keyof LocationState, value: string) =>
@@ -78,31 +85,35 @@ export default function Profile() {
         setSaving(true);
         setSaveError(null);
         try {
-            const token = localStorage.getItem("token");  // ← get token
+            const token = localStorage.getItem("token");
 
-            const res = await fetch("https://vikas-bhatt-classes-server.onrender.com/api/users", {
-                method: "PUT",
+
+           console.log(`${getServerUrl()}/users`);
+           
+
+            const res = await axios.put(`${getServerUrl()}/users`, {
+                id: (user as any).id ?? (user as any)._id,
+                fullName: form.fullName,
+                classIn: form.classIn,
+                rollNumber: form.rollNumber,
+                gmail: form.gmail,
+                phone: form.phone,
+                dob: form.dob,
+                bio: form.bio,
+                country: form.location.country,
+                state: form.location.state,
+                city: form.location.city,
+                pincode: form.location.pincode,
+                address: form.location.address,
+                ...(avatarSrc ? { avatar: avatarSrc } : {}),
+            }, {
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,  // ← add this
+                    "Authorization": `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    id: (user as any).id ?? (user as any)._id,
-                    firstName: form.firstName,
-                    lastName: form.lastName,
-                    gmail: form.gmail,
-                    phone: form.phone,
-                    dob: form.dob,
-                    bio: form.bio,
-                    country: form.location.country,
-                    state: form.location.state,
-                    city: form.location.city,
-                    pincode: form.location.pincode,
-                    address: form.location.address,
-                    ...(avatarSrc ? { avatar: avatarSrc } : {}),
-                }),
             });
-            const data = await res.json();
+
+            const data = res.data;
+            // const data = await res.json();
             if (!data.success) {
                 setSaveError(data.message || data.error || "Failed to save");
                 return;
@@ -125,10 +136,9 @@ export default function Profile() {
 
     // ── Derived display values ─────────────────────────────────────────────
 
-    const displayName =
-        saved.firstName || saved.lastName
-            ? `${saved.firstName} ${saved.lastName}`.trim()
-            : (user?.username ?? "User");
+    const displayName = (user?.username ?? "User");
+    const rollNumber = (user?.rollNumber ?? "00000");
+    const id = (user?.id ?? "Id");
 
     if (!mounted) return <ProfileSkeleton />;
 
@@ -162,7 +172,27 @@ export default function Profile() {
                             onSave={handleSave}
                             onCancel={handleCancel}
                         />
-                        <ProfileStats />
+                        {/* <ProfileStats /> */}
+                        {/* <StudentDetails
+                            displayName={displayName}
+                            // email={saved.gmail || user?.gmail || ""}
+                            // avatarSrc={avatarSrc}
+                            editing={editing}
+                            saving={saving}
+                            saveError={saveError}
+                            // onAvatarChange={setAvatarSrc}
+                            onEdit={() => setEditing(true)}
+                            onSave={handleSave}
+                            onCancel={handleCancel}
+                        /> */}
+                        <ResultCard
+                            user={user}
+                            userId={id}
+                            role={user?.role ?? "student"}
+                            displayName={displayName}
+                            rollNumber={rollNumber}
+                            classIn={saved.classIn}
+                        />
                     </div>
 
                     {/* ── Right column ── */}
@@ -171,12 +201,13 @@ export default function Profile() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
 
                                 <PersonalInfoSection
-                                    firstName={form.firstName}
-                                    lastName={form.lastName}
+                                    fullName={form.fullName}
                                     gmail={form.gmail}
                                     phone={form.phone}
                                     dob={form.dob}
                                     editing={editing}
+                                    classIn={form.classIn}
+                                    rollNumber={form.rollNumber}
                                     onChange={handleChange}
                                 />
 

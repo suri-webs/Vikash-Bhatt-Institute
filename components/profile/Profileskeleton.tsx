@@ -124,6 +124,7 @@ export function ProfileSkeleton() {
                         <ProfileCardSkeleton />
                         <ProfileStatsSkeleton />
                     </div>
+                    {/*  */}
 
                     {/* Right column */}
                     <Card className="flex-1 min-w-0 border-gray-100 shadow-sm rounded-2xl">

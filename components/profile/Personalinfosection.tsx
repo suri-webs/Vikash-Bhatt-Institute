@@ -6,13 +6,14 @@ import { Separator } from "@/components/ui/separator";
 import { ViewEditField } from "./Vieweditfield";
 
 interface PersonalInfoProps {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   gmail: string;
   phone: string;
   dob: string;
   editing: boolean;
-  onChange: (field: string, value: string) => void;
+  classIn: string;
+  rollNumber: number|string
+  onChange: (field: string, value: string | number) => void;
 }
 
 function formatDob(dob: string): string {
@@ -26,7 +27,7 @@ function formatDob(dob: string): string {
 }
 
 export function PersonalInfoSection({
-  firstName, lastName, gmail, phone, dob,
+  fullName, gmail, phone, dob, classIn, rollNumber,
   editing, onChange,
 }: PersonalInfoProps) {
   const dobRef = useRef<HTMLInputElement>(null);
@@ -42,20 +43,26 @@ export function PersonalInfoSection({
 
       <div className="space-y-4">
         <ViewEditField
-          label="First Name"
-          value={firstName}
+          label="Full Name"
+          value={fullName}
           editing={editing}
           onChange={(v) => onChange("firstName", v)}
           placeholder="Enter your first name"
         />
         <ViewEditField
-          label="Last Name"
-          value={lastName}
+          label="Class"
+          value={classIn}
           editing={editing}
-          onChange={(v) => onChange("lastName", v)}
-          placeholder="Enter your last name"
+          onChange={(v) => onChange("classIn", v)}
+          placeholder="Enter your Class"
         />
-
+        <ViewEditField
+          label="rollNumber"
+          value={String(rollNumber)}
+          editing={editing}
+          onChange={(v) => onChange("rollNumberNo", v)}
+          placeholder="Enter your rollNumber No."
+        />
 
         <ViewEditField
           label="Email Address"

@@ -8,8 +8,9 @@ export interface LocationState {
 }
 
 export interface ProfileFormState {
-    firstName: string;
-    lastName: string;
+    fullName: string;
+    classIn:string;
+    rollNumber:number|string;
     gmail: string;
     phone: string;
     dob: string;
