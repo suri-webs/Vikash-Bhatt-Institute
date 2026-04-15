@@ -236,7 +236,7 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
                 {/* ── RESULTS ── */}
                 {selectedMonth && (
                     <Card className="shadow-sm border-gray-100 overflow-hidden">
-                        <CardHeader className="flex flex-row items-center justify-between px-5 py-4 bg-gradient-to-r from-slate-50 to-blue-50 border-b border-gray-100 space-y-0">
+                        <CardHeader className="flex flex-row items-center justify-between px-5 py-4 bg-linear-to-r from-slate-50 to-blue-50 border-b border-gray-100 space-y-0">
                             <div>
                                 <p className="text-base font-bold text-gray-900">
                                     {selectedMonth} — Test Papers
