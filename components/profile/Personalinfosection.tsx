@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { User, CalendarDays } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import { ViewEditField } from "./Vieweditfield";
 
 interface PersonalInfoProps {
