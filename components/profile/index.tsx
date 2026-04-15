@@ -4,14 +4,11 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProfileCard } from "./Profilecard";
-import { ProfileStats } from "./Profilestats";
 import { PersonalInfoSection } from "./Personalinfosection";
 import { AdditionalInfoSection } from "./Additionalinfosection";
 import { LocationState, ProfileFormState } from "../utils/types/profile";
 import { ProfileSkeleton } from "./Profileskeleton";
 import { ResultCard } from "./Result";
-import { number } from "framer-motion";
-import { StudentDetails } from "./StudentDetails";
 import { getServerUrl } from "../utils/config";
 import axios from "axios";
 
