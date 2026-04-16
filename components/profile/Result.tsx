@@ -89,7 +89,7 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
         setError(null);
         try {
             const res = await fetch(
-                `${getServerUrl()}results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`,
+                `${getServerUrl()}/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`,
                 { method: "GET", headers: { "Content-Type": "application/json" } }
             );
             const data = await res.json();
