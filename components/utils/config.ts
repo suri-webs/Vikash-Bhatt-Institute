@@ -4,16 +4,8 @@ const BETA_SERVER_URL = 'https://vikas-bhatt-classes-server-beta.onrender.com/ap
 
 export function getServerUrl() {
     const env = process.env.NEXT_PUBLIC_APP_ENV;
+    if (env === 'production') return PROD_SERVER_URL;
+    if (env === 'test') return BETA_SERVER_URL;
 
-    console.log("ENV:", env);
-
-    if (env === 'production') {
-        return PROD_SERVER_URL;
-    }
-
-    if (env === 'test') {
-        return BETA_SERVER_URL;
-    }
-
-    return DEVELOPMENT_SERVER_URL;
+    return PROD_SERVER_URL;
 }
