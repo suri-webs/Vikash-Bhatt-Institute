@@ -184,6 +184,7 @@ export default function RegistrationForm() {
                 "https://vikas-bhatt-classes-server.onrender.com/api/users",
                 { ...formData, role: "student" },
                 { headers: { "Content-Type": "application/json" } }
+                
             )
 
             if (res.data.success) {

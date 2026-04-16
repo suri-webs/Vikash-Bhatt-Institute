@@ -41,13 +41,16 @@ export default function Login() {
         e.preventDefault()
         setLoading(true)
         setError("")
-        
+
         try {
-            const response = await axios.post(`http://localhost:3001/api/login`, formData)
-            const { user } = response.data
-            login(user)
+            const response = await axios.post(`http://localhost:3001/api/login`, formData);
+            const { user, token } = response.data;
+            localStorage.setItem("token",token);
+            login(user);
+
             console.log(user);
-            router.push("/profile")
+            console.log(token);
+            router.push("/profile");
         } catch (err) {
             setError("Invalid email or password. Please try again.")
         } finally {
