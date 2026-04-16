@@ -4,6 +4,7 @@ import { useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
+import { useGoogleLogin } from "@react-oauth/google"
 import {
     User, Mail, Lock, Eye, EyeOff,
     ArrowRight, Loader2, AlertCircle, CheckCircle2, GraduationCap,
@@ -35,37 +36,21 @@ function MobileLogo() {
 
 function FormHeader() {
     return (
-        <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest mb-1 text-[#0891b2]">
-                Student Registration
-            </p>
-            <h2 className="text-[22px] font-semibold tracking-tight text-slate-900">
-                Create your account
-            </h2>
-            <p className="text-sm mt-1 text-slate-400">
-                Fill in your details to get started
-            </p>
-        </div>
+        <h2 className="text-[22px] font-semibold tracking-tight mb-2 text-slate-900">Create your account</h2>
     )
 }
 
 function InputWrapper({ label, children }: { label: string; children: React.ReactNode }) {
     return (
         <div>
-            <label className="block text-[11px] font-semibold text-slate-600 mb-1.25 tracking-[0.04em] uppercase">
-                {label}
-            </label>
+            <label className="block text-[11px] font-semibold text-slate-600 mb-1.25 tracking-[0.04em] uppercase">{label}</label>
             <div className="relative">{children}</div>
         </div>
     )
 }
 
 function InputIcon({ children }: { children: React.ReactNode }) {
-    return (
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 flex">
-            {children}
-        </span>
-    )
+    return <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 flex">{children}</span>
 }
 
 const inputBase = "w-full bg-slate-50 border-[1.5px] border-slate-200 rounded-[10px] py-[10px] pr-3 pl-9 text-[13.5px] text-slate-800 outline-none transition-all duration-[180ms] placeholder:text-slate-400 focus:bg-white focus:border-[#0891b2] focus:shadow-[0_0_0_3px_rgba(8,145,178,0.1)]"
@@ -74,8 +59,7 @@ function UsernameField({ value, onChange }: { value: string; onChange: (e: React
     return (
         <InputWrapper label="Username">
             <InputIcon><User size={13} /></InputIcon>
-            <input type="text" name="username" placeholder="e.g. rahul_sharma"
-                value={value} onChange={onChange} required className={inputBase} />
+            <input type="text" name="username" placeholder="e.g. rahul_sharma" value={value} onChange={onChange} required className={inputBase} />
         </InputWrapper>
     )
 }
@@ -84,24 +68,20 @@ function EmailField({ value, onChange }: { value: string; onChange: (e: React.Ch
     return (
         <InputWrapper label="Email Address">
             <InputIcon><Mail size={13} /></InputIcon>
-            <input type="email" name="gmail" placeholder="you@email.com"
-                value={value} onChange={onChange} required className={inputBase} />
+            <input type="email" name="gmail" placeholder="you@email.com" value={value} onChange={onChange} required className={inputBase} />
         </InputWrapper>
     )
 }
 
 function PasswordField({ value, onChange, showPassword, togglePassword }: {
-    value: string
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    showPassword: boolean
-    togglePassword: () => void
+    value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    showPassword: boolean; togglePassword: () => void
 }) {
     return (
         <InputWrapper label="Password">
             <InputIcon><Lock size={13} /></InputIcon>
-            <input type={showPassword ? "text" : "password"} name="password"
-                placeholder="Min. 8 chars" value={value} onChange={onChange} required
-                className={`${inputBase} pr-9`} />
+            <input type={showPassword ? "text" : "password"} name="password" placeholder="Min. 8 chars"
+                value={value} onChange={onChange} required className={`${inputBase} pr-9`} />
             <button type="button" onClick={togglePassword}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 flex bg-transparent border-0 cursor-pointer p-0">
                 {showPassword ? <EyeOff size={13} /> : <Eye size={13} />}
@@ -123,14 +103,8 @@ function SubmitButton({ loading }: { loading: boolean }) {
     return (
         <button type="submit" disabled={loading}
             className={`w-full font-bold text-sm text-white py-3 rounded-[10px] border-0 flex items-center justify-center gap-1.5 shadow-[0_4px_16px_rgba(8,145,178,0.3)] transition-all duration-200
-                ${loading
-                    ? "bg-slate-400 cursor-not-allowed"
-                    : "bg-linear-to-br from-[#0891b2] to-[#06b6d4] cursor-pointer"
-                }`}>
-            {loading
-                ? <><Loader2 size={14} className="animate-spin" /> Creating Account...</>
-                : <>Register Now <ArrowRight size={14} /></>
-            }
+                ${loading ? "bg-slate-400 cursor-not-allowed" : "bg-linear-to-br from-[#0891b2] to-[#06b6d4] cursor-pointer"}`}>
+            {loading ? <><Loader2 size={14} className="animate-spin" /> Creating Account...</> : <>Register Now <ArrowRight size={14} /></>}
         </button>
     )
 }
@@ -167,6 +141,7 @@ export default function RegistrationForm() {
 
     const [formData, setFormData] = useState<FormData>({ username: "", gmail: "", password: "" })
     const [loading, setLoading] = useState(false)
+    const [googleLoading, setGoogleLoading] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
@@ -175,40 +150,58 @@ export default function RegistrationForm() {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            setGoogleLoading(true)
+            try {
+                const res = await axios.post(`${getServerUrl()}/login`, {
+                    googleToken: tokenResponse.access_token,
+                })
+                if (res.data.success) {
+                    localStorage.setItem("token", res.data.token)
+                    if (setUser) setUser(res.data.user)
+                    toast.success("Login successful! Welcome back 🎉")
+                    router.push("/")
+                } else {
+                    toast.error(res.data.message || "Google sign-in failed")
+                }
+            } catch {
+                toast.error("Google sign-in failed ❌")
+            } finally {
+                setGoogleLoading(false)
+            }
+        },
+        onError: () => toast.error("Google sign-in cancelled"),
+    })
+
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault()
         setLoading(true)
         setError("")
-
         try {
             const res = await axios.post(
                 `${getServerUrl()}/users`,
                 { ...formData, role: "student" },
                 { headers: { "Content-Type": "application/json" } }
             )
-
             if (res.data.success) {
                 toast.success("Registration successful 🎉")
-
-                // ✅ Auto-login after registration
                 const loginRes = await axios.post(
                     `${getServerUrl()}/login`,
                     { gmail: formData.gmail, password: formData.password },
                     { headers: { "Content-Type": "application/json" } }
                 )
-
                 if (loginRes.data.success) {
                     localStorage.setItem("token", loginRes.data.token)
                     if (setUser) setUser(loginRes.data.user)
+                    toast.success("Login successful! Welcome back 🎉")
                     router.push("/")
                 } else {
-                    setSuccess(true)  // fallback: show success screen
+                    setSuccess(true)
                 }
-
             } else {
                 toast.error(res.data.error || "Something went wrong")
             }
-
         } catch (err: any) {
             if (err.response?.data?.error?.includes("duplicate key")) {
                 toast.error("Username or Email already exists ❌")
@@ -235,10 +228,8 @@ export default function RegistrationForm() {
 
                         <div className="grid grid-cols-1 gap-3">
                             <PasswordField
-                                value={formData.password}
-                                onChange={handleChange}
-                                showPassword={showPassword}
-                                togglePassword={() => setShowPassword(p => !p)}
+                                value={formData.password} onChange={handleChange}
+                                showPassword={showPassword} togglePassword={() => setShowPassword(p => !p)}
                             />
                         </div>
 
@@ -252,6 +243,27 @@ export default function RegistrationForm() {
                         </p>
 
                         <SubmitButton loading={loading} />
+
+                        {/* ── Divider ── */}
+                        <div className="flex items-center gap-3">
+                            <div className="flex-1 h-px bg-slate-100" />
+                            <span className="text-slate-300 text-[10px]">or</span>
+                            <div className="flex-1 h-px bg-slate-100" />
+                        </div>
+
+                        {/* ── Google Button ── */}
+                        <button type="button" onClick={() => handleGoogleLogin()} disabled={googleLoading}
+                            className="w-full flex items-center justify-center gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-60 disabled:cursor-not-allowed text-slate-700 font-medium text-sm py-2.5 rounded-[10px] transition-all duration-150 shadow-sm">
+                            {googleLoading ? <Loader2 size={14} className="animate-spin" /> : (
+                                <svg width="16" height="16" viewBox="0 0 48 48">
+                                    <path fill="#EA4335" d="M24 9.5c3.14 0 5.95 1.08 8.17 2.85l6.09-6.09C34.46 3.05 29.56 1 24 1 14.82 1 7.07 6.48 3.64 14.19l7.08 5.5C12.43 13.61 17.76 9.5 24 9.5z" />
+                                    <path fill="#4285F4" d="M46.5 24.5c0-1.64-.15-3.22-.42-4.75H24v9h12.67c-.55 2.9-2.2 5.36-4.67 7.02l7.17 5.57C43.27 37.28 46.5 31.36 46.5 24.5z" />
+                                    <path fill="#FBBC05" d="M10.72 28.31A14.6 14.6 0 0 1 9.5 24c0-1.49.26-2.93.72-4.31l-7.08-5.5A23.94 23.94 0 0 0 0 24c0 3.86.92 7.5 2.55 10.72l8.17-6.41z" />
+                                    <path fill="#34A853" d="M24 47c5.56 0 10.22-1.84 13.63-5l-7.17-5.57c-1.84 1.24-4.2 1.97-6.46 1.97-6.24 0-11.57-4.11-13.28-9.69l-8.17 6.41C7.07 41.52 14.82 47 24 47z" />
+                                </svg>
+                            )}
+                            {googleLoading ? "Signing in..." : "Register with Google"}
+                        </button>
 
                         <p className="text-center text-xs text-slate-400">
                             Already have an account?{" "}

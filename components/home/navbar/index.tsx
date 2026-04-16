@@ -11,6 +11,7 @@ import { NavDesktopActions } from "./Navdesktopactions";
 import { NavMobileDrawer } from "./Navmobiledrawer";
 import { LogoutDialog } from "./Logoutdialog";
 import { SearchBar } from "./Searchbar";
+import { toast } from "react-toastify";
 
 
 export default function Navbar() {
@@ -71,6 +72,11 @@ export default function Navbar() {
         };
     }, [pathname]);
 
+    const handleLogoutConfirm = () => {
+        logout();
+        toast.success("Logged out successfully 👋");
+    };
+
     return (
         <>
             <nav className={`w-full max-sm:px-4 top-0 z-50 bg-white shadow rounded-b-2xl border-gray-200 transition-all duration-300 ${scrolled ? "sticky" : "absolute"}`}>
@@ -114,7 +120,7 @@ export default function Navbar() {
             <LogoutDialog
                 open={logoutOpen}
                 onOpenChange={setLogoutOpen}
-                onConfirm={logout}
+                onConfirm={handleLogoutConfirm}
             />
         </>
     );
