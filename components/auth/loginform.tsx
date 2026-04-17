@@ -32,7 +32,17 @@ export default function Login() {
         setLoading(true)
         setError("")
         try {
-            const response = await axios.post(`${getServerUrl()}/login`, formData)
+
+            const response = await axios.post(
+                `${getServerUrl()}/login`,
+                {
+                    email: formData.gmail,
+                    password: formData.password,
+                },
+                {
+                    withCredentials: true, 
+                }
+            );
             const { user } = response.data
             login(user)
             toast.success("Login successful! Welcome back 🎉")
@@ -52,7 +62,6 @@ export default function Login() {
                     googleToken: tokenResponse.access_token,
                 })
                 if (res.data.success) {
-                    localStorage.setItem("token", res.data.token)
                     login(res.data.user)
                     toast.success("Login successful! Welcome back 🎉")
                     router.push("/profile")

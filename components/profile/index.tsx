@@ -82,7 +82,6 @@ export default function Profile() {
         setSaving(true);
         setSaveError(null);
         try {
-            const token = localStorage.getItem("token");
             const res = await axios.put(`${getServerUrl()}/users`, {
                 id: (user as any).id ?? (user as any)._id,
                 fullName: form.fullName,
@@ -98,10 +97,6 @@ export default function Profile() {
                 pincode: form.location.pincode,
                 address: form.location.address,
                 ...(avatarSrc ? { avatar: avatarSrc } : {}),
-            }, {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
             });
 
             const data = res.data;

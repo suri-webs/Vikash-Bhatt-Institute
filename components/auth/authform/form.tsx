@@ -158,7 +158,6 @@ export default function RegistrationForm() {
                     googleToken: tokenResponse.access_token,
                 })
                 if (res.data.success) {
-                    localStorage.setItem("token", res.data.token)
                     if (setUser) setUser(res.data.user)
                     toast.success("Login successful! Welcome back 🎉")
                     router.push("/")
@@ -192,7 +191,6 @@ export default function RegistrationForm() {
                     { headers: { "Content-Type": "application/json" } }
                 )
                 if (loginRes.data.success) {
-                    localStorage.setItem("token", loginRes.data.token)
                     if (setUser) setUser(loginRes.data.user)
                     toast.success("Login successful! Welcome back 🎉")
                     router.push("/")

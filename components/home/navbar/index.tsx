@@ -12,7 +12,9 @@ import { NavMobileDrawer } from "./Navmobiledrawer";
 import { LogoutDialog } from "./Logoutdialog";
 import { SearchBar } from "./Searchbar";
 import { toast } from "react-toastify";
-
+import api from "@/lib/api";
+import router from "next/router";
+import axios, { Axios } from "axios";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -72,10 +74,14 @@ export default function Navbar() {
         };
     }, [pathname]);
 
-    const handleLogoutConfirm = () => {
+    
+    const handleLogoutConfirm = async () => {
+        await axios.post("http://localhost:8080/api/logout");
+
         logout();
         toast.success("Logged out successfully 👋");
-    };
+
+    }
 
     return (
         <>
