@@ -12,10 +12,6 @@ import { NavMobileDrawer } from "./Navmobiledrawer";
 import { LogoutDialog } from "./Logoutdialog";
 import { SearchBar } from "./Searchbar";
 import { toast } from "react-toastify";
-import api from "@/lib/api";
-import router from "next/router";
-import axios, { Axios } from "axios";
-import { getServerUrl } from "@/components/utils/config";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -75,14 +71,19 @@ export default function Navbar() {
         };
     }, [pathname]);
 
-    
     const handleLogoutConfirm = async () => {
-        await axios.post(`${getServerUrl()}/logout`);
+        try {
+            await fetch("/api/logout", {
+                method: "POST",
+                credentials: "include",
+            });
 
-        logout();
-        toast.success("Logged out successfully 👋");
-
-    }
+            logout();
+            toast.success("Logged out successfully 👋");
+        } catch (error) {
+            toast.error("Logout failed ❌");
+        }
+    };
 
     return (
         <>
@@ -92,7 +93,6 @@ export default function Navbar() {
 
                         <NavLogo onClick={() => setActiveLink("/")} />
 
-                        {/* Search bar — hidden on max-sm, visible sm and above */}
                         <SearchBar placeholder="Search courses, subjects..." />
 
                         <div className="flex gap-3">
