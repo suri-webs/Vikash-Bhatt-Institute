@@ -14,6 +14,7 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { getServerUrl } from "../utils/config";
+import api from "@/lib/api";
 
 interface Result {
     rollNumber: string;
@@ -87,6 +88,7 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
         if (mockResults.length) return;
         setLoading(true);
         setError(null);
+        
         try {
             const res = await fetch(
                 `${getServerUrl()}/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`,
