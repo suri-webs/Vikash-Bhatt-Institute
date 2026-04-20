@@ -14,6 +14,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from '@/components/ui/card';
+import { getServerUrl } from '@/components/utils/config';
 
 type FormData = {
     name: string;
@@ -81,7 +82,7 @@ export default function Contact() {
         setError(null);
 
         try {
-            const res = await fetch("http://localhost:3001/api/enquiry", {
+            const res = await fetch(`${getServerUrl()}enquiry`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ...form, source: "contact-page" }),

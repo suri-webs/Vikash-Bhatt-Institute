@@ -4,7 +4,6 @@ import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ProfileAvatar } from "./Profileavatar";
 
 interface ProfileCardProps {
     displayName: string;

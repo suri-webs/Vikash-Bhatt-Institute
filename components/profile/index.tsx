@@ -4,14 +4,11 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProfileCard } from "./Profilecard";
-import { ProfileStats } from "./Profilestats";
 import { PersonalInfoSection } from "./Personalinfosection";
 import { AdditionalInfoSection } from "./Additionalinfosection";
 import { LocationState, ProfileFormState } from "../utils/types/profile";
 import { ProfileSkeleton } from "./Profileskeleton";
 import { ResultCard } from "./Result";
-import { number } from "framer-motion";
-import { StudentDetails } from "./StudentDetails";
 import { getServerUrl } from "../utils/config";
 import axios from "axios";
 
@@ -85,12 +82,6 @@ export default function Profile() {
         setSaving(true);
         setSaveError(null);
         try {
-            const token = localStorage.getItem("token");
-
-
-           console.log(`${getServerUrl()}/users`);
-           
-
             const res = await axios.put(`${getServerUrl()}/users`, {
                 id: (user as any).id ?? (user as any)._id,
                 fullName: form.fullName,
@@ -106,10 +97,6 @@ export default function Profile() {
                 pincode: form.location.pincode,
                 address: form.location.address,
                 ...(avatarSrc ? { avatar: avatarSrc } : {}),
-            }, {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
             });
 
             const data = res.data;
