@@ -1,5 +1,3 @@
-// lib/courses.ts — single source of truth for all course data
-
 export interface Course {
     id: string;
     title: string;

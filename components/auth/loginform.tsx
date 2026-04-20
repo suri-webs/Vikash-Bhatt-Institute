@@ -32,7 +32,6 @@ export default function Login() {
         setLoading(true)
         setError("")
         try {
-
             const response = await axios.post(
                 `${getServerUrl()}/login`,
                 {
@@ -42,7 +41,7 @@ export default function Login() {
                 {
                     withCredentials: true,
                 }
-            );
+            )
             const { user } = response.data
             login(user)
             toast.success("Login successful! Welcome back 🎉")
@@ -58,21 +57,20 @@ export default function Login() {
         onSuccess: async (tokenResponse) => {
             setGoogleLoading(true)
             try {
-                const res = await axios.post(`${getServerUrl()}/login`, {
-                    googleToken: tokenResponse.access_token,
-                },
-                    {
-                        withCredentials: true,
-                    })
+                const res = await axios.post(
+                    `${getServerUrl()}/login`,
+                    { googleToken: tokenResponse.access_token },
+                    { withCredentials: true }
+                )
                 if (res.data.success) {
                     login(res.data.user)
-                    toast.success("Login successful! Welcome back 🎉")
+                    toast.success("Login successful! Welcome back")
                     router.push("/profile")
                 } else {
                     toast.error(res.data.message || "Google sign-in failed")
                 }
             } catch {
-                toast.error("Google sign-in failed ❌")
+                toast.error("Google sign-in failed")
             } finally {
                 setGoogleLoading(false)
             }
@@ -99,7 +97,6 @@ export default function Login() {
         <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12">
             <div className="w-full max-w-7xl pr-10 max-sm:pr-0 flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12 mt-10 sm:mt-14">
 
-                {/* Decorative dot grid — hidden on small screens */}
                 <div className="absolute inset-0 pointer-events-none hidden sm:block">
                     {[...Array(6)].map((_, row) =>
                         [...Array(8)].map((_, col) => (
@@ -115,7 +112,6 @@ export default function Login() {
                     )}
                 </div>
 
-                {/* ── LEFT SIDE — hidden on mobile ── */}
                 <div className="hidden lg:flex flex-1 relative overflow-hidden rounded-2xl p-8 xl:p-12 flex-col justify-center gap-8">
                     <div className="relative z-10 max-w-md">
                         <h2 className="text-slate-900 text-3xl xl:text-4xl font-bold leading-tight tracking-tight mb-4">
@@ -169,7 +165,6 @@ export default function Login() {
                     </div>
                 </div>
 
-                {/* ── RIGHT SIDE (form) ── */}
                 <div className="w-full lg:w-auto lg:min-w-95 xl:min-w-105 flex flex-col justify-center">
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
                         <div className="h-1 w-full bg-linear-to-r from-cyan-400 to-teal-500" />

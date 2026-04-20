@@ -88,13 +88,11 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
         if (mockResults.length) return;
         setLoading(true);
         setError(null);
-        
+
         try {
-            const res = await fetch(
-                `${getServerUrl()}/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`,
-                { method: "GET", headers: { "Content-Type": "application/json" } }
+            const { data } = await api.get(
+                `/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`
             );
-            const data = await res.json();
             mockResults = data.results ?? [];
         } catch {
             setError("Could not load results. Please try again.");
