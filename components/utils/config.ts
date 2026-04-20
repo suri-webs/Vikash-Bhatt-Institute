@@ -1,5 +1,3 @@
-const BASE_URL = 'https://vikas-bhatt-classes-server.onrender.com/api';
-
 export function getServerUrl() {
-    return BASE_URL;
+    return process.env.NEXT_PUBLIC_API_URL || 'https://vikas-bhatt-classes-server.onrender.com/api';
 }

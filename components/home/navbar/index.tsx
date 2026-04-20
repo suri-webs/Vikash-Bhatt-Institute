@@ -12,6 +12,7 @@ import { NavMobileDrawer } from "./Navmobiledrawer";
 import { LogoutDialog } from "./Logoutdialog";
 import { SearchBar } from "./Searchbar";
 import { toast } from "react-toastify";
+import { getServerUrl } from "@/components/utils/config";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -73,15 +74,15 @@ export default function Navbar() {
 
     const handleLogoutConfirm = async () => {
         try {
-            await fetch("/api/logout", {
+            await fetch("/api/logout", {  
                 method: "POST",
                 credentials: "include",
             });
 
             logout();
-            toast.success("Logged out successfully 👋");
+            toast.success("Logged out successfully");
         } catch (error) {
-            toast.error("Logout failed ❌");
+            toast.error("Logout failed");
         }
     };
 
