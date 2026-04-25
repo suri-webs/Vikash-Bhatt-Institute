@@ -9,7 +9,6 @@ export default function Profilepage() {
             <Navbar />
             <Profile />
             <Footer />
-
         </>
     )
 }

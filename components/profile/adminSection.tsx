@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { getServerUrl } from "../utils/config";
 import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
     Card,
     CardContent,
@@ -11,13 +12,14 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@base-ui/react/button";
 
+
 export interface User {
     _id: string;
-    name: string;
-    rollNumber: number;
-    className: string;
+    username: string;
+    rollNumber: string;
+    classIn: string;
     batch: string;
-    result: string;
+    result?: string[];
     gmail: string;
 }
 
@@ -27,10 +29,13 @@ export default function AdminSection() {
     const [users, setUsers] = useState<User[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [formData, setFormData] = useState<User | null>(null);
+    const router = useRouter();
+
 
     const filteredUsers = users.filter((user) =>
-        (user.name?.toLowerCase() || "").includes(search.toLowerCase()) ||
+        (user.username?.toLowerCase() || "").includes(search.toLowerCase()) ||
         (user.rollNumber?.toString() || "").includes(search)
+
     );
 
     const handleEdit = (user: User) => {
@@ -51,6 +56,14 @@ export default function AdminSection() {
         }
     };
 
+
+
+    const handleAddResult = (user: User) => {
+        console.log("hello");
+        router.push(`/result-edit?user=${encodeURIComponent(JSON.stringify(user))}`);
+    };
+
+
     const handleChangeField = (field: keyof User, value: string) => {
         if (!formData) return;
         setFormData({
@@ -58,23 +71,23 @@ export default function AdminSection() {
             [field]: field === "rollNumber" ? Number(value) : value,
         });
     };
-const handleSave = async () => {
-    if (!formData) return;
-    try {
-        await axios.put(
-            `${getServerUrl()}/users`,
-            { ...formData, id: formData._id }, // send target user id in body
-            { withCredentials: true }
-        );
-        setUsers((prev) =>
-            prev.map((u) => (u._id === formData._id ? formData : u))
-        );
-        setEditingId(null);
-        setFormData(null);
-    } catch (err) {
-        console.log(err);
-    }
-};
+    const handleSave = async () => {
+        if (!formData) return;
+        try {
+            await axios.put(
+                `${getServerUrl()}/users`,
+                { ...formData, id: formData._id },
+                { withCredentials: true }
+            );
+            setUsers((prev) =>
+                prev.map((u) => (u._id === formData._id ? formData : u))
+            );
+            setEditingId(null);
+            setFormData(null);
+        } catch (err) {
+            console.log(err);
+        }
+    };
     useEffect(() => {
         const getData = async () => {
             try {
@@ -89,6 +102,8 @@ const handleSave = async () => {
         };
         getData();
     }, []);
+
+
 
     return (
         <div className="flex flex-col w-full justify-center items-center">
@@ -130,15 +145,27 @@ const handleSave = async () => {
                 <div className="grid grid-cols-3 gap-4">
                     {filteredUsers.map((user) => {
                         const isEditing = editingId === user._id;
+                        // {console.log(user)}
                         const values = isEditing && formData ? formData : user;
 
                         return (
                             <Card key={user._id} className="w-full max-w-xs p-3">
                                 <CardHeader className="p-2">
-                                    <CardTitle className="text-base">{user.name}</CardTitle>
+                                    <CardTitle className="text-base">{values.username}</CardTitle>
                                 </CardHeader>
 
                                 <CardContent className="space-y-2 text-sm">
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-24 text-gray-500">Name:</span>
+                                        <input
+                                            value={values.username || ""}
+                                            disabled={!isEditing}
+                                            onChange={(e) => handleChangeField("username", e.target.value)}
+                                            className="flex-1 border p-1 rounded-md disabled:bg-gray-100"
+                                        />
+                                    </div>
+
+
                                     <div className="flex items-center gap-2">
                                         <span className="w-24 text-gray-500">Roll No:</span>
                                         <input
@@ -151,9 +178,9 @@ const handleSave = async () => {
                                     <div className="flex items-center gap-2">
                                         <span className="w-24 text-gray-500">Class:</span>
                                         <input
-                                            value={values.className || ""}
+                                            value={values.classIn || ""}
                                             disabled={!isEditing}
-                                            onChange={(e) => handleChangeField("className", e.target.value)}
+                                            onChange={(e) => handleChangeField("classIn", e.target.value)}
                                             className="flex-1 border p-1 rounded-md disabled:bg-gray-100"
                                         />
                                     </div>
@@ -166,15 +193,7 @@ const handleSave = async () => {
                                             className="flex-1 border p-1 rounded-md disabled:bg-gray-100"
                                         />
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-24 text-gray-500">Result:</span>
-                                        <input
-                                            value={values.result || ""}
-                                            disabled={!isEditing}
-                                            onChange={(e) => handleChangeField("result", e.target.value)}
-                                            className="flex-1 border p-1 rounded-md disabled:bg-gray-100"
-                                        />
-                                    </div>
+
                                     <div className="flex items-center gap-2">
                                         <span className="w-24 text-gray-500">Email:</span>
                                         <input
@@ -186,25 +205,29 @@ const handleSave = async () => {
                                     </div>
                                 </CardContent>
 
-                                <CardFooter className="p-2 flex w-full gap-2">
+                                <CardFooter className="p-2 flex flex-col w-full gap-2">
+                                    <Button className="w-full" onClick={() => handleAddResult(values)} >Add Result </Button>
                                     {isEditing ? (
-                                        <>
+                                        <div className=" flex  w-full gap-2">
+
                                             <Button className="w-full" onClick={() => { setEditingId(null); setFormData(null); }}>
                                                 Cancel
                                             </Button>
                                             <Button className="w-full" onClick={handleSave}>
                                                 Save
                                             </Button>
-                                        </>
+
+                                        </div>
                                     ) : (
-                                        <>
+                                        <div className=" flex  w-full gap-2">
+
                                             <Button className="w-full" onClick={() => handleEdit(user)}>
                                                 Edit
                                             </Button>
                                             <Button className="w-full" onClick={() => handleDelete(user)}>
                                                 Delete
                                             </Button>
-                                        </>
+                                        </div>
                                     )}
                                 </CardFooter>
                             </Card>

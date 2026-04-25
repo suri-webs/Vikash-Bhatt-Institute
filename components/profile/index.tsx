@@ -30,6 +30,9 @@ const emptyForm: ProfileFormState = {
 export default function Profile() {
     const { user, setUser } = useAuth();
 
+    console.log(user?.results);
+
+
     const [mounted, setMounted] = useState(false);
     const [editing, setEditing] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -127,6 +130,8 @@ export default function Profile() {
     const rollNumber = (user?.rollNumber ?? "00000");
     const id = (user?.id ?? "Id");
 
+
+
     if (!mounted) return <ProfileSkeleton />;
 
     // ── Render ─────────────────────────────────────────────────────────────
@@ -164,27 +169,15 @@ export default function Profile() {
                             onSave={handleSave}
                             onCancel={handleCancel}
                         />
-                        {/* <ProfileStats /> */}
-                        {/* <StudentDetails
-                            displayName={displayName}
-                            // email={saved.gmail || user?.gmail || ""}
-                            // avatarSrc={avatarSrc}
-                            editing={editing}
-                            saving={saving}
-                            saveError={saveError}
-                            // onAvatarChange={setAvatarSrc}
-                            onEdit={() => setEditing(true)}
-                            onSave={handleSave}
-                            onCancel={handleCancel}
-                        /> */}
-                        <ResultCard
-                            user={user}
-                            userId={id}
-                            role={user?.role ?? "student"}
-                            displayName={displayName}
-                            rollNumber={rollNumber}
-                            classIn={saved.classIn}
-                        />
+                        {user?.role !== "admin" ?
+                            <ResultCard
+                                user={user}
+                                userId={id}
+                                role={user?.role ?? "student"}
+                                displayName={displayName}
+                                rollNumber={rollNumber}
+                                classIn={saved.classIn}
+                            /> : <></>}
                     </div>
 
 
@@ -193,7 +186,7 @@ export default function Profile() {
 
                     {user?.role === "admin" ?
 
-                      <AdminSection/>
+                        <AdminSection />
 
                         : <Card className="flex-1 w-full max-w-full border-gray-100 shadow-sm rounded-2xl">
                             <CardContent className="p-6 lg:p-8">
