@@ -13,6 +13,7 @@ import { LogoutDialog } from "./Logoutdialog";
 import { SearchBar } from "./Searchbar";
 import { toast } from "react-toastify";
 import { getServerUrl } from "@/components/utils/config";
+import axios from "axios";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -74,11 +75,9 @@ export default function Navbar() {
 
     const handleLogoutConfirm = async () => {
         try {
-            await fetch("/api/logout", {  
-                method: "POST",
-                credentials: "include",
-            });
-
+         await axios.post(
+                `${getServerUrl()}/logout`
+            )
             logout();
             toast.success("Logged out successfully");
         } catch (error) {

@@ -1,3 +1,4 @@
+"use client";
 import Login from "@/components/auth/loginform";
 import Navbar from "@/components/home/navbar";
 
