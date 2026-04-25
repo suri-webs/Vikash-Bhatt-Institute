@@ -21,6 +21,7 @@ export interface User {
   location?: UserLocation;
   classIn: string;
   rollNumber?: number;
+  results:[string];
   bio?: string;
   avatar?: string;
 }

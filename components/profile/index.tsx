@@ -11,6 +11,7 @@ import { ProfileSkeleton } from "./Profileskeleton";
 import { ResultCard } from "./Result";
 import { getServerUrl } from "../utils/config";
 import axios from "axios";
+import AdminSection from "./adminSection";
 
 
 
@@ -28,6 +29,9 @@ const emptyForm: ProfileFormState = {
 
 export default function Profile() {
     const { user, setUser } = useAuth();
+
+    console.log(user?.results);
+
 
     const [mounted, setMounted] = useState(false);
     const [editing, setEditing] = useState(false);
@@ -100,7 +104,6 @@ export default function Profile() {
             });
 
             const data = res.data;
-            // const data = await res.json();
             if (!data.success) {
                 setSaveError(data.message || data.error || "Failed to save");
                 return;
@@ -127,6 +130,8 @@ export default function Profile() {
     const rollNumber = (user?.rollNumber ?? "00000");
     const id = (user?.id ?? "Id");
 
+
+
     if (!mounted) return <ProfileSkeleton />;
 
     // ── Render ─────────────────────────────────────────────────────────────
@@ -138,9 +143,13 @@ export default function Profile() {
                 {/* Page header */}
                 <div className="mb-8">
                     <h1 className="text-[28px] font-bold text-gray-900 leading-tight">My Profile</h1>
-                    <p className="text-gray-400 mt-1 text-sm">
-                        Manage your personal info, security and learning progress.
-                    </p>
+                    {user?.role === "admin" ?
+                        <p className="text-gray-400 mt-1 text-sm">
+                            Manage Student details, security and  monitor learning progress.
+                        </p> :
+                        <p className="text-gray-400 mt-1 text-sm">
+                            Manage your personal info, security and learning progress.
+                        </p>}
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-5 items-start">
@@ -148,6 +157,7 @@ export default function Profile() {
                     {/* ── Left column ── */}
                     <div className="flex flex-col gap-4 w-full lg:w-100 shrink-0">
                         <ProfileCard
+                            role={user?.role || "Learning Member"}
                             displayName={displayName}
                             email={saved.gmail || user?.gmail || ""}
                             avatarSrc={avatarSrc}
@@ -159,56 +169,55 @@ export default function Profile() {
                             onSave={handleSave}
                             onCancel={handleCancel}
                         />
-                        {/* <ProfileStats /> */}
-                        {/* <StudentDetails
-                            displayName={displayName}
-                            // email={saved.gmail || user?.gmail || ""}
-                            // avatarSrc={avatarSrc}
-                            editing={editing}
-                            saving={saving}
-                            saveError={saveError}
-                            // onAvatarChange={setAvatarSrc}
-                            onEdit={() => setEditing(true)}
-                            onSave={handleSave}
-                            onCancel={handleCancel}
-                        /> */}
-                        <ResultCard
-                            user={user}
-                            userId={id}
-                            role={user?.role ?? "student"}
-                            displayName={displayName}
-                            rollNumber={rollNumber}
-                            classIn={saved.classIn}
-                        />
+                        {user?.role !== "admin" ?
+                            <ResultCard
+                                user={user}
+                                userId={id}
+                                role={user?.role ?? "student"}
+                                displayName={displayName}
+                                rollNumber={rollNumber}
+                                classIn={saved.classIn}
+                            /> : <></>}
                     </div>
 
+
                     {/* ── Right column ── */}
-                    <Card className="flex-1 w-full max-w-full border-gray-100 shadow-sm rounded-2xl">
-                        <CardContent className="p-6 lg:p-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
 
-                                <PersonalInfoSection
-                                    fullName={form.fullName}
-                                    gmail={form.gmail}
-                                    phone={form.phone}
-                                    dob={form.dob}
-                                    editing={editing}
-                                    classIn={form.classIn}
-                                    rollNumber={form.rollNumber}
-                                    onChange={handleChange}
-                                />
 
-                                <AdditionalInfoSection
-                                    location={form.location}
-                                    bio={form.bio}
-                                    editing={editing}
-                                    onLocationChange={handleLocationChange}
-                                    onBioChange={(v) => handleChange("bio", v)}
-                                />
+                    {user?.role === "admin" ?
 
-                            </div>
-                        </CardContent>
-                    </Card>
+                        <AdminSection />
+
+                        : <Card className="flex-1 w-full max-w-full border-gray-100 shadow-sm rounded-2xl">
+                            <CardContent className="p-6 lg:p-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+
+
+                                    <PersonalInfoSection
+                                        fullName={form.fullName}
+                                        gmail={form.gmail}
+                                        phone={form.phone}
+                                        dob={form.dob}
+                                        editing={editing}
+                                        classIn={form.classIn}
+                                        rollNumber={form.rollNumber}
+                                        onChange={handleChange}
+                                    />
+
+                                    <AdditionalInfoSection
+                                        location={form.location}
+                                        bio={form.bio}
+                                        editing={editing}
+                                        onLocationChange={handleLocationChange}
+                                        onBioChange={(v) => handleChange("bio", v)}
+                                    />
+
+                                </div>
+                            </CardContent>
+                        </Card>}
+
+
+
 
                 </div>
             </div>

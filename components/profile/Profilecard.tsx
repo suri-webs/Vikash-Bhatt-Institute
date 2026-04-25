@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ProfileAvatar } from "./Profileavatar";
 
 interface ProfileCardProps {
+    role:string;
     displayName: string;
     email: string;
     avatarSrc: string | null;
@@ -29,6 +30,7 @@ const SaveIcon = () => (
 
 export function ProfileCard({
     displayName,
+    role,
     email,
     avatarSrc,
     editing,
@@ -56,7 +58,8 @@ export function ProfileCard({
                                 className="bg-emerald-50 border-emerald-200 text-emerald-600 text-xs font-medium px-2.5 py-1 rounded-full gap-1.5"
                             >
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                                Learning Member
+                               {role === "admin"?
+                                 role:  "Learning Member" }
                             </Badge>
 
                             {editing ? (
