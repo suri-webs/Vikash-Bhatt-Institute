@@ -19,6 +19,7 @@ export interface User {
   phone?: string;
   dob?: string;
   location?: UserLocation;
+  batch:strting
   classIn: string;
   rollNumber?: number;
   results:[string];

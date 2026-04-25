@@ -2,8 +2,9 @@
 import { useSearchParams } from "next/navigation";
 import Footer from "@/components/home/footer";
 import Navbar from "@/components/home/navbar";
-import ResultEdit from "@/components/profile/ResultEdit";
-import { User } from "@/components/profile/adminSection";
+import { User } from "@/components/profile/admin";
+import ResultEdit from "@/components/profile/student/ResultEdit";
+
 
 export default function Result_Edit() {
     const searchParams = useSearchParams();
