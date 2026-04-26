@@ -14,21 +14,26 @@ interface DeleteDialogProps {
 
 export function DeleteDialog({ user, onClose, onConfirm }: DeleteDialogProps) {
     return (
-        <AlertDialog open={!!user} onOpenChange={onClose}>
+        <AlertDialog open={!!user} onOpenChange={(open) => { if (!open) onClose(); }}>
             <AlertDialogContent className="rounded-2xl max-w-sm">
                 <AlertDialogHeader>
                     <AlertDialogTitle className="text-sm font-semibold">Delete student</AlertDialogTitle>
                     <AlertDialogDescription className="text-sm text-gray-400">
                         Are you sure you want to remove{" "}
                         <span className="font-medium text-gray-600">{user?.username}</span>?
-                        This cannot be undone.
+                        This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="gap-2">
-                    <AlertDialogCancel className="flex-1 rounded-xl h-9 text-sm">Cancel</AlertDialogCancel>
+                    <AlertDialogCancel
+                        onClick={onClose}
+                        className="flex-1 rounded-xl h-9 text-sm"
+                    >
+                        Cancel
+                    </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={() => user && onConfirm(user)}
-                        className="flex-1 rounded-xl h-9 text-sm bg-red-600 hover:bg-red-700 gap-1.5"
+                        className="flex-1 rounded-xl text-white h-9 text-sm bg-red-600 hover:bg-red-700 gap-1.5"
                     >
                         <Trash2 size={12} /> Delete
                     </AlertDialogAction>

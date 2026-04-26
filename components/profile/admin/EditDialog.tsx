@@ -68,10 +68,10 @@ export function EditDialog({ user, open, onClose, onSave, error }: EditDialogPro
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
       <DialogContent className="sm:max-w-[400px] rounded-3xl p-0 gap-0 overflow-hidden border border-gray-100 shadow-2xl">
 
-        {/* ── Gradient header banner ── */}
+        {/* Gradient header banner */}
         <div
           className="h-16 w-full relative"
           style={{ background: `linear-gradient(135deg, ${gradFrom}22, ${gradTo}44)` }}
@@ -82,18 +82,12 @@ export function EditDialog({ user, open, onClose, onSave, error }: EditDialogPro
             style={{ background: `radial-gradient(circle, ${gradFrom}, transparent)` }} />
         </div>
 
-        {/* ── Avatar ── */}
+        {/* Avatar */}
         <div className="flex flex-col items-center -mt-8 pb-2 px-5 relative z-10">
           <div className="w-16 h-16 rounded-2xl overflow-hidden border-4 border-white shadow-lg bg-gray-50 flex items-center justify-center">
             {hasAvatar ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={form.avatar!}
-                alt={form.username}
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-              />
+              <img src={form.avatar!} alt={form.username} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             ) : (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -116,7 +110,6 @@ export function EditDialog({ user, open, onClose, onSave, error }: EditDialogPro
           </div>
         </div>
 
-        {/* ── Header text ── */}
         <DialogHeader className="px-5 pb-1 text-center">
           <DialogTitle className="text-sm font-semibold text-gray-900">Edit student</DialogTitle>
           <DialogDescription className="text-xs text-gray-400">
@@ -124,10 +117,8 @@ export function EditDialog({ user, open, onClose, onSave, error }: EditDialogPro
           </DialogDescription>
         </DialogHeader>
 
-        {/* ── Divider ── */}
         <div className="mx-5 mt-3 mb-1 h-px bg-gray-100" />
 
-        {/* ── Error banner ── */}
         {error && (
           <div className="mx-5 mt-3 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-red-50 border border-red-100">
             <AlertCircle size={13} className="text-red-400 shrink-0" />
@@ -135,7 +126,6 @@ export function EditDialog({ user, open, onClose, onSave, error }: EditDialogPro
           </div>
         )}
 
-        {/* ── Fields ── */}
         <div className="px-5 pt-3 pb-1 space-y-3">
           {FIELDS.map(({ id, label, icon: Icon, type = "text", placeholder }) => (
             <div key={id} className="space-y-1">
@@ -157,7 +147,6 @@ export function EditDialog({ user, open, onClose, onSave, error }: EditDialogPro
           ))}
         </div>
 
-        {/* ── Footer ── */}
         <DialogFooter className="px-5 pt-4 pb-5 flex gap-2">
           <Button
             variant="outline"

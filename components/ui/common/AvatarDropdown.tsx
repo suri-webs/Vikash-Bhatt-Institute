@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 👈 add this
+import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 import {
@@ -36,14 +36,16 @@ export function AvatarDropdown({
     onLogout: () => void;
 }) {
     const [open, setOpen] = useState(false);
-    const router = useRouter(); // 👈 initialize router
+    const router = useRouter();
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
                 <Avatar className="h-9 w-9">
-                    <AvatarImage src={user.avatar || ""} />
-
+                    <AvatarImage
+                        src={user.avatar || ""}
+                        referrerPolicy="no-referrer"
+                    />
                     <AvatarFallback className="bg-cyan-500 text-white font-semibold text-sm">
                         {getInitials(user.username)}
                     </AvatarFallback>
@@ -57,7 +59,6 @@ export function AvatarDropdown({
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
-                {/* 👇 Add navigation */}
                 <DropdownMenuItem onClick={() => router.push("/profile")}>
                     Profile
                 </DropdownMenuItem>

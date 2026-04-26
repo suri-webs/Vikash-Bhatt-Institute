@@ -30,7 +30,7 @@ export default function StudentProfile() {
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-5 items-start">
-                    {/* Left */}
+                    {/* Left column */}
                     <div className="flex flex-col gap-4 w-full lg:w-100 shrink-0">
                         <ProfileCard
                             role={user?.role ?? "Learning Member"}
@@ -55,7 +55,7 @@ export default function StudentProfile() {
                         />
                     </div>
 
-                    {/* Right */}
+                    {/* Right column */}
                     <Card className="flex-1 w-full border-gray-100 shadow-sm rounded-2xl">
                         <CardContent className="p-6 lg:p-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">

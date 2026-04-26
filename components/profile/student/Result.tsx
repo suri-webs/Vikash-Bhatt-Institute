@@ -1,17 +1,17 @@
 "use client";
 import { useState } from "react";
-import { Download, BookOpen, Calendar, ChevronDown, ChevronUp, AlertCircle, FileText } from "lucide-react";
+import {
+  BookOpen, Calendar, ChevronDown, ChevronUp,
+  AlertCircle, TrendingUp, Award, BarChart3,
+  FileText, Download, ExternalLink, Star,
+} from "lucide-react";
 import { User } from "@/hooks/useAuth";
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
+  Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import api from "@/lib/api";
 
@@ -25,7 +25,7 @@ interface Result {
 
 let mockResults: Result[] = [];
 
-interface ProfileCardProps {
+interface ResultCardProps {
   user: User | null;
   displayName: string;
   role: string;
@@ -49,32 +49,151 @@ const MONTHS = [
   { full: "December",  short: "Dec" },
 ];
 
-const SUBJECT_COLORS: Record<string, { bg: string; text: string; ring: string }> = {
-  English:     { bg: "bg-primary",    text: "text-white",       ring: "ring-blue-100"    },
-  Mathematics: { bg: "bg-violet-50",  text: "text-violet-700",  ring: "ring-violet-200"  },
-  Science:     { bg: "bg-emerald-50", text: "text-emerald-700", ring: "ring-emerald-200" },
-  Physics:     { bg: "bg-indigo-50",  text: "text-indigo-700",  ring: "ring-indigo-200"  },
-  Chemistry:   { bg: "bg-pink-50",    text: "text-pink-700",    ring: "ring-pink-200"    },
-  Biology:     { bg: "bg-green-50",   text: "text-green-700",   ring: "ring-green-200"   },
-  History:     { bg: "bg-amber-50",   text: "text-amber-700",   ring: "ring-amber-200"   },
-  Geography:   { bg: "bg-teal-50",    text: "text-teal-700",    ring: "ring-teal-200"    },
-  Hindi:       { bg: "bg-orange-50",  text: "text-orange-700",  ring: "ring-orange-200"  },
-  Computer:    { bg: "bg-sky-50",     text: "text-sky-700",     ring: "ring-sky-200"     },
+const SUBJECT_CONFIG: Record<string, {
+  color: string; bg: string; light: string; icon: string; gradient: string;
+}> = {
+  English:     { color: "#3b82f6", bg: "#eff6ff", light: "#dbeafe", icon: "E", gradient: "from-blue-500 to-blue-600" },
+  Mathematics: { color: "#7c3aed", bg: "#f5f3ff", light: "#ede9fe", icon: "M", gradient: "from-violet-500 to-purple-600" },
+  Science:     { color: "#059669", bg: "#ecfdf5", light: "#d1fae5", icon: "S", gradient: "from-emerald-500 to-green-600" },
+  Physics:     { color: "#4f46e5", bg: "#eef2ff", light: "#e0e7ff", icon: "P", gradient: "from-indigo-500 to-blue-600" },
+  Chemistry:   { color: "#db2777", bg: "#fdf2f8", light: "#fce7f3", icon: "C", gradient: "from-pink-500 to-rose-600" },
+  Biology:     { color: "#16a34a", bg: "#f0fdf4", light: "#dcfce7", icon: "B", gradient: "from-green-500 to-emerald-600" },
+  History:     { color: "#d97706", bg: "#fffbeb", light: "#fef3c7", icon: "H", gradient: "from-amber-500 to-yellow-600" },
+  Geography:   { color: "#0d9488", bg: "#f0fdfa", light: "#ccfbf1", icon: "G", gradient: "from-teal-500 to-cyan-600" },
+  Hindi:       { color: "#ea580c", bg: "#fff7ed", light: "#fed7aa", icon: "H", gradient: "from-orange-500 to-red-500" },
+  Computer:    { color: "#0284c7", bg: "#f0f9ff", light: "#bae6fd", icon: "C", gradient: "from-sky-500 to-blue-500" },
+  SST:         { color: "#9333ea", bg: "#faf5ff", light: "#e9d5ff", icon: "S", gradient: "from-purple-500 to-violet-600" },
+  Sanskrit:    { color: "#be185d", bg: "#fdf2f8", light: "#fbcfe8", icon: "S", gradient: "from-pink-600 to-rose-700" },
 };
 
-function getSubjectColor(subject: string) {
-  const key = Object.keys(SUBJECT_COLORS).find((k) =>
+function getSubjectConfig(subject: string) {
+  const key = Object.keys(SUBJECT_CONFIG).find((k) =>
     subject.toLowerCase().includes(k.toLowerCase())
   );
-  return SUBJECT_COLORS[key ?? ""] ?? { bg: "bg-gray-50", text: "text-gray-600", ring: "ring-gray-200" };
+  return SUBJECT_CONFIG[key ?? ""] ?? {
+    color: "#6b7280", bg: "#f9fafb", light: "#f3f4f6", icon: subject.charAt(0), gradient: "from-gray-500 to-gray-600"
+  };
 }
 
-export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) {
-  const [isOpen,         setIsOpen]         = useState(false);
-  const [loading,        setLoading]        = useState(false);
-  const [selectedMonth,  setSelectedMonth]  = useState<string | null>(null);
-  const [results,        setResults]        = useState<Result[]>([]);
-  const [error,          setError]          = useState<string | null>(null);
+// ── Week Progress Bar (visual flair) ────────────────────────────────────────
+function WeekBadge({ week }: { week: string }) {
+  const num = parseInt(week.replace(/\D/g, ""), 10) || 1;
+  const pct = Math.min(num * 25, 100);
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{week}</span>
+      <div className="w-16 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ── Single subject result card ───────────────────────────────────────────────
+function SubjectResultCard({ result, index }: { result: Result; index: number }) {
+  const cfg = getSubjectConfig(result.subject);
+
+  return (
+    <div
+      className="relative flex flex-col gap-3 rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      style={{ borderColor: `${cfg.color}22`, backgroundColor: cfg.bg }}
+    >
+      {/* Top accent bar */}
+      <div className={`h-1 w-full bg-gradient-to-r ${cfg.gradient}`} />
+
+      <div className="px-4 pb-4">
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <div className="flex items-center gap-2.5">
+            {/* Subject icon circle */}
+            <div
+              className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm text-white bg-gradient-to-br ${cfg.gradient} shadow-sm`}
+            >
+              {result.subject.charAt(0)}
+            </div>
+            <div>
+              <p className="text-sm font-bold text-gray-900 leading-tight">{result.subject}</p>
+              <p className="text-[10px] text-gray-400 font-medium mt-0.5">{result.month}</p>
+            </div>
+          </div>
+
+          {/* Star badge for visual delight */}
+          <div
+            className="w-7 h-7 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: cfg.light }}
+          >
+            <Star size={12} style={{ color: cfg.color }} fill={cfg.color} />
+          </div>
+        </div>
+
+        {/* Week info */}
+        <WeekBadge week={result.week} />
+
+        <Separator className="my-3" style={{ backgroundColor: `${cfg.color}18` }} />
+
+        {/* Actions */}
+        <div className="flex gap-2">
+          <a
+            href={result.url}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl transition-all hover:opacity-90 active:scale-95"
+            style={{ backgroundColor: cfg.light, color: cfg.color }}
+          >
+            <ExternalLink size={11} />
+            View
+          </a>
+          <a
+            href={result.url}
+            download={`${result.subject}_${result.week}.pdf`}
+            className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl text-white transition-all hover:opacity-90 active:scale-95 bg-gradient-to-r ${cfg.gradient} shadow-sm`}
+          >
+            <Download size={11} />
+            PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Summary row (monthly overview) ──────────────────────────────────────────
+function MonthlySummary({ results }: { results: Result[] }) {
+  const subjects = results.length;
+  const weeks = [...new Set(results.map((r) => r.week))];
+
+  return (
+    <div className="flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+      <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm shadow-blue-200 shrink-0">
+        <BarChart3 size={16} className="text-white" />
+      </div>
+      <div className="flex-1">
+        <p className="text-sm font-bold text-gray-900">Monthly Overview</p>
+        <p className="text-xs text-gray-500 mt-0.5">
+          {subjects} subject{subjects !== 1 ? "s" : ""} · {weeks.length} week{weeks.length !== 1 ? "s" : ""} of tests
+        </p>
+      </div>
+      <div className="flex flex-col items-end">
+        <div className="flex items-center gap-1 text-emerald-600">
+          <TrendingUp size={12} />
+          <span className="text-xs font-bold">Active</span>
+        </div>
+        <span className="text-[10px] text-gray-400">{subjects} papers</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Main ResultCard ──────────────────────────────────────────────────────────
+export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
+  const [isOpen,        setIsOpen]        = useState(false);
+  const [loading,       setLoading]       = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [results,       setResults]       = useState<Result[]>([]);
+  const [error,         setError]         = useState<string | null>(null);
 
   async function ensureLoaded() {
     if (mockResults.length) return;
@@ -104,15 +223,6 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
     setResults(mockResults.filter((r) => r.month === month));
   }
 
-  function handleDownload(url: string, subject: string, week: string) {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${subject}_${week}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-
   const activeMonths = new Set(mockResults.map((r) => r.month));
 
   return (
@@ -122,22 +232,22 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
       <Card className="overflow-hidden shadow-sm border-gray-100 py-0 gap-0">
         <CardContent className="flex items-center justify-between px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
-              <BookOpen size={17} className="text-primary" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-sm shadow-blue-200">
+              <Award size={17} className="text-white" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900 leading-tight">Result Documents</p>
-              <p className="text-xs text-gray-400 mt-0.5">Week-wise test papers</p>
+              <p className="text-sm font-semibold text-gray-900 leading-tight">Academic Results</p>
+              <p className="text-xs text-gray-400 mt-0.5">Subject-wise test performance</p>
             </div>
           </div>
 
           <CollapsibleTrigger>
             <span
               onClick={handleToggle}
-              className={`gap-1.5 flex px-3 text-[13px] py-3 items-center rounded-xl font-semibold cursor-pointer ${
+              className={`gap-1.5 flex px-3 text-[13px] py-2.5 items-center rounded-xl font-semibold cursor-pointer transition-all ${
                 isOpen
-                  ? "border-red-100 bg-red-50 text-red-600 hover:bg-red-100"
-                  : "bg-primary text-white hover:bg-primary/90 shadow-sm shadow-blue-200"
+                  ? "border border-red-100 bg-red-50 text-red-600 hover:bg-red-100"
+                  : "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:opacity-90 shadow-sm shadow-blue-200"
               }`}
             >
               {isOpen ? "Close" : "View Results"}
@@ -153,20 +263,20 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
         <Card className="shadow-sm border-gray-100">
           <CardContent className="p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Calendar size={12} className="text-gray-400" />
+              <Calendar size={12} className="text-blue-500" />
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                 Select Month
               </span>
               {activeMonths.size > 0 && (
-                <Badge variant="outline" className="ml-auto text-[11px] font-semibold text-primary bg-blue-50 border-blue-100 rounded-full">
-                  {activeMonths.size} available
+                <Badge variant="outline" className="ml-auto text-[11px] font-semibold text-blue-600 bg-blue-50 border-blue-100 rounded-full">
+                  {activeMonths.size} months
                 </Badge>
               )}
             </div>
 
             {loading ? (
               <div className="flex items-center justify-center gap-3 py-8">
-                <div className="w-5 h-5 rounded-full border-2 border-blue-100 border-t-primary animate-spin" />
+                <div className="w-5 h-5 rounded-full border-2 border-blue-100 border-t-blue-600 animate-spin" />
                 <span className="text-sm text-gray-400">Loading results…</span>
               </div>
             ) : error ? (
@@ -180,26 +290,24 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
                   const has = activeMonths.has(full);
                   const sel = selectedMonth === full;
                   return (
-                    <Button
+                    <button
                       key={full}
-                      variant="ghost"
-                      size="sm"
                       title={full}
                       disabled={!has}
                       onClick={() => has && selectMonth(full)}
-                      className={`relative rounded-md px-2 text-[12px] font-semibold py-5 transition-all duration-150
+                      className={`relative rounded-xl px-2 text-[12px] font-semibold py-3 transition-all duration-150 border
                         ${sel
-                          ? "bg-primary! text-white! shadow-sm shadow-blue-200 border-2 border-primary hover:bg-primary! hover:text-white!"
+                          ? "bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-200"
                           : has
-                            ? "bg-blue-50 text-primary border border-blue-200 hover:bg-blue-100"
-                            : "bg-gray-50 text-gray-300 border border-gray-200"
+                            ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
+                            : "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
                         }`}
                     >
                       {short}
                       {has && !sel && (
-                        <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
+                        <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-blue-500" />
                       )}
-                    </Button>
+                    </button>
                   );
                 })}
               </div>
@@ -210,7 +318,7 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
                 <Separator className="my-4" />
                 <div className="flex gap-4">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    <span className="w-2 h-2 rounded-full bg-blue-500" />
                     <span className="text-[11px] text-gray-400">Available</span>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -223,84 +331,79 @@ export function ResultCard({ role, displayName, rollNumber }: ProfileCardProps) 
           </CardContent>
         </Card>
 
-        {/* ── RESULTS ── */}
+        {/* ── RESULTS DISPLAY ── */}
         {selectedMonth && (
           <Card className="shadow-sm border-gray-100 overflow-hidden">
-            <CardHeader className="flex flex-row items-center justify-between px-5 py-4 bg-linear-to-r from-slate-50 to-blue-50 border-b border-gray-100 space-y-0">
-              <div>
-                <p className="text-base font-bold text-gray-900">{selectedMonth} — Test Papers</p>
-                <p className="text-xs text-gray-400 mt-0.5">
-                  {results.length > 0
-                    ? `${results.length} paper${results.length > 1 ? "s" : ""} ready to download`
-                    : "No papers uploaded yet"}
-                </p>
-              </div>
-              {results.length > 0 && (
-                <div className="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center font-bold text-base shadow-sm shadow-blue-200">
-                  {results.length}
+            {/* Header */}
+            <CardHeader className="px-5 py-4 bg-gradient-to-r from-slate-50 via-blue-50/40 to-indigo-50/30 border-b border-gray-100 space-y-0">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-base font-bold text-gray-900">{selectedMonth}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {results.length > 0
+                      ? `${results.length} subject${results.length > 1 ? "s" : ""} tested`
+                      : "No results uploaded yet"}
+                  </p>
                 </div>
-              )}
+                {results.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="flex -space-x-1">
+                      {results.slice(0, 3).map((r, i) => {
+                        const cfg = getSubjectConfig(r.subject);
+                        return (
+                          <div
+                            key={i}
+                            className={`w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white bg-gradient-to-br ${cfg.gradient}`}
+                          >
+                            {r.subject.charAt(0)}
+                          </div>
+                        );
+                      })}
+                      {results.length > 3 && (
+                        <div className="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[9px] font-bold text-gray-500">
+                          +{results.length - 3}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </CardHeader>
 
-            <CardContent className="p-0">
+            <CardContent className="p-4">
               {results.length > 0 ? (
-                <>
-                  <div className="p-4 flex flex-col gap-2.5">
-                    {results.map((r, i) => {
-                      const sc = getSubjectColor(r.subject);
-                      return (
-                        <div
-                          key={i}
-                          className="relative flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl border border-gray-100 bg-white hover:border-blue-100 hover:bg-blue-50/30 transition-all duration-150"
-                        >
-                          <Badge className="absolute -top-2 left-4 text-[10px] px-2 h-4 bg-primary text-white rounded-sm font-semibold">
-                            {r.week}
-                          </Badge>
+                <div className="flex flex-col gap-3">
+                  {/* Summary bar */}
+                  <MonthlySummary results={results} />
 
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center font-bold text-base ring-1 ${sc.bg} ${sc.text} ${sc.ring}`}>
-                              {r.subject.charAt(0)}
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-sm font-semibold text-gray-900 leading-tight">{r.subject}</p>
-                              <Badge variant="secondary" className={`text-[10px] font-bold mt-0.5 px-1.5 py-0 h-4 rounded border-0 ${sc.bg} ${sc.text}`}>
-                                TEST PAPER
-                              </Badge>
-                            </div>
-                          </div>
-
-                          <Button
-                            size="sm"
-                            onClick={() => handleDownload(r.url, r.subject, r.week)}
-                            className="gap-1.5 h-8 px-3.5 py-5 rounded-lg bg-primary text-white text-xs font-semibold border-none cursor-pointer hover:bg-primary/90 active:scale-95 transition-all shadow-sm shadow-blue-200"
-                          >
-                            <Download size={11} />
-                            PDF
-                          </Button>
-                        </div>
-                      );
-                    })}
+                  {/* Subject grid */}
+                  <div className="grid grid-cols-1 gap-3">
+                    {results.map((r, i) => (
+                      <SubjectResultCard key={i} result={r} index={i} />
+                    ))}
                   </div>
-                  <Separator />
-                  <p className="py-3 text-center text-[11px] text-gray-400">
-                    Tap <span className="font-semibold text-gray-500">PDF</span> to download the test paper
-                  </p>
-                </>
+
+                  {/* Footer note */}
+                  <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] text-gray-400">
+                    <FileText size={11} />
+                    Click <span className="font-semibold text-gray-500 mx-0.5">View</span> to open online ·
+                    <span className="font-semibold text-gray-500 mx-0.5">PDF</span> to download
+                  </div>
+                </div>
               ) : (
                 <div className="flex flex-col items-center py-12 px-6 text-center">
-                  <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
-                    <FileText size={20} className="text-gray-300" />
+                  <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-4">
+                    <BookOpen size={24} className="text-gray-300" />
                   </div>
                   <p className="text-sm font-semibold text-gray-500">No results for {selectedMonth}</p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Results will appear once your teacher uploads them.
+                  <p className="text-xs text-gray-400 mt-1.5 max-w-[220px]">
+                    Results will appear once your teacher uploads the test papers.
                   </p>
                 </div>
               )}
             </CardContent>
           </Card>
         )}
-
       </CollapsibleContent>
     </Collapsible>
   );

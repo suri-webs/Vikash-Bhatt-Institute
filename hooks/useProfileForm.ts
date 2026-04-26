@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "@/hooks/useAuth";
 import { LocationState, ProfileFormState } from "@/components/utils/types/profile";
 import { getServerUrl } from "@/components/utils/config";
+import { toast } from "react-toastify";
 
 const emptyLocation: LocationState = {
     country: "", state: "", city: "", pincode: "", address: "",
@@ -18,28 +19,28 @@ const emptyForm: ProfileFormState = {
 export function useProfileForm() {
     const { user, setUser } = useAuth();
 
-    const [editing, setEditing] = useState(false);
-    const [saving, setSaving] = useState(false);
+    const [editing,   setEditing]   = useState(false);
+    const [saving,    setSaving]    = useState(false);
     const [saveError, setSaveError] = useState<string | null>(null);
     const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
-    const [form, setForm] = useState<ProfileFormState>(emptyForm);
-    const [saved, setSaved] = useState<ProfileFormState>(emptyForm);
+    const [form,      setForm]      = useState<ProfileFormState>(emptyForm);
+    const [saved,     setSaved]     = useState<ProfileFormState>(emptyForm);
 
     useEffect(() => {
         if (!user) return;
         const loc = (user as any).location;
         const populated: ProfileFormState = {
-            fullName: user.username ?? "",
-            classIn: user.classIn ?? "",
+            fullName:   user.username ?? "",
+            classIn:    user.classIn ?? "",
             rollNumber: user.rollNumber ?? 0,
-            gmail: user.gmail ?? "",
-            phone: (user as any).phone ?? "",
-            dob: (user as any).dob ?? "",
-            bio: (user as any).bio ?? "",
+            gmail:      user.gmail ?? "",
+            phone:      (user as any).phone ?? "",
+            dob:        (user as any).dob ?? "",
+            bio:        (user as any).bio ?? "",
             location: {
                 country: loc?.country ?? "",
-                state: loc?.state ?? "",
-                city: loc?.city ?? "",
+                state:   loc?.state   ?? "",
+                city:    loc?.city    ?? "",
                 pincode: loc?.pincode ?? "",
                 address: loc?.address ?? "",
             },
@@ -63,16 +64,22 @@ export function useProfileForm() {
             const res = await axios.put(
                 `${getServerUrl()}/users`,
                 {
+                    // Use _id if available, fallback to id
                     id: (user as any)._id ?? (user as any).id,
-                    username: form.fullName,
-                    fullName: form.fullName,
-                    classIn: form.classIn,
-                    rollNumber: form.rollNumber,
-                    gmail: form.gmail,
-                    phone: form.phone,
-                    dob: form.dob,
-                    bio: form.bio,
-                    ...form.location,
+                    // Map fullName → username (what the backend expects)
+                    username:    form.fullName,
+                    classIn:     form.classIn,
+                    rollNumber:  form.rollNumber,
+                    gmail:       form.gmail,
+                    phone:       form.phone,
+                    dob:         form.dob,
+                    bio:         form.bio,
+                    // Send location as structured object (matches backend PUT handler)
+                    country:     form.location.country,
+                    state:       form.location.state,
+                    city:        form.location.city,
+                    pincode:     form.location.pincode,
+                    address:     form.location.address,
                     ...(avatarSrc ? { avatar: avatarSrc } : {}),
                 },
                 { withCredentials: true }
@@ -80,15 +87,18 @@ export function useProfileForm() {
 
             if (res.data && !res.data.success && res.data.message) {
                 setSaveError(res.data.message);
+                toast.error(res.data.message);
                 return;
             }
 
             if (setUser && res.data.user) setUser(res.data.user);
             setSaved({ ...form, location: { ...form.location } });
             setEditing(false);
+            toast.success("Profile updated successfully!");
         } catch (e: any) {
             const msg = e?.response?.data?.message ?? e?.message ?? "Network error. Please try again.";
             setSaveError(msg);
+            toast.error(msg);
             console.error("Save failed:", e?.response?.data ?? e);
         } finally {
             setSaving(false);

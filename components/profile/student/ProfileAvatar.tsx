@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { User, Camera } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -12,16 +12,20 @@ interface ProfileAvatarProps {
 
 export function ProfileAvatar({ avatarSrc, editing, onAvatarChange }: ProfileAvatarProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [imgError, setImgError] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = () => onAvatarChange(reader.result as string);
+        reader.onload = () => {
+            setImgError(false);
+            onAvatarChange(reader.result as string);
+        };
         reader.readAsDataURL(file);
     };
 
-    const hasAvatar = avatarSrc && avatarSrc.trim().length > 0;
+    const hasAvatar = avatarSrc && avatarSrc.trim().length > 0 && !imgError;
 
     return (
         <div className="relative shrink-0">
@@ -30,18 +34,14 @@ export function ProfileAvatar({ avatarSrc, editing, onAvatarChange }: ProfileAva
                 style={{ width: 72, height: 72 }}
             >
                 {hasAvatar ? (
-                    // Using <img> instead of Next.js <Image> avoids domain whitelist issues for Google OAuth URLs.
-                    // For production, also add googleusercontent.com to next.config.js images.domains.
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={avatarSrc!}
                         alt="User avatar"
                         className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"   // Required for Google profile images
-                        onError={(e) => {
-                            // Fallback: hide broken image so the User icon shows instead
-                            (e.target as HTMLImageElement).style.display = "none";
-                        }}
+                        referrerPolicy="no-referrer"
+                        crossOrigin="anonymous"
+                        onError={() => setImgError(true)}
                     />
                 ) : (
                     <User size={28} className="text-gray-400" />

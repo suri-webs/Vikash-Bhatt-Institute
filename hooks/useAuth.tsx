@@ -19,10 +19,10 @@ export interface User {
   phone?: string;
   dob?: string;
   location?: UserLocation;
-  batch:strting
+  batch: string;
   classIn: string;
   rollNumber?: number;
-  results:[string];
+  results: [string];
   bio?: string;
   avatar?: string;
 }

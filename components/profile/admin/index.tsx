@@ -11,6 +11,7 @@ import { StatTile } from "./StatTile";
 import { StudentCard } from "./StudentCard";
 import { DeleteDialog } from "./DeleteDialog";
 import { EditDialog } from "./EditDialog";
+import { toast } from "react-toastify";
 
 export interface User {
     _id: string;
@@ -40,7 +41,7 @@ export default function AdminProfile() {
     useEffect(() => {
         axios.get(`${getServerUrl()}/users`, { withCredentials: true })
             .then((r) => { setUsers(r.data.users); setTotal(r.data.users.length); })
-            .catch(console.error);
+            .catch(() => toast.error("Failed to load students"));
     }, []);
 
     const handleSave = async (updated: User) => {
@@ -60,13 +61,16 @@ export default function AdminProfile() {
                 { withCredentials: true }
             );
 
-            const saved = res.data?.user ?? updated;
-            setUsers((p) => p.map((u) => (u._id === saved._id ? saved : u)));
+            // Use the server-returned user (fresh, has all updated fields)
+            const saved: User = res.data?.user ?? updated;
+            setUsers((prev) => prev.map((u) => (u._id === saved._id ? saved : u)));
             setEditTarget(null);
             setSaveError(null);
+            toast.success(`${saved.username}'s profile updated`);
         } catch (e: any) {
             const msg = e?.response?.data?.message ?? e?.message ?? "Update failed";
             setSaveError(msg);
+            toast.error(msg);
             console.error("Update failed:", e?.response?.data ?? e);
         }
     };
@@ -80,7 +84,18 @@ export default function AdminProfile() {
             setUsers((p) => p.filter((u) => u._id !== user._id));
             setTotal((p) => p - 1);
             setDeleteTarget(null);
-        } catch (e) { console.error(e); }
+            toast.success(`${user.username} has been removed`);
+        } catch {
+            toast.error("Failed to delete student");
+        }
+    };
+
+    // Navigate to result-edit — the page itself will fetch fresh data
+    // We still pass rollNumber so the page knows who to fetch
+    const handleAddResult = (u: User) => {
+        // Find the latest version of this user from our local state (already updated after save)
+        const latestUser = users.find((x) => x._id === u._id) ?? u;
+        router.push(`/result-edit?user=${encodeURIComponent(JSON.stringify(latestUser))}`);
     };
 
     return (
@@ -94,7 +109,6 @@ export default function AdminProfile() {
                 </div>
 
                 <div className="flex-1 w-full flex flex-col gap-4">
-
                     {/* Stat tiles */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <StatTile icon={Users} iconBg="bg-blue-50" iconColor="text-blue-600" label="Total students" value={total} pill="+2 this week" pillStyle="bg-emerald-50 text-emerald-700 border-emerald-100" />
@@ -120,7 +134,7 @@ export default function AdminProfile() {
                     {/* Student grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
                         {filtered.length === 0 ? (
-                            <div className="col-span-3 flex flex-col items-center justify-center py-16 text-center">
+                            <div className="col-span-4 flex flex-col items-center justify-center py-16 text-center">
                                 <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-3">
                                     <Users size={20} className="text-gray-300" />
                                 </div>
@@ -133,7 +147,7 @@ export default function AdminProfile() {
                                 user={u}
                                 onEdit={setEditTarget}
                                 onDelete={setDeleteTarget}
-                                onAddResult={(u) => router.push(`/result-edit?user=${encodeURIComponent(JSON.stringify(u))}`)}
+                                onAddResult={handleAddResult}
                             />
                         ))}
                     </div>
