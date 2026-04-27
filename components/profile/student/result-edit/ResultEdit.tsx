@@ -47,7 +47,6 @@ export default function ResultEdit({ user }: Props) {
         fetchResults();
     }, [user.rollNumber]);
 
-    // ✅ FIXED — marksScored and totalMarks now included
     async function handleSave({ subject, week, url, month, marksScored, totalMarks }: {
         subject: string; week: string; url: string; month: string;
         marksScored: number; totalMarks: number;
@@ -97,9 +96,8 @@ export default function ResultEdit({ user }: Props) {
         <section className="min-h-screen bg-[#f7f8fa] px-4 sm:px-8 pb-16 pt-28">
             <div className="max-w-6xl mx-auto flex flex-col gap-8">
 
-                {/* ── Hero Profile Card ── */}
                 <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div className="h-24 bg-gradient-to-r from-sky-400 via-indigo-400 to-violet-400" />
+                    <div className="h-24 bg-linear-to-r from-sky-400 via-indigo-400 to-violet-400" />
 
                     <div className="px-6 pb-6 -mt-12 flex flex-col sm:flex-row sm:items-end gap-4">
                         <Avatar className="w-24 h-24 rounded-full border-4 border-white shadow-md shrink-0">
@@ -150,7 +148,6 @@ export default function ResultEdit({ user }: Props) {
                     </div>
                 </div>
 
-                {/* ── Toolbar ── */}
                 <div className="flex items-center gap-3">
                     <button
                         type="button"
@@ -178,7 +175,6 @@ export default function ResultEdit({ user }: Props) {
                     </div>
                 </div>
 
-                {/* ── Results ── */}
                 {loading ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {[...Array(3)].map((_, i) => (

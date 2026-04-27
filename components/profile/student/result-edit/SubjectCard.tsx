@@ -102,7 +102,7 @@ export default function SubjectCard({ result, onDelete }: Props) {
                         {/* Pass threshold marker at 33% */}
                         <div className="relative h-0">
                             <div
-                                className="absolute top-[-8px] w-0.5 h-3 bg-gray-300 rounded-full"
+                                className="absolute -top-2 w-0.5 h-3 bg-gray-300 rounded-full"
                                 style={{ left: "33%" }}
                             />
                         </div>

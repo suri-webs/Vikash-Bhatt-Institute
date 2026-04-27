@@ -4,12 +4,12 @@ import { useState, useRef, useEffect } from "react";
 import { Search, X, BookOpen, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Course, searchCourses } from "@/lib/course";
+import Image from "next/image";
 
 interface SearchBarProps {
     placeholder?: string;
 }
 
-// ── Subject color tags ────────────────────────────────────────────────────
 
 const subjectColors: Record<string, string> = {
     Mathematics: "bg-blue-50 text-blue-600 border-blue-100",
@@ -30,7 +30,6 @@ function formatPrice(price: number) {
     return `₹${price.toLocaleString("en-IN")}`;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────
 
 export function SearchBar({ placeholder = "Search courses, subjects..." }: SearchBarProps) {
     const router = useRouter();
@@ -175,14 +174,13 @@ export function SearchBar({ placeholder = "Search courses, subjects..." }: Searc
                                                 ${activeIndex === i ? "bg-[#f0fbfe]" : "hover:bg-gray-50"}
                                             `}
                                         >
-                                            {/* Course image / fallback */}
-                                            <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-100">
-                                                <img
+                                            <div className="w-10 h-10 relative rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-100">
+                                                <Image
                                                     src={course.image}
                                                     alt={course.title}
                                                     className="w-full h-full object-cover"
+                                                    fill
                                                     onError={(e) => {
-                                                        // Fallback to icon on broken image
                                                         (e.target as HTMLImageElement).style.display = "none";
                                                         (e.target as HTMLImageElement).parentElement!.classList.add("flex", "items-center", "justify-center");
                                                     }}
@@ -234,7 +232,6 @@ export function SearchBar({ placeholder = "Search courses, subjects..." }: Searc
     );
 }
 
-// ── Highlight matching text ───────────────────────────────────────────────
 
 function highlightMatch(text: string, query: string) {
     if (!query.trim()) return <>{text}</>;

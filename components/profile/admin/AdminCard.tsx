@@ -2,6 +2,7 @@
 
 import { ShieldCheck, Mail, BookOpen, LayoutGrid, Settings } from "lucide-react";
 import { User } from ".";
+import Image from "next/image";
 
 interface AdminCardProps {
     admin: User;
@@ -18,7 +19,7 @@ export function AdminCard({ admin, onEdit }: AdminCardProps) {
                 <div className="relative shrink-0">
                     <div className="h-20 w-20 overflow-hidden rounded-2xl border-4 border-white shadow-md bg-blue-100 flex items-center justify-center">
                         {admin.avatar ? (
-                            <img
+                            <Image
                                 src={admin.avatar}
                                 alt={admin.username}
                                 className="h-full w-full object-cover"

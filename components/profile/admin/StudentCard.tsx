@@ -124,7 +124,7 @@ export function StudentCard({ user, onEdit, onDelete, onAddResult }: StudentCard
                     {user.username}
                 </p>
 
-                <p className="text-[11px] text-gray-400 mt-0.5 text-center truncate max-w-[180px]">
+                <p className="text-[11px] text-gray-400 mt-0.5 text-center truncate max-w-45">
                     {user.gmail}
                 </p>
 

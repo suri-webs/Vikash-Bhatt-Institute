@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { toast } from "react-toastify"
 import { getServerUrl } from "@/components/utils/config"
+import Link from "next/link"
 
 interface FormData {
     username: string
@@ -119,9 +120,9 @@ function SuccessScreen() {
                 <p className="font-semibold text-lg text-slate-900">Registration Successful!</p>
                 <p className="text-sm mt-1 text-slate-400">Your account is ready. Welcome aboard.</p>
             </div>
-            <a href="/login" className="flex items-center gap-1.5 text-sm font-semibold mt-1 text-[#0891b2]">
+            <Link href="/login" className="flex items-center gap-1.5 text-sm font-semibold mt-1 text-[#0891b2]">
                 Sign in to your portal <ArrowRight size={14} />
-            </a>
+            </Link>
         </div>
     )
 }
@@ -235,9 +236,9 @@ export default function RegistrationForm() {
 
                         <p className="text-[11px] text-slate-400 leading-relaxed">
                             By registering, you agree to our{" "}
-                            <a href="#" className="text-[#0891b2] font-semibold">Terms of Service</a>
+                            <Link href="#" className="text-[#0891b2] font-semibold">Terms of Service</Link>
                             {" "}and{" "}
-                            <a href="#" className="text-[#0891b2] font-semibold">Privacy Policy</a>.
+                            <Link href="#" className="text-[#0891b2] font-semibold">Privacy Policy</Link>.
                         </p>
 
                         <SubmitButton loading={loading} />
@@ -265,7 +266,7 @@ export default function RegistrationForm() {
 
                         <p className="text-center text-xs text-slate-400">
                             Already have an account?{" "}
-                            <a href="/login" className="text-[#0891b2] font-bold">Sign in</a>
+                            <Link href="/login" className="text-[#0891b2] font-bold">Sign in</Link>
                         </p>
                     </form>
 

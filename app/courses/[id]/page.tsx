@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { courses, getCourseById } from "@/lib/course";
 import Navbar from "@/components/home/navbar";
 import Footer from "@/components/home/footer";
+import Image from "next/image";
 
 // ── Static params for all courses ─────────────────────────────────────────
 
@@ -23,7 +24,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
     return (
         <div>
-            
+
             <Navbar />
             <main className="min-h-screen w-full flex justify-center items-center flex-col bg-gray-50">
                 <div className="bg-white w-[80%] border-b border-gray-100">
@@ -41,11 +42,12 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
                         <div className="flex flex-col md:flex-row gap-8 items-start">
 
                             {/* Course image */}
-                            <div className="w-full md:w-64 h-44 rounded-2xl overflow-hidden bg-gray-100 shrink-0 border border-gray-100">
+                            <div className="w-full relative md:w-64 h-44 rounded-2xl overflow-hidden bg-gray-100 shrink-0 border border-gray-100">
                                 {course.image ? (
-                                    <img
+                                    <Image
                                         src={course.image}
                                         alt={course.title}
+                                        fill
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (

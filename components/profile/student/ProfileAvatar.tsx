@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { User, Camera } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import Image from "next/image";
 
 interface ProfileAvatarProps {
     avatarSrc: string | null;
@@ -34,13 +35,13 @@ export function ProfileAvatar({ avatarSrc, editing, onAvatarChange }: ProfileAva
                 style={{ width: 72, height: 72 }}
             >
                 {hasAvatar ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                         src={avatarSrc!}
                         alt="User avatar"
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                         crossOrigin="anonymous"
+                        fill
                         onError={() => setImgError(true)}
                     />
                 ) : (

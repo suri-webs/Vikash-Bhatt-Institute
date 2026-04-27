@@ -14,6 +14,7 @@ import {
   Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import api from "@/lib/api";
+import Link from "next/link";
 
 interface Result {
   rollNumber: string;
@@ -35,35 +36,35 @@ interface ResultCardProps {
 }
 
 const MONTHS = [
-  { full: "January",   short: "Jan" },
-  { full: "February",  short: "Feb" },
-  { full: "March",     short: "Mar" },
-  { full: "April",     short: "Apr" },
-  { full: "May",       short: "May" },
-  { full: "June",      short: "Jun" },
-  { full: "July",      short: "Jul" },
-  { full: "August",    short: "Aug" },
+  { full: "January", short: "Jan" },
+  { full: "February", short: "Feb" },
+  { full: "March", short: "Mar" },
+  { full: "April", short: "Apr" },
+  { full: "May", short: "May" },
+  { full: "June", short: "Jun" },
+  { full: "July", short: "Jul" },
+  { full: "August", short: "Aug" },
   { full: "September", short: "Sep" },
-  { full: "October",   short: "Oct" },
-  { full: "November",  short: "Nov" },
-  { full: "December",  short: "Dec" },
+  { full: "October", short: "Oct" },
+  { full: "November", short: "Nov" },
+  { full: "December", short: "Dec" },
 ];
 
 const SUBJECT_CONFIG: Record<string, {
   color: string; bg: string; light: string; icon: string; gradient: string;
 }> = {
-  English:     { color: "#3b82f6", bg: "#eff6ff", light: "#dbeafe", icon: "E", gradient: "from-blue-500 to-blue-600" },
+  English: { color: "#3b82f6", bg: "#eff6ff", light: "#dbeafe", icon: "E", gradient: "from-blue-500 to-blue-600" },
   Mathematics: { color: "#7c3aed", bg: "#f5f3ff", light: "#ede9fe", icon: "M", gradient: "from-violet-500 to-purple-600" },
-  Science:     { color: "#059669", bg: "#ecfdf5", light: "#d1fae5", icon: "S", gradient: "from-emerald-500 to-green-600" },
-  Physics:     { color: "#4f46e5", bg: "#eef2ff", light: "#e0e7ff", icon: "P", gradient: "from-indigo-500 to-blue-600" },
-  Chemistry:   { color: "#db2777", bg: "#fdf2f8", light: "#fce7f3", icon: "C", gradient: "from-pink-500 to-rose-600" },
-  Biology:     { color: "#16a34a", bg: "#f0fdf4", light: "#dcfce7", icon: "B", gradient: "from-green-500 to-emerald-600" },
-  History:     { color: "#d97706", bg: "#fffbeb", light: "#fef3c7", icon: "H", gradient: "from-amber-500 to-yellow-600" },
-  Geography:   { color: "#0d9488", bg: "#f0fdfa", light: "#ccfbf1", icon: "G", gradient: "from-teal-500 to-cyan-600" },
-  Hindi:       { color: "#ea580c", bg: "#fff7ed", light: "#fed7aa", icon: "H", gradient: "from-orange-500 to-red-500" },
-  Computer:    { color: "#0284c7", bg: "#f0f9ff", light: "#bae6fd", icon: "C", gradient: "from-sky-500 to-blue-500" },
-  SST:         { color: "#9333ea", bg: "#faf5ff", light: "#e9d5ff", icon: "S", gradient: "from-purple-500 to-violet-600" },
-  Sanskrit:    { color: "#be185d", bg: "#fdf2f8", light: "#fbcfe8", icon: "S", gradient: "from-pink-600 to-rose-700" },
+  Science: { color: "#059669", bg: "#ecfdf5", light: "#d1fae5", icon: "S", gradient: "from-emerald-500 to-green-600" },
+  Physics: { color: "#4f46e5", bg: "#eef2ff", light: "#e0e7ff", icon: "P", gradient: "from-indigo-500 to-blue-600" },
+  Chemistry: { color: "#db2777", bg: "#fdf2f8", light: "#fce7f3", icon: "C", gradient: "from-pink-500 to-rose-600" },
+  Biology: { color: "#16a34a", bg: "#f0fdf4", light: "#dcfce7", icon: "B", gradient: "from-green-500 to-emerald-600" },
+  History: { color: "#d97706", bg: "#fffbeb", light: "#fef3c7", icon: "H", gradient: "from-amber-500 to-yellow-600" },
+  Geography: { color: "#0d9488", bg: "#f0fdfa", light: "#ccfbf1", icon: "G", gradient: "from-teal-500 to-cyan-600" },
+  Hindi: { color: "#ea580c", bg: "#fff7ed", light: "#fed7aa", icon: "H", gradient: "from-orange-500 to-red-500" },
+  Computer: { color: "#0284c7", bg: "#f0f9ff", light: "#bae6fd", icon: "C", gradient: "from-sky-500 to-blue-500" },
+  SST: { color: "#9333ea", bg: "#faf5ff", light: "#e9d5ff", icon: "S", gradient: "from-purple-500 to-violet-600" },
+  Sanskrit: { color: "#be185d", bg: "#fdf2f8", light: "#fbcfe8", icon: "S", gradient: "from-pink-600 to-rose-700" },
 };
 
 function getSubjectConfig(subject: string) {
@@ -75,7 +76,6 @@ function getSubjectConfig(subject: string) {
   };
 }
 
-// ── Week Progress Bar (visual flair) ────────────────────────────────────────
 function WeekBadge({ week }: { week: string }) {
   const num = parseInt(week.replace(/\D/g, ""), 10) || 1;
   const pct = Math.min(num * 25, 100);
@@ -84,7 +84,7 @@ function WeekBadge({ week }: { week: string }) {
       <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{week}</span>
       <div className="w-16 h-1.5 rounded-full bg-gray-100 overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all"
+          className="h-full rounded-full bg-linear-to-r from-blue-400 to-blue-600 transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -92,7 +92,6 @@ function WeekBadge({ week }: { week: string }) {
   );
 }
 
-// ── Single subject result card ───────────────────────────────────────────────
 function SubjectResultCard({ result, index }: { result: Result; index: number }) {
   const cfg = getSubjectConfig(result.subject);
 
@@ -101,16 +100,13 @@ function SubjectResultCard({ result, index }: { result: Result; index: number })
       className="relative flex flex-col gap-3 rounded-2xl border overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
       style={{ borderColor: `${cfg.color}22`, backgroundColor: cfg.bg }}
     >
-      {/* Top accent bar */}
-      <div className={`h-1 w-full bg-gradient-to-r ${cfg.gradient}`} />
+      <div className={`h-1 w-full bg-linear-to-r ${cfg.gradient}`} />
 
       <div className="px-4 pb-4">
-        {/* Header row */}
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-center gap-2.5">
-            {/* Subject icon circle */}
             <div
-              className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm text-white bg-gradient-to-br ${cfg.gradient} shadow-sm`}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm text-white bg-linear-to-br ${cfg.gradient} shadow-sm`}
             >
               {result.subject.charAt(0)}
             </div>
@@ -120,7 +116,6 @@ function SubjectResultCard({ result, index }: { result: Result; index: number })
             </div>
           </div>
 
-          {/* Star badge for visual delight */}
           <div
             className="w-7 h-7 rounded-full flex items-center justify-center"
             style={{ backgroundColor: cfg.light }}
@@ -129,14 +124,12 @@ function SubjectResultCard({ result, index }: { result: Result; index: number })
           </div>
         </div>
 
-        {/* Week info */}
         <WeekBadge week={result.week} />
 
         <Separator className="my-3" style={{ backgroundColor: `${cfg.color}18` }} />
 
-        {/* Actions */}
         <div className="flex gap-2">
-          <a
+          <Link
             href={result.url}
             target="_blank"
             rel="noreferrer"
@@ -145,28 +138,27 @@ function SubjectResultCard({ result, index }: { result: Result; index: number })
           >
             <ExternalLink size={11} />
             View
-          </a>
-          <a
+          </Link>
+          <Link
             href={result.url}
             download={`${result.subject}_${result.week}.pdf`}
-            className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl text-white transition-all hover:opacity-90 active:scale-95 bg-gradient-to-r ${cfg.gradient} shadow-sm`}
+            className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl text-white transition-all hover:opacity-90 active:scale-95 bg-linear-to-r ${cfg.gradient} shadow-sm`}
           >
             <Download size={11} />
             PDF
-          </a>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
 
-// ── Summary row (monthly overview) ──────────────────────────────────────────
 function MonthlySummary({ results }: { results: Result[] }) {
   const subjects = results.length;
   const weeks = [...new Set(results.map((r) => r.week))];
 
   return (
-    <div className="flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+    <div className="flex items-center gap-3 p-4 rounded-2xl bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-100">
       <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm shadow-blue-200 shrink-0">
         <BarChart3 size={16} className="text-white" />
       </div>
@@ -187,13 +179,12 @@ function MonthlySummary({ results }: { results: Result[] }) {
   );
 }
 
-// ── Main ResultCard ──────────────────────────────────────────────────────────
 export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
-  const [isOpen,        setIsOpen]        = useState(false);
-  const [loading,       setLoading]       = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
-  const [results,       setResults]       = useState<Result[]>([]);
-  const [error,         setError]         = useState<string | null>(null);
+  const [results, setResults] = useState<Result[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   async function ensureLoaded() {
     if (mockResults.length) return;
@@ -232,7 +223,7 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
       <Card className="overflow-hidden shadow-sm border-gray-100 py-0 gap-0">
         <CardContent className="flex items-center justify-between px-5 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-sm shadow-blue-200">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-sm shadow-blue-200">
               <Award size={17} className="text-white" />
             </div>
             <div>
@@ -244,11 +235,10 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
           <CollapsibleTrigger>
             <span
               onClick={handleToggle}
-              className={`gap-1.5 flex px-3 text-[13px] py-2.5 items-center rounded-xl font-semibold cursor-pointer transition-all ${
-                isOpen
-                  ? "border border-red-100 bg-red-50 text-red-600 hover:bg-red-100"
-                  : "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:opacity-90 shadow-sm shadow-blue-200"
-              }`}
+              className={`gap-1.5 flex px-3 text-[13px] py-2.5 items-center rounded-xl font-semibold cursor-pointer transition-all ${isOpen
+                ? "border border-red-100 bg-red-50 text-red-600 hover:bg-red-100"
+                : "bg-linear-to-r from-blue-600 to-indigo-600 text-white hover:opacity-90 shadow-sm shadow-blue-200"
+                }`}
             >
               {isOpen ? "Close" : "View Results"}
               {isOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
@@ -331,11 +321,9 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
           </CardContent>
         </Card>
 
-        {/* ── RESULTS DISPLAY ── */}
         {selectedMonth && (
           <Card className="shadow-sm border-gray-100 overflow-hidden">
-            {/* Header */}
-            <CardHeader className="px-5 py-4 bg-gradient-to-r from-slate-50 via-blue-50/40 to-indigo-50/30 border-b border-gray-100 space-y-0">
+            <CardHeader className="px-5 py-4 bg-linear-to-r from-slate-50 via-blue-50/40 to-indigo-50/30 border-b border-gray-100 space-y-0">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-base font-bold text-gray-900">{selectedMonth}</p>
@@ -353,7 +341,7 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
                         return (
                           <div
                             key={i}
-                            className={`w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white bg-gradient-to-br ${cfg.gradient}`}
+                            className={`w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white bg-linear-to-br ${cfg.gradient}`}
                           >
                             {r.subject.charAt(0)}
                           </div>
@@ -373,17 +361,14 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
             <CardContent className="p-4">
               {results.length > 0 ? (
                 <div className="flex flex-col gap-3">
-                  {/* Summary bar */}
                   <MonthlySummary results={results} />
 
-                  {/* Subject grid */}
                   <div className="grid grid-cols-1 gap-3">
                     {results.map((r, i) => (
                       <SubjectResultCard key={i} result={r} index={i} />
                     ))}
                   </div>
 
-                  {/* Footer note */}
                   <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] text-gray-400">
                     <FileText size={11} />
                     Click <span className="font-semibold text-gray-500 mx-0.5">View</span> to open online ·
@@ -396,7 +381,7 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
                     <BookOpen size={24} className="text-gray-300" />
                   </div>
                   <p className="text-sm font-semibold text-gray-500">No results for {selectedMonth}</p>
-                  <p className="text-xs text-gray-400 mt-1.5 max-w-[220px]">
+                  <p className="text-xs text-gray-400 mt-1.5 max-w-55">
                     Results will appear once your teacher uploads the test papers.
                   </p>
                 </div>
