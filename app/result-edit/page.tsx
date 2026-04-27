@@ -9,41 +9,34 @@ import ResultEdit from "@/components/profile/student/result-edit/ResultEdit";
 import axios from "axios";
 import { getServerUrl } from "@/components/utils/config";
 
-// ── Inner component that uses useSearchParams ────────────────────────────────
-// Must be a separate component so Suspense can wrap it properly
 function ResultEditInner() {
     const searchParams = useSearchParams();
-    const raw = searchParams.get("user");
-    const urlUser: User | null = raw ? JSON.parse(decodeURIComponent(raw)) : null;
+    const rollNumber = searchParams.get("rollNumber");
 
-    const [user, setUser] = useState<User | null>(urlUser);
-    const [loading, setLoading] = useState(!!urlUser?.rollNumber);
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(!!rollNumber);
 
     useEffect(() => {
-        if (!urlUser?.rollNumber) {
-            setLoading(false);
-            return;
-        }
+        if (!rollNumber) { setLoading(false); return; }
 
-        const fetchFreshUser = async () => {
+        const fetchUser = async () => {
             try {
                 const res = await axios.get(
-                    `${getServerUrl()}/users?rollNumber=${urlUser.rollNumber}`,
+                    `${getServerUrl()}/users?rollNumber=${rollNumber}`,
                     { withCredentials: true }
                 );
                 if (res.data?.success && res.data?.user) {
                     setUser(res.data.user);
                 }
             } catch (err) {
-                console.error("Could not refresh user:", err);
+                console.error("Could not load user:", err);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchFreshUser();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [urlUser?.rollNumber]);
+        fetchUser();
+    }, [rollNumber]);
 
     if (loading) {
         return (
@@ -57,7 +50,6 @@ function ResultEditInner() {
     return <ResultEdit user={user} />;
 }
 
-// ── Page component — wraps inner in Suspense (required for useSearchParams) ──
 export default function Result_Edit() {
     return (
         <>

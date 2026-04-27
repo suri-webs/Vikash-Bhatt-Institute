@@ -27,13 +27,13 @@ export function DeleteDialog({ user, onClose, onConfirm }: DeleteDialogProps) {
                 <AlertDialogFooter className="gap-2">
                     <AlertDialogCancel
                         onClick={onClose}
-                        className="flex-1 rounded-xl h-9 text-sm"
+                        className="flex-1 rounded-md h-11 text-sm"
                     >
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={() => user && onConfirm(user)}
-                        className="flex-1 rounded-xl text-white h-9 text-sm bg-red-600 hover:bg-red-700 gap-1.5"
+                        className="flex-1 rounded-md text-white h-11 text-sm bg-red-600 hover:bg-red-700 gap-1.5"
                     >
                         <Trash2 size={12} /> Delete
                     </AlertDialogAction>

@@ -5,6 +5,18 @@ export interface IResult {
     subject: string;
     month: string;
     week: string;
+    marksScored: number;
+    totalMarks: number;
+}
+
+export function isPassed(result: IResult): boolean {
+    if (!result.totalMarks) return false;
+    return (result.marksScored / result.totalMarks) * 100 >= 33;
+}
+
+export function getPercentage(result: IResult): number {
+    if (!result.totalMarks) return 0;
+    return Math.round((result.marksScored / result.totalMarks) * 100);
 }
 
 export const SUBJECT_CONFIG: Record<string, { color: string; bg: string; light: string; gradient: string }> = {
@@ -28,3 +40,6 @@ export function getSubjectConfig(subject: string) {
         color: "#6b7280", bg: "#f9fafb", light: "#f3f4f6", gradient: "from-gray-500 to-gray-600",
     };
 }
+
+export const CLASS_OPTIONS = ["All", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+export const BATCH_OPTIONS = ["All", "Morning", "Evening", "Night"];

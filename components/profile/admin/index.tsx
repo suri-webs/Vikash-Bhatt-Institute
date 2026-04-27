@@ -3,15 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { Search, Users, GraduationCap, LayoutGrid, UserPlus } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { getServerUrl } from "@/components/utils/config";
-import { StatTile } from "./StatTile";
-import { StudentCard } from "./StudentCard";
 import { DeleteDialog } from "./DeleteDialog";
 import { EditDialog } from "./EditDialog";
+import { AdminCard } from "./AdminCard";
+import { SearchBar } from "./SearchBar";
+import { StudentGrid } from "./StudentGrid";
 import { toast } from "react-toastify";
+import { StatTiles } from "./StatTilesCard";
 
 export interface User {
     _id: string;
@@ -22,25 +21,44 @@ export interface User {
     result?: string[];
     gmail: string;
     avatar?: string;
+    role?: string;
 }
 
 export default function AdminProfile() {
     const [users, setUsers] = useState<User[]>([]);
     const [total, setTotal] = useState(0);
     const [search, setSearch] = useState("");
+    const [classFilter, setClassFilter] = useState("All");
+    const [batchFilter, setBatchFilter] = useState("All");
     const [editTarget, setEditTarget] = useState<User | null>(null);
     const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
     const [saveError, setSaveError] = useState<string | null>(null);
     const router = useRouter();
 
-    const filtered = users.filter((u) =>
-        (u.username?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
-        (u.rollNumber?.toString() ?? "").includes(search)
-    );
+    const adminUser = users.find((u) => u.role === "admin") ?? null;
+    const students = users.filter((u) => !u.role || u.role === "student");
+
+    const filtered = students.filter((u) => {
+        const matchSearch =
+            (u.username?.toLowerCase() ?? "").includes(search.toLowerCase()) ||
+            (u.rollNumber?.toString() ?? "").includes(search);
+        const matchClass =
+            classFilter === "All" || (u.classIn ?? "").trim() === classFilter;
+        const matchBatch =
+            batchFilter === "All" ||
+            (u.batch ?? "").toLowerCase().trim() === batchFilter.toLowerCase();
+        return matchSearch && matchClass && matchBatch;
+    });
 
     useEffect(() => {
         axios.get(`${getServerUrl()}/users`, { withCredentials: true })
-            .then((r) => { setUsers(r.data.users); setTotal(r.data.users.length); })
+            .then((r) => {
+                setUsers(r.data.users);
+                const studentCount = (r.data.users as User[]).filter(
+                    (u) => !u.role || u.role === "student"
+                ).length;
+                setTotal(studentCount);
+            })
             .catch(() => toast.error("Failed to load students"));
     }, []);
 
@@ -60,8 +78,6 @@ export default function AdminProfile() {
                 },
                 { withCredentials: true }
             );
-
-            // Use the server-returned user (fresh, has all updated fields)
             const saved: User = res.data?.user ?? updated;
             setUsers((prev) => prev.map((u) => (u._id === saved._id ? saved : u)));
             setEditTarget(null);
@@ -71,7 +87,6 @@ export default function AdminProfile() {
             const msg = e?.response?.data?.message ?? e?.message ?? "Update failed";
             setSaveError(msg);
             toast.error(msg);
-            console.error("Update failed:", e?.response?.data ?? e);
         }
     };
 
@@ -90,12 +105,13 @@ export default function AdminProfile() {
         }
     };
 
-    // Navigate to result-edit — the page itself will fetch fresh data
-    // We still pass rollNumber so the page knows who to fetch
+    // const handleAddResult = (u: User) => {
+    //     const latestUser = users.find((x) => x._id === u._id) ?? u;
+    //     router.push(`/result-edit?user=${encodeURIComponent(JSON.stringify(latestUser))}`);
+    // };
+
     const handleAddResult = (u: User) => {
-        // Find the latest version of this user from our local state (already updated after save)
-        const latestUser = users.find((x) => x._id === u._id) ?? u;
-        router.push(`/result-edit?user=${encodeURIComponent(JSON.stringify(latestUser))}`);
+        router.push(`/result-edit?rollNumber=${u.rollNumber}`);
     };
 
     return (
@@ -109,48 +125,23 @@ export default function AdminProfile() {
                 </div>
 
                 <div className="flex-1 w-full flex flex-col gap-4">
-                    {/* Stat tiles */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <StatTile icon={Users} iconBg="bg-blue-50" iconColor="text-blue-600" label="Total students" value={total} pill="+2 this week" pillStyle="bg-emerald-50 text-emerald-700 border-emerald-100" />
-                        <StatTile icon={GraduationCap} iconBg="bg-violet-50" iconColor="text-violet-600" label="Teachers" value="—" pill="Active" pillStyle="bg-violet-50 text-violet-700 border-violet-100" />
-                        <StatTile icon={LayoutGrid} iconBg="bg-emerald-50" iconColor="text-emerald-600" label="Active batches" value="—" pill="Running" pillStyle="bg-emerald-50 text-emerald-700 border-emerald-100" />
-                        <StatTile icon={UserPlus} iconBg="bg-gray-50" iconColor="text-gray-400" label="Invite a user" value="Add user" dashed onClick={() => { }} />
-                    </div>
+                    {adminUser && <AdminCard admin={adminUser} onEdit={setEditTarget} />}
 
-                    {/* Search */}
-                    <div className="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-2.5">
-                        <Search size={14} className="text-gray-400 flex-shrink-0" />
-                        <Input
-                            placeholder="Search by name or roll number…"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="flex-1 border-none shadow-none p-0 h-auto text-sm focus-visible:ring-0 bg-transparent placeholder:text-gray-400"
-                        />
-                        <Badge variant="outline" className="text-[11px] font-medium text-blue-600 bg-blue-50 border-blue-100 rounded-full px-2.5 py-0.5 whitespace-nowrap">
-                            {filtered.length} student{filtered.length !== 1 ? "s" : ""}
-                        </Badge>
-                    </div>
+                    <StatTiles total={total} />
 
-                    {/* Student grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-                        {filtered.length === 0 ? (
-                            <div className="col-span-4 flex flex-col items-center justify-center py-16 text-center">
-                                <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center mb-3">
-                                    <Users size={20} className="text-gray-300" />
-                                </div>
-                                <p className="text-sm font-medium text-gray-500">No students found</p>
-                                <p className="text-xs text-gray-400 mt-1">Try a different name or roll number</p>
-                            </div>
-                        ) : filtered.map((u) => (
-                            <StudentCard
-                                key={u._id}
-                                user={u}
-                                onEdit={setEditTarget}
-                                onDelete={setDeleteTarget}
-                                onAddResult={handleAddResult}
-                            />
-                        ))}
-                    </div>
+                    <SearchBar
+                        search={search} onSearch={setSearch}
+                        classFilter={classFilter} onClassFilter={setClassFilter}
+                        batchFilter={batchFilter} onBatchFilter={setBatchFilter}
+                        resultCount={filtered.length}
+                    />
+
+                    <StudentGrid
+                        users={filtered}
+                        onEdit={setEditTarget}
+                        onDelete={setDeleteTarget}
+                        onAddResult={handleAddResult}
+                    />
 
                     <EditDialog
                         user={editTarget}
@@ -158,6 +149,7 @@ export default function AdminProfile() {
                         onClose={() => { setEditTarget(null); setSaveError(null); }}
                         onSave={handleSave}
                         error={saveError}
+                        adminOnly={editTarget?.role === "admin"}
                     />
                     <DeleteDialog
                         user={deleteTarget}
