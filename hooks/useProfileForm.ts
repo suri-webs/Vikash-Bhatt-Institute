@@ -64,9 +64,7 @@ export function useProfileForm() {
             const res = await axios.put(
                 `${getServerUrl()}/users`,
                 {
-                    // Use _id if available, fallback to id
                     id: (user as any)._id ?? (user as any).id,
-                    // Map fullName → username (what the backend expects)
                     username:    form.fullName,
                     classIn:     form.classIn,
                     rollNumber:  form.rollNumber,
@@ -74,7 +72,6 @@ export function useProfileForm() {
                     phone:       form.phone,
                     dob:         form.dob,
                     bio:         form.bio,
-                    // Send location as structured object (matches backend PUT handler)
                     country:     form.location.country,
                     state:       form.location.state,
                     city:        form.location.city,
