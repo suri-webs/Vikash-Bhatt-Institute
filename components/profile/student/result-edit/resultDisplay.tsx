@@ -87,7 +87,7 @@ export function ResultDisplay() {
                     className="rounded-2xl p-5 pb-0 flex flex-col items-center  gap-4 flex-1"
                     style={{ backgroundColor: "#ffffff", border: "1px solid #e2e8f0" }}
                 >
-                    <div>
+                    <div className="w-full ">
                         {/* Subject header */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
