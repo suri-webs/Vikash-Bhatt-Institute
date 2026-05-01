@@ -12,7 +12,7 @@ export default function Profile() {
   const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
-  console.log(getServerUrl());
+  // console.log(getServerUrl());
   
 
   if (!mounted) return <ProfileSkeleton />;

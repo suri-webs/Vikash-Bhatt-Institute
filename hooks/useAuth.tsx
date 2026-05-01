@@ -11,6 +11,17 @@ export interface UserLocation {
   address: string;
 }
 
+export interface Results {
+  rollNumber: string;
+  subject: string;
+  month: string;
+  url: string;
+  week: string;
+  _id: string;
+  totalMarks?: number; 
+  marksScored?: number;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -22,7 +33,7 @@ export interface User {
   batch: string;
   classIn: string;
   rollNumber?: number;
-  results: [string];
+  results: string[];
   bio?: string;
   avatar?: string;
 }
@@ -30,7 +41,9 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  result: Results[] | null;
   login: (userData: User) => void;
+  studentResults: (studentRes: Results[]) => void;
   logout: () => void;
   setUser: (userData: User) => void;
 }
@@ -39,11 +52,16 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUserState] = useState<User | null>(null);
+  const [result, setResult] = useState<Results[] | null>(null);
   const router = useRouter();
+
+  const studentResults = (studentRes: Results[]) => {
+    setResult(studentRes);
+    localStorage.setItem("StudentResults", JSON.stringify(studentRes));
+  };
 
   const login = (userData: User) => {
     setUserState(userData);
-
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("isLoggedIn", "true");
     router.push("/");
@@ -53,6 +71,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setUserState(null);
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("StudentResults");
     router.push("/login");
   };
 
@@ -64,13 +83,26 @@ export function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     const stored = localStorage.getItem("isLoggedIn");
     const userStr = localStorage.getItem("user");
+    const resultsStr = localStorage.getItem("StudentResults");
+
     if (stored === "true" && userStr) {
       setUserState(JSON.parse(userStr));
+    }
+    if (resultsStr) {
+      setResult(JSON.parse(resultsStr));
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, logout, setUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isLoggedIn: !!user, 
+      login, 
+      logout, 
+      setUser, 
+      studentResults, 
+      result 
+    }}>
       {children}
     </AuthContext.Provider>
   );

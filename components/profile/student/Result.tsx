@@ -4,8 +4,9 @@ import {
   BookOpen, Calendar, ChevronDown, ChevronUp,
   AlertCircle, TrendingUp, Award, BarChart3,
   FileText, Download, ExternalLink, Star,
+  LinkIcon,
 } from "lucide-react";
-import { User } from "@/hooks/useAuth";
+import { useAuth, User } from "@/hooks/useAuth";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -15,6 +16,8 @@ import {
 } from "@/components/ui/collapsible";
 import api from "@/lib/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Console } from "node:console";
 
 interface Result {
   rollNumber: string;
@@ -22,9 +25,11 @@ interface Result {
   month: string;
   url: string;
   week: string;
+  _id:string
 }
 
 let mockResults: Result[] = [];
+
 
 interface ResultCardProps {
   user: User | null;
@@ -130,23 +135,21 @@ function SubjectResultCard({ result, index }: { result: Result; index: number })
 
         <div className="flex gap-2">
           <Link
-            href={result.url}
-            target="_blank"
-            rel="noreferrer"
+            href={`/resultDisplay?url=${encodeURIComponent(result.url)}&id=${encodeURIComponent(result._id)}`}
             className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl transition-all hover:opacity-90 active:scale-95"
             style={{ backgroundColor: cfg.light, color: cfg.color }}
           >
-            <ExternalLink size={11} />
+            <LinkIcon size={11} />
             View
           </Link>
-          <Link
+          {/* <Link
             href={result.url}
             download={`${result.subject}_${result.week}.pdf`}
             className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-xl text-white transition-all hover:opacity-90 active:scale-95 bg-linear-to-r ${cfg.gradient} shadow-sm`}
           >
             <Download size={11} />
             PDF
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
@@ -180,6 +183,7 @@ function MonthlySummary({ results }: { results: Result[] }) {
 }
 
 export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
+    const { studentResults,result } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
@@ -192,8 +196,13 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
     setError(null);
     try {
       const { data } = await api.get(
-        `/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`
+        `/results?rollNumber=${rollNumber}`
       );
+
+      studentResults(data.results ?? []);
+      console.log("this is the result.tsx");
+      console.log(result);
+      
       mockResults = data.results ?? [];
     } catch {
       setError("Could not load results. Please try again.");
@@ -214,7 +223,13 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
     setResults(mockResults.filter((r) => r.month === month));
   }
 
+
   const activeMonths = new Set(mockResults.map((r) => r.month));
+  const router = useRouter();
+
+  function handleView() {
+    router.push("/resultDisplay");
+  }
 
   return (
     <Collapsible open={isOpen} className="flex flex-col gap-3">
@@ -371,7 +386,7 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
 
                   <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] text-gray-400">
                     <FileText size={11} />
-                    Click <span className="font-semibold text-gray-500 mx-0.5">View</span> to open online ·
+                    Click <span onClick={handleView} className="font-semibold text-gray-500 mx-0.5">View</span> to open online ·
                     <span className="font-semibold text-gray-500 mx-0.5">PDF</span> to download
                   </div>
                 </div>
@@ -393,3 +408,4 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
     </Collapsible>
   );
 }
+
