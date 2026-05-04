@@ -4,20 +4,19 @@ import { Results, useAuth } from "@/hooks/useAuth";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Download, BarChart2 } from "lucide-react";
 
 export function ResultDisplay() {
     const searchParams = useSearchParams();
-    const url = searchParams.get("url") || "";
+    const id = searchParams.get("id") || "";
     const { result, user } = useAuth();
 
     const [resultinfo, setResultInfo] = useState<Results>();
     useEffect(() => {
-        const currentResult = result?.find((r) => r.url === url);
+        const currentResult = result?.find((r) => r._id === id);
         setResultInfo(currentResult);
-    }, [result, url]);
+    }, [result, id]);
 
     const percentage = resultinfo?.marksScored && resultinfo?.totalMarks
         ? Math.round((resultinfo.marksScored / resultinfo.totalMarks) * 100)
@@ -44,7 +43,7 @@ export function ResultDisplay() {
                     {user?.avatar ? (
                         <Image
                             className="rounded-full object-cover"
-                            src={user.avatar}
+                            src={user?.avatar}
                             height={36}
                             width={36}
                             alt="User avatar"
@@ -167,15 +166,9 @@ export function ResultDisplay() {
 
                     {/* Action buttons */}
                     <div className="flex items-center w-[40%] mt-1">
-                        {/* <Link
-                            href={url}
-                            className="flex-1 flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold text-gray-600 transition-all hover:bg-gray-100 active:scale-95"
-                            style={{ backgroundColor: "#f1f5f9", border: "1px solid #e2e8f0" }}
-                        >
-                            🔗 View
-                        </Link> */}
+                      
                         <Link
-                            href={url}
+                            href={resultinfo?.url || "null"}
                             download={`${resultinfo?.subject}_${resultinfo?.week}.pdf`}
                             className="flex-1 flex items-center justify-center gap-2  rounded-xl py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
                             style={{ backgroundColor: "#1e293b" }}
@@ -187,8 +180,7 @@ export function ResultDisplay() {
 
                     {/* Hint text */}
                     <p className="text-center text-xs text-gray-400">
-                        Click <span className="font-semibold text-gray-500">View</span> to open online ·{" "}
-                        <span className="font-semibold text-gray-500">PDF</span> to download
+                        Click  <span className="font-semibold text-gray-500">PDF</span> to download
                     </p>
                 </div>
 

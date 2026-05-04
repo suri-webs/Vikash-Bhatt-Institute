@@ -18,7 +18,7 @@ export interface Results {
   url: string;
   week: string;
   _id: string;
-  totalMarks?: number; 
+  totalMarks?: number;
   marksScored?: number;
 }
 
@@ -41,6 +41,9 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  
+  IsCollapse: boolean;
+  setIsCollapse: (IsOpen: boolean) => void,
   result: Results[] | null;
   login: (userData: User) => void;
   studentResults: (studentRes: Results[]) => void;
@@ -53,7 +56,9 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUserState] = useState<User | null>(null);
   const [result, setResult] = useState<Results[] | null>(null);
+  const [IsCollapse, setIsCollapseState] = useState<boolean>(false);
   const router = useRouter();
+
 
   const studentResults = (studentRes: Results[]) => {
     setResult(studentRes);
@@ -75,6 +80,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
     router.push("/login");
   };
 
+  const setIsCollapse = (value: boolean) => {
+    // setIsCollapse(value);
+    setIsCollapseState(value);
+  };
+
   const setUser = (userData: User) => {
     setUserState(userData);
     localStorage.setItem("user", JSON.stringify(userData));
@@ -85,6 +95,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const userStr = localStorage.getItem("user");
     const resultsStr = localStorage.getItem("StudentResults");
 
+
     if (stored === "true" && userStr) {
       setUserState(JSON.parse(userStr));
     }
@@ -94,14 +105,16 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isLoggedIn: !!user, 
-      login, 
-      logout, 
-      setUser, 
-      studentResults, 
-      result 
+    <AuthContext.Provider value={{
+      user,
+      setIsCollapse,
+      IsCollapse,
+      isLoggedIn: !!user,
+      login,
+      logout,
+      setUser,
+      studentResults,
+      result
     }}>
       {children}
     </AuthContext.Provider>

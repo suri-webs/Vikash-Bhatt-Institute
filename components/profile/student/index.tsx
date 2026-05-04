@@ -1,12 +1,28 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useProfileForm } from "@/hooks/useProfileForm";
 import { ProfileCard } from "./ProfileCard";
-import { ResultCard } from "./Result";
+import { ResultSection } from "./Result";
 import { AdditionalInfoSection } from "./AdditionalInfoSection";
 import { PersonalInfoSection } from "./PersonalInfoSection";
+import { useState } from "react";
+import { getSubjectConfig } from "@/components/utils/types/result/type";
+import { FileText, BookOpen, BarChart3, TrendingUp, Link, LinkIcon, Star } from "lucide-react";
+import ResultCard from "@/components/profile/student/result-edit/resultCard"
+import { Separator } from "@base-ui/react";
+interface Result {
+    rollNumber: string;
+    subject: string;
+    month: string;
+    url: string;
+    week: string;
+    _id: string;
+}
+
+
+// function monthResult
 
 export default function StudentProfile() {
     const { user } = useAuth();
@@ -18,6 +34,10 @@ export default function StudentProfile() {
     const displayName = user?.username ?? "User";
     const rollNumber = user?.rollNumber ?? "00000";
     const id = (user as any)?.id ?? "Id";
+    const [monthResults, setMonthResults] = useState<{
+        month: string | null;
+        results: Result[];
+    }>({ month: null, results: [] });
 
     return (
         <section className="my-20 px-6 py-12">
@@ -29,9 +49,9 @@ export default function StudentProfile() {
                     </p>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-5 items-start">
+                <div className="flex flex-col lg:flex-row gap-5  items-start">
                     {/* Left column */}
-                    <div className="flex flex-col gap-4 w-full lg:w-100 shrink-0">
+                    <div className="flex flex-col gap-6 w-full lg:w-100 shrink-0">
                         <ProfileCard
                             role={user?.role ?? "Learning Member"}
                             displayName={displayName}
@@ -45,20 +65,22 @@ export default function StudentProfile() {
                             onSave={handleSave}
                             onCancel={handleCancel}
                         />
-                        <ResultCard
+                        <ResultSection
                             user={user}
                             userId={id}
                             role={user?.role ?? "student"}
                             displayName={displayName}
                             rollNumber={rollNumber}
                             classIn={saved.classIn}
+                            onMonthSelect={(month, results) =>
+                                setMonthResults({ month, results })}
                         />
                     </div>
 
                     {/* Right column */}
                     <Card className="flex-1 w-full border-gray-100 shadow-sm rounded-2xl">
-                        <CardContent className="p-6 lg:p-8">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+                        <CardContent className="p-4 lg:p-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10">
                                 <PersonalInfoSection
                                     fullName={form.fullName}
                                     gmail={form.gmail}
@@ -80,6 +102,14 @@ export default function StudentProfile() {
                         </CardContent>
                     </Card>
                 </div>
+
+                {/* bottom  */}
+                {monthResults.month && (
+                    <ResultCard
+                        month={monthResults.month}
+                        results={monthResults.results}
+                    />
+                )}
             </div>
         </section>
     );

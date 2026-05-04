@@ -32,7 +32,7 @@ export function ProfileAvatar({ avatarSrc, editing, onAvatarChange }: ProfileAva
         <div className="relative shrink-0">
             <div
                 className="rounded-lg relative shadow-sm border-2 border-white overflow-hidden bg-gray-100 flex items-center justify-center"
-                style={{ width: 72, height: 72 }}
+                style={{ width: 80, height: 80 }}
             >
                 {hasAvatar ? (
                     <Image
