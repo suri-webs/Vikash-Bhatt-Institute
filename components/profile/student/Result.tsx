@@ -24,7 +24,6 @@ interface Result {
   week: string;
 }
 
-let mockResults: Result[] = [];
 
 interface ResultCardProps {
   user: User | null;
@@ -183,20 +182,29 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [allResults, setAllResults] = useState<Result[]>([]); // ✅ state mein
   const [results, setResults] = useState<Result[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   async function ensureLoaded() {
-    if (mockResults.length) return;
+    if (allResults.length) return; // ✅ allResults check
     setLoading(true);
     setError(null);
     try {
       const { data } = await api.get(
         `/results?role=${role}&username=${displayName}&rollNumber=${rollNumber}`
       );
-      mockResults = data.results ?? [];
-    } catch {
-      setError("Could not load results. Please try again.");
+      setAllResults(data.results ?? []); // ✅ setState
+    } catch (err: any) {
+      console.error("Results fetch error:", err.response?.status, err.response?.data);
+
+      if (err.response?.status === 401) {
+        setError("Session expired. Please refresh the page.");
+      } else if (err.response?.status === 403) {
+        setError("Access denied. Please contact your teacher.");
+      } else {
+        setError("Could not load results. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -211,10 +219,10 @@ export function ResultCard({ role, displayName, rollNumber }: ResultCardProps) {
 
   function selectMonth(month: string) {
     setSelectedMonth(month);
-    setResults(mockResults.filter((r) => r.month === month));
+    setResults(allResults.filter((r) => r.month === month)); // ✅ allResults
   }
 
-  const activeMonths = new Set(mockResults.map((r) => r.month));
+  const activeMonths = new Set(allResults.map((r) => r.month)); // ✅ allResults
 
   return (
     <Collapsible open={isOpen} className="flex flex-col gap-3">

@@ -4,7 +4,6 @@ import axios from "axios";
 const api = axios.create({
     baseURL: getServerUrl(),
     withCredentials: true,
-
 });
 
 api.interceptors.response.use(
@@ -18,12 +17,18 @@ api.interceptors.response.use(
 
             try {
                 await api.post("/refresh");
-
                 return api(originalRequest);
 
             } catch (refreshError) {
-                await api.post("/logout");
-                window.location.href = "/login";
+                // Agar /results request hai toh login par redirect mat karo
+                // UI mein error show hoga
+                const isResultsRequest = originalRequest.url?.includes("/results");
+
+                if (!isResultsRequest) {
+                    await api.post("/logout");
+                    window.location.href = "/login";
+                }
+
                 return Promise.reject(refreshError);
             }
         }
