@@ -24,7 +24,7 @@ export function ResultDisplay() {
     const isPass = percentage > 40;
 
     console.log(user?.avatar);
-    
+
 
     const fields = [
         { icon: User, label: "Name", value: user?.username ?? "" },
