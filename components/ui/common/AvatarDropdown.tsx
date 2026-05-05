@@ -73,10 +73,6 @@ export function AvatarDropdown({
                     Profile
                 </DropdownMenuItem>
 
-                <DropdownMenuItem onClick={() => router.push("/dashboard")}>
-                    Dashboard
-                </DropdownMenuItem>
-
                 <DropdownMenuItem
                     onClick={onLogout}
                     className="hover:text-white hover:bg-primary"
