@@ -6,11 +6,20 @@ const api = axios.create({
     withCredentials: true,
 });
 
+const NO_RETRY_URLS = ["/refresh", "/logout", "/login"];
+
 api.interceptors.response.use(
     (response) => response,
 
     async (error) => {
         const originalRequest = error.config;
+
+        const isAuthRoute = NO_RETRY_URLS.some(url =>
+            originalRequest.url?.includes(url)
+        );
+        if (isAuthRoute) {
+            return Promise.reject(error);
+        }
 
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
@@ -20,12 +29,11 @@ api.interceptors.response.use(
                 return api(originalRequest);
 
             } catch (refreshError) {
-                // Agar /results request hai toh login par redirect mat karo
-                // UI mein error show hoga
                 const isResultsRequest = originalRequest.url?.includes("/results");
 
                 if (!isResultsRequest) {
-                    await api.post("/logout");
+                  
+                    await axios.post(`${getServerUrl()}/logout`, {}, { withCredentials: true });
                     window.location.href = "/login";
                 }
 

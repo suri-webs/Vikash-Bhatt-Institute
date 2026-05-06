@@ -68,7 +68,6 @@ export function ResultSection({ rollNumber, onMonthSelect }: ResultCardProps) {
 
   useEffect(() => {
     setIsCollapse(IsCollapseLocal);
-    console.log(IsCollapseLocal);
   }, [IsCollapseLocal]);
   async function ensureLoaded() {
 
@@ -177,7 +176,6 @@ export function ResultSection({ rollNumber, onMonthSelect }: ResultCardProps) {
                           selectMonth(full);
                           const next = !IsCollapseLocal;
                           setIsCollapseLocal(next);
-                          console.log(IsCollapseLocal);
 
                         }
                       }}

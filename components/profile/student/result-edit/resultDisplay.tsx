@@ -12,6 +12,13 @@ export function ResultDisplay() {
     const { result, user } = useAuth();
 
     const [resultinfo, setResultInfo] = useState<Results>();
+    const [imgError, setImgError] = useState(false);
+    const [mounted, setMounted] = useState(false); 
+
+    useEffect(() => {
+        setMounted(true); 
+    }, []);
+
     useEffect(() => {
         const currentResult = result?.find((r) => r._id === id);
         setResultInfo(currentResult);
@@ -22,21 +29,18 @@ export function ResultDisplay() {
         : 0;
 
     const isPass = percentage > 40;
-
-    console.log(user?.avatar);
-
+    const hasAvatar = mounted && user?.avatar && user.avatar.trim().length > 0 && !imgError; 
 
     const fields = [
-        { icon: User, label: "Name", value: user?.username ?? "" },
-        { icon: Hash, label: "Roll No.", value: user?.rollNumber?.toString() ?? "" },
-        { icon: BookOpen, label: "Class", value: user?.classIn ?? "" },
-        { icon: BookOpen, label: "Subject", value: resultinfo?.subject ?? "" },
-        { icon: Calendar, label: "Test Taken", value: `Week ${resultinfo?.week ?? "—"} · ${resultinfo?.month ?? ""}` },
-        { icon: Target, label: "Score", value: `${resultinfo?.marksScored ?? 0} / ${resultinfo?.totalMarks ?? 0}` },
-        { icon: Percent, label: "Percentage", value: `${percentage}%` },
+        { icon: User, label: "Name", value: mounted ? (user?.username ?? "") : "" },
+        { icon: Hash, label: "Roll No.", value: mounted ? (user?.rollNumber?.toString() ?? "") : "" },
+        { icon: BookOpen, label: "Class", value: mounted ? (user?.classIn ?? "") : "" },
+        { icon: BookOpen, label: "Subject", value: mounted ? (resultinfo?.subject ?? "") : "" },
+        { icon: Calendar, label: "Test Taken", value: mounted ? `Week ${resultinfo?.week ?? "—"} · ${resultinfo?.month ?? ""}` : "" },
+        { icon: Target, label: "Score", value: mounted ? `${resultinfo?.marksScored ?? 0} / ${resultinfo?.totalMarks ?? 0}` : "" },
+        { icon: Percent, label: "Percentage", value: mounted ? `${percentage}%` : "" },
     ];
 
-    // Circular progress math
     const radius = 42;
     const circumference = 2 * Math.PI * radius;
     const strokeDash = (percentage / 100) * circumference;
@@ -53,24 +57,33 @@ export function ResultDisplay() {
                         </p>
                         <p className="text-[11px] text-slate-400 mt-0.5">1 subject tested</p>
                     </div>
-                    {user?.avatar ? (
-                        <Image className="rounded-full object-cover ring-2 ring-blue-100" src={user.avatar} height={38} width={38} alt="avatar" />
+
+                    {hasAvatar ? (
+                        <div className="relative w-9 h-9 rounded-full overflow-hidden ring-2 ring-blue-100 shrink-0">
+                            <Image
+                                src={user!.avatar!}
+                                fill
+                                className="object-cover"
+                                alt="avatar"
+                                referrerPolicy="no-referrer"
+                                crossOrigin="anonymous"
+                                onError={() => setImgError(true)}
+                            />
+                        </div>
                     ) : (
-                        <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white text-sm font-bold ring-2 ring-slate-200">
-                            {user?.username?.[0]?.toUpperCase() ?? "U"}
+                        <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white text-sm font-bold ring-2 ring-slate-200 shrink-0">
+                            {mounted ? (user?.username?.[0]?.toUpperCase() ?? "U") : "U"} 
                         </div>
                     )}
                 </div>
 
                 {/* ── Score Hero ─────────────────────────── */}
-                <div className={`relative rounded-2xl px-6 py-6 overflow-hidden border ${isPass ? 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200' : 'bg-gradient-to-br from-rose-50 to-orange-50 border-rose-200'}`}>
-                    {/* Background circle decoration */}
+                <div className={`relative rounded-2xl px-6 py-6 overflow-hidden border ${isPass ? 'bg-linear-to-br from-emerald-50 to-teal-50 border-emerald-200' : 'bg-linear-to-br from-rose-50 to-orange-50 border-rose-200'}`}>
                     <div className={`absolute -right-10 -top-10 w-48 h-48 rounded-full opacity-10 ${isPass ? 'bg-emerald-400' : 'bg-rose-400'}`} />
                     <div className={`absolute -right-4 -bottom-8 w-32 h-32 rounded-full opacity-10 ${isPass ? 'bg-teal-400' : 'bg-orange-400'}`} />
 
                     <div className="flex items-center gap-5 relative z-10">
-                        {/* Circular progress */}
-                        <div className="relative w-[100px] h-[100px] flex-shrink-0">
+                        <div className="relative w-25 h-25 shrink-0">
                             <svg width="100" height="100" viewBox="0 0 100 100" className="-rotate-90">
                                 <circle cx="50" cy="50" r={radius} fill="none" stroke={isPass ? '#d1fae5' : '#fee2e2'} strokeWidth="10" />
                                 <circle
@@ -87,7 +100,6 @@ export function ResultDisplay() {
                             </div>
                         </div>
 
-                        {/* Score info */}
                         <div className="flex flex-col gap-1">
                             <div className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest ${isPass ? 'text-emerald-600' : 'text-rose-500'}`}>
                                 {isPass ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
@@ -126,7 +138,6 @@ export function ResultDisplay() {
                             </div>
                         ))}
 
-                        {/* Verdict cell */}
                         <div className="bg-white px-4 py-3 flex flex-col gap-1">
                             <div className="flex items-center gap-1.5">
                                 <Target size={11} className="text-slate-400" />
