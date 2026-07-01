@@ -56,12 +56,12 @@ export default function Footer() {
                 {/* Brand Column */}
                 <div className="sm:col-span-2 lg:col-span-1">
                     <Link href="/" className="flex mb-3 items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                             <GraduationCap size={16} className="text-white" />
                         </div>
                         <div className="flex flex-col leading-none">
                             <span className="text-white font-bold text-sm tracking-tight">vikas Bhatt</span>
-                            <span className="text-cyan-500 font-medium text-[10px] tracking-widest uppercase">Classes</span>
+                            <span className="text-primary font-medium text-[10px] tracking-widest uppercase">Classes</span>
                         </div>
                     </Link>
                     <p className="text-sm leading-relaxed text-[#8b96a5] max-w-70 m-0 mb-5">

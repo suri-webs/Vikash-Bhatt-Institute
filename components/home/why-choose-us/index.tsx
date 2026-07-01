@@ -51,7 +51,7 @@ export default function WhyChooseUs() {
             <div className=" max-w-7xl max-sm:w-[95%] mx-auto">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-14">
-                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-5">
                         WHY CHOOSE US
                     </span>
                     <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 leading-tight">
@@ -70,7 +70,7 @@ export default function WhyChooseUs() {
                             className="bg-white rounded-2xl p-8 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow duration-300 group"
                         >
                             {/* Icon circle */}
-                            <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-[#e8f4fc] to-[#d1ecf1] flex items-center justify-center mb-6 group-hover:scale-105 transition-all duration-300 shadow-sm">
+                            <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center mb-6 group-hover:scale-105 transition-all duration-300 shadow-sm">
                                 <Icon size={28} className="text-primary group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
                             </div>
 

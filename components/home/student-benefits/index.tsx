@@ -24,7 +24,7 @@ export default function StudentBenefits() {
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     {/* Left */}
                     <div className="flex-1 w-full">
-                        <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
+                        <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-5">
                             STUDENT RESULTS
                         </span>
                         <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-5 tracking-tight">
@@ -39,7 +39,7 @@ export default function StudentBenefits() {
                                 >
                                     <path
                                         d="M0 6 Q50 0 100 6"
-                                        stroke="#2d9cdb"
+                                        stroke="#00b4d8"
                                         strokeWidth="2.5"
                                         fill="none"
                                         strokeLinecap="round"
@@ -59,7 +59,7 @@ export default function StudentBenefits() {
                                     key={benefit}
                                     className="flex items-center gap-3.5 group"
                                 >
-                                    <div className="w-6 h-6 shrink-0 rounded-full bg-[#e8f4fc] flex items-center justify-center group-hover:bg-primary transition-colors duration-200">
+                                    <div className="w-6 h-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-200">
                                         <CheckCircle2
                                             size={14}
                                             className="text-primary group-hover:text-white transition-colors duration-200"
@@ -77,12 +77,7 @@ export default function StudentBenefits() {
                     {/* Right — Stat Card */}
                     <div className="w-full lg:w-105 shrink-0">
                         <div
-                            className="relative rounded-3xl overflow-hidden p-10 flex flex-col items-center text-center gap-5"
-                            style={{
-                                background: 'linear-gradient(145deg, #e8f4fc 0%, #dbeeff 100%)',
-                                boxShadow:
-                                    '0 20px 60px rgba(45,156,219,0.15), 0 4px 16px rgba(45,156,219,0.08)',
-                            }}
+                            className="relative rounded-3xl overflow-hidden p-10 flex flex-col items-center text-center gap-5 bg-gradient-to-br from-primary/10 to-primary/20 border border-primary/20 shadow-xl shadow-primary/10"
                         >
                             {/* Decorative blobs */}
                             <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-primary/10 pointer-events-none" />

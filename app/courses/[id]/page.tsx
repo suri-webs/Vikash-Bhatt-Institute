@@ -8,6 +8,24 @@ import { courses, getCourseById } from "@/lib/course";
 import Navbar from "@/components/home/navbar";
 import Footer from "@/components/home/footer";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+// ── Dynamic metadata generation for SEO ───────────────────────────────────
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const course = getCourseById(id);
+    if (!course) {
+        return {
+            title: "Course Not Found",
+        };
+    }
+    return {
+        title: course.title,
+        description: course.description || `Enroll in ${course.title} by Vikas Bhatt. Comprehensive curriculum for ${course.classLevel} students.`,
+        keywords: [course.subject, course.classLevel, "Vikas Bhatt Classes", "Burari Coaching"],
+    };
+}
 
 // ── Static params for all courses ─────────────────────────────────────────
 
@@ -32,11 +50,11 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
                         {/* Back link */}
                         <Link
-                            href="/courses"
-                            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#0BBFE0] transition-colors mb-6"
+                            href="/"
+                            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-primary transition-colors mb-6"
                         >
                             <ArrowLeft size={14} />
-                            Back to Courses
+                            Back
                         </Link>
 
                         <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -60,7 +78,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
                             {/* Info */}
                             <div className="flex-1 min-w-0">
                                 <div className="flex flex-wrap gap-2 mb-3">
-                                    <Badge className="bg-[#e0f9ff] text-[#0BBFE0] border border-[#b3eef8] hover:bg-[#e0f9ff] text-xs font-semibold rounded-full px-3">
+                                    <Badge className="bg-primary/10 text-primary border border-primary/20 hover:bg-primary/10 text-xs font-semibold rounded-full px-3">
                                         {course.subject}
                                     </Badge>
                                     <Badge variant="outline" className="text-xs font-medium rounded-full px-3">
@@ -80,7 +98,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
                                 {course.instructor && (
                                     <p className="text-sm text-gray-400 flex items-center gap-1.5">
-                                        <GraduationCap size={14} className="text-[#0BBFE0]" />
+                                        <GraduationCap size={14} className="text-primary" />
                                         By <span className="font-medium text-gray-600">{course.instructor}</span>
                                     </p>
                                 )}
@@ -97,11 +115,11 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
                                 <CardContent className="p-6 space-y-4">
                                     <h2 className="text-base font-bold text-gray-800">Course Details</h2>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <Detail icon={<BookOpen size={14} className="text-[#0BBFE0]" />} label="Subject" value={course.subject} />
-                                        <Detail icon={<Users size={14} className="text-[#0BBFE0]" />} label="Class Level" value={course.classLevel} />
-                                        <Detail icon={<Tag size={14} className="text-[#0BBFE0]" />} label="Price" value={`₹${course.price.toLocaleString("en-IN")}`} />
+                                        <Detail icon={<BookOpen size={14} className="text-primary" />} label="Subject" value={course.subject} />
+                                        <Detail icon={<Users size={14} className="text-primary" />} label="Class Level" value={course.classLevel} />
+                                        <Detail icon={<Tag size={14} className="text-primary" />} label="Price" value={`₹${course.price.toLocaleString("en-IN")}`} />
                                         {course.instructor && (
-                                            <Detail icon={<GraduationCap size={14} className="text-[#0BBFE0]" />} label="Instructor" value={course.instructor} />
+                                            <Detail icon={<GraduationCap size={14} className="text-primary" />} label="Instructor" value={course.instructor} />
                                         )}
                                     </div>
                                 </CardContent>
@@ -115,12 +133,14 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
                                     <p className="text-3xl font-extrabold text-gray-900">
                                         ₹{course.price.toLocaleString("en-IN")}
                                     </p>
-                                    <Button className="w-full bg-[#0BBFE0] hover:bg-[#09a8c7] text-white font-semibold rounded-xl py-5 shadow-md shadow-cyan-200">
-                                        Enroll Now
+                                    <Button className="w-full bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl py-5 shadow-md shadow-primary/20">
+                                        <Link href="/#contact">
+                                            Enroll Now
+                                        </Link>
                                     </Button>
                                     <Link
                                         href="/#contact"
-                                        className="text-sm text-[#0BBFE0] hover:underline font-medium"
+                                        className="text-sm text-primary hover:underline font-medium"
                                     >
                                         Have questions? Contact us
                                     </Link>

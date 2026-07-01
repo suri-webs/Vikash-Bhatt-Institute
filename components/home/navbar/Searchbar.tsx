@@ -106,14 +106,14 @@ export function SearchBar({ placeholder = "Search courses, subjects..." }: Searc
                     flex items-center gap-2 h-10 px-3 rounded-2xl border bg-white
                     transition-all duration-200
                     ${focused
-                        ? "border-[#0BBFE0] shadow-[0_0_0_3px_rgba(11,191,224,0.15)]"
+                        ? "border-primary shadow-[0_0_0_3px_rgba(0,180,216,0.15)]"
                         : "border-gray-200 hover:border-gray-300"
                     }
                 `}
             >
                 <Search
                     size={15}
-                    className={`shrink-0 transition-colors duration-200 ${focused ? "text-[#0BBFE0]" : "text-gray-400"}`}
+                    className={`shrink-0 transition-colors duration-200 ${focused ? "text-primary" : "text-gray-400"}`}
                 />
                 <input
                     ref={inputRef}
@@ -171,7 +171,7 @@ export function SearchBar({ placeholder = "Search courses, subjects..." }: Searc
                                             className={`
                                                 w-full flex items-center gap-3 px-3 py-2.5 text-left
                                                 transition-colors duration-100 group
-                                                ${activeIndex === i ? "bg-[#f0fbfe]" : "hover:bg-gray-50"}
+                                                ${activeIndex === i ? "bg-primary/5" : "hover:bg-gray-50"}
                                             `}
                                         >
                                             <div className="w-10 h-10 relative rounded-xl overflow-hidden shrink-0 bg-gray-100 border border-gray-100">
@@ -205,12 +205,12 @@ export function SearchBar({ placeholder = "Search courses, subjects..." }: Searc
 
                                             {/* Price + arrow */}
                                             <div className="shrink-0 flex items-center gap-1">
-                                                <span className="text-sm font-bold text-[#0BBFE0]">
+                                                <span className="text-sm font-bold text-primary">
                                                     {formatPrice(course.price)}
                                                 </span>
                                                 <ChevronRight
                                                     size={14}
-                                                    className={`text-gray-300 transition-transform duration-150 ${activeIndex === i ? "translate-x-0.5 text-[#0BBFE0]" : ""}`}
+                                                    className={`text-gray-300 transition-transform duration-150 ${activeIndex === i ? "translate-x-0.5 text-primary" : ""}`}
                                                 />
                                             </div>
                                         </button>
@@ -241,7 +241,7 @@ function highlightMatch(text: string, query: string) {
         <>
             {parts.map((part, i) =>
                 regex.test(part) ? (
-                    <mark key={i} className="bg-[#d0f4fc] text-[#0BBFE0] rounded px-0.5 not-italic font-semibold">
+                    <mark key={i} className="bg-primary/15 text-primary rounded px-0.5 not-italic font-semibold">
                         {part}
                     </mark>
                 ) : (

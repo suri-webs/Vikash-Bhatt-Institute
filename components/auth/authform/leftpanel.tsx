@@ -102,7 +102,7 @@ function LeftHeadline() {
 }
 
 function LeftStats() {
-    const stats = [["2,400+", "Students"], ["120+", "Courses"], ["98%", "Results"]] as const
+    const stats = [["8,500+", "Students"], ["21+", "Years Exp"], ["98%", "Pass Rate"]] as const
     return (
         <div className="relative space-y-3">
             <div className="grid grid-cols-3 gap-2">

@@ -109,7 +109,7 @@ export default function Contact() {
 
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-12">
-                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-5">
                         Get In Touch
                     </span>
                     <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">

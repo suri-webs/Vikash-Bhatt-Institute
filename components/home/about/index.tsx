@@ -5,10 +5,10 @@ import { BookOpen, Users, TrendingUp, Award, Quote, Star, GraduationCap, CheckCi
 import Image from "next/image";
 
 const stats = [
-    { value: "10+", label: "Years Experience", icon: GraduationCap },
-    { value: "2000+", label: "Students Mentored", icon: Users2 },
-    { value: "95%", label: "Success Rate", icon: TrendingUp },
-    { value: "150+", label: "Batches Co", icon: Users },
+    { value: "21+", label: "Years Experience", icon: GraduationCap },
+    { value: "8500+", label: "Students Taught", icon: Users2 },
+    { value: "98%", label: "Pass Rate", icon: TrendingUp },
+    { value: "12+", label: "Subjects Covered", icon: Users },
 ];
 
 export default function About() {
@@ -29,7 +29,7 @@ export default function About() {
             <div className="relative z-10 max-w-7xl max-lg:px-4 mx-auto">
                 {/* Header */}
                 <div className="text-center mb-10 sm:mb-14">
-                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-5">
                         ABOUT THE TEACHER
                     </span>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">

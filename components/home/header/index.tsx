@@ -36,10 +36,10 @@ export default function Header() {
                         {/* Badge */}
                         <div
                             className={cn(
-                                "group w-fit rounded-full border border-cyan-200 bg-cyan-50 text-base text-cyan-900 transition-all ease-in hover:cursor-pointer hover:bg-cyan-100 mb-6"
+                                "group w-fit rounded-full border border-primary/20 bg-primary/5 text-primary transition-all ease-in hover:cursor-pointer hover:bg-primary/10 mb-6"
                             )}
                         >
-                            <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-cyan-700 hover:duration-300 max-sm:text-[10px]">
+                            <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-primary hover:duration-300 max-sm:text-[10px]">
                                 <span className="text-sm">⭐ Trusted by 5000+ Students Across India</span>
                                 <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
                             </AnimatedShinyText>
@@ -85,7 +85,7 @@ export default function Header() {
                                 { icon: LayoutGrid, num: "12+", label: "Subjects Covered" },
                             ].map(({ icon: Icon, num, label }) => (
                                 <div key={label} className="flex items-center gap-2.5">
-                                    <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                                         <Icon className="w-4 h-4 text-primary" />
                                     </div>
                                     <div className="flex flex-col">
@@ -104,14 +104,14 @@ export default function Header() {
                         <div className="flex flex-wrap gap-4">
                             <Button
                                 onClick={() => setEnquiryOpen(true)}
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-6 font-semibold text-white shadow-lg shadow-blue-100"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-6 font-semibold text-white shadow-lg shadow-primary/20"
                             >
                                 Get Started
                                 <ArrowRight className="w-4 h-4" />
                             </Button>
                             <Button
                                 variant="outline"
-                                className="rounded-xl border-primary px-8 py-6 font-semibold text-primary hover:bg-blue-50 transition-colors duration-200"
+                                className="rounded-xl border-primary px-8 py-6 font-semibold text-primary hover:bg-primary/5 transition-colors duration-200"
                             >
                                 <Link
                                     href="#courses"

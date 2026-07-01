@@ -21,7 +21,7 @@ export default function Testimonials() {
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-10">
 
-                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-sky-200 px-4 py-1.5 rounded-full mb-5">
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-5">
                         Student Testimonials
                     </span>
                     
@@ -66,7 +66,7 @@ export default function Testimonials() {
                                     {/* Body */}
                                     <div className="p-5 flex flex-col gap-3 flex-1">
                                         <div className="flex gap-0.5">
-                                            {[...Array(5)].map((_, i) => <Star key={i} size={13} fill="#2d9cdb" className="text-[#2d9cdb]" strokeWidth={0} />)}
+                                            {[...Array(5)].map((_, i) => <Star key={i} size={13} fill="#00b4d8" className="text-[#00b4d8]" strokeWidth={0} />)}
                                         </div>
                                         <p className="text-gray-600 text-[13.5px] leading-relaxed italic flex-1 font-normal">&quot;{t.quote}&quot;</p>
                                         <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
@@ -89,13 +89,13 @@ export default function Testimonials() {
                 <div className="flex mx-auto w-fit items-center gap-4 mt-8">
                     <button
                         onClick={() => swiperRef.current?.slidePrev()}
-                        className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#2d9cdb] hover:text-white hover:border-[#2d9cdb] transition-all duration-200 cursor-pointer"
+                        className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 cursor-pointer"
                     >
                         <ChevronLeft size={18} />
                     </button>
                     <button
                         onClick={() => swiperRef.current?.slideNext()}
-                        className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#2d9cdb] hover:text-white hover:border-[#2d9cdb] transition-all duration-200 cursor-pointer"
+                        className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 cursor-pointer"
                     >
                         <ChevronRight size={18} />
                     </button>

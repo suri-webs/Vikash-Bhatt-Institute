@@ -55,12 +55,12 @@ export function NavMobileDrawer({
                     {/* Drawer Header */}
                     <div className="px-5 pt-6 pb-5">
                         <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                                 <GraduationCap size={16} className="text-white" />
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="text-gray-900 font-bold text-sm">vikas Bhatt</span>
-                                <span className="text-cyan-500 font-medium text-[10px] tracking-widest uppercase">
+                                <span className="text-primary font-medium text-[10px] tracking-widest uppercase">
                                     Classes
                                 </span>
                             </div>
@@ -85,16 +85,16 @@ export function NavMobileDrawer({
                                         className={`
                                             flex items-center justify-between gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150
                                             ${isActive
-                                                ? "bg-cyan-50 text-cyan-600"
+                                                ? "bg-primary/10 text-primary"
                                                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                                             }
                                         `}
                                     >
                                         <div className="flex gap-2 items-center">
-                                            <Icon size={16} className={isActive ? "text-cyan-500" : "text-gray-400"} />
+                                            <Icon size={16} className={isActive ? "text-primary" : "text-gray-400"} />
                                             <span className="flex-1">{link.label}</span>
                                         </div>
-                                        {isActive && <ChevronRight size={14} className="text-cyan-400" />}
+                                        {isActive && <ChevronRight size={14} className="text-primary/70" />}
                                     </Link>
                                 </SheetClose>
                             );
@@ -107,7 +107,7 @@ export function NavMobileDrawer({
                     <div className="px-4 absolute bottom-3 right-0 py-4 space-y-2">
                         <SheetClose
                             onClick={onEnquiryOpen}
-                            className="bg-cyan-500 hover:bg-cyan-600 transition-colors px-5 py-3 rounded-md text-white text-sm font-medium"
+                            className="bg-primary hover:bg-primary/90 transition-colors px-5 py-3 rounded-md text-white text-sm font-medium"
                         >
                             Get Started
                         </SheetClose>
