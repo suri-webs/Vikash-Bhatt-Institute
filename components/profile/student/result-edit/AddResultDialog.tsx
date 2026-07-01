@@ -9,6 +9,8 @@ import { FilePlus, CalendarIcon, BookOpen, Link2, Hash, Trophy } from "lucide-re
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
+// some changes 
+
 interface Props {
     open: boolean;
     onOpenChange: (v: boolean) => void;
