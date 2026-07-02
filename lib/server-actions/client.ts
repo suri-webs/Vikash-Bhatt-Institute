@@ -2,7 +2,11 @@
 
 import { cookies } from "next/headers";
 
-const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://vikas-bhatt-classes-server.onrender.com/api";
+let API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://vikas-bhatt-classes-server.onrender.com/api";
+
+if (process.env.NODE_ENV === "production" && (API_BASE_URL.includes("localhost") || API_BASE_URL.includes("127.0.0.1"))) {
+    API_BASE_URL = "https://vikas-bhatt-classes-server.onrender.com/api";
+}
 
 function parseSetCookie(cookieStr: string) {
     const parts = cookieStr.split(';');
