@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css"
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "missing-google-client-id"}>
             <AuthProvider>
                 {children}
                 <ToastContainer

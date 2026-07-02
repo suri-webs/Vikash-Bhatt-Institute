@@ -241,7 +241,13 @@ export default function AuthForm() {
                         </div>
 
                         {/* ── Google Button ── */}
-                        <button type="button" onClick={() => handleGoogleLogin()} disabled={googleLoading}
+                        <button type="button" onClick={() => {
+                            if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+                                toast.error("Google sign-in is not configured on this environment.")
+                                return
+                            }
+                            handleGoogleLogin()
+                         }} disabled={googleLoading}
                             className="w-full flex items-center justify-center gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-60 disabled:cursor-not-allowed text-slate-700 font-medium text-sm py-2.5 rounded-[10px] transition-all duration-150 shadow-sm">
                             {googleLoading ? <Loader2 size={14} className="animate-spin" /> : (
                                 <svg width="16" height="16" viewBox="0 0 48 48">

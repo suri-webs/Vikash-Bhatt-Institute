@@ -192,9 +192,13 @@ export default function Login() {
                                 <div>
                                     <div className="flex items-center justify-between mb-1">
                                         <label htmlFor="password" className="text-xs font-medium text-slate-600">Password</label>
-                                        <Link href="/forgot-password" className="text-[11px] text-cyan-500 hover:text-cyan-600 transition-colors font-medium">
+                                        <button
+                                            type="button"
+                                            onClick={() => toast.info("Password reset feature is coming soon! Please contact your administrator to reset your password.")}
+                                            className="text-[11px] text-cyan-500 hover:text-cyan-600 transition-colors font-medium"
+                                        >
                                             Forgot password?
-                                        </Link>
+                                        </button>
                                     </div>
                                     <div className="relative">
                                         <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -230,7 +234,13 @@ export default function Login() {
                                     <div className="flex-1 h-px bg-slate-100" />
                                 </div>
 
-                                <button type="button" onClick={() => handleGoogleLogin()} disabled={googleLoading}
+                                <button type="button" onClick={() => {
+                                    if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+                                        toast.error("Google sign-in is not configured on this environment.")
+                                        return
+                                    }
+                                    handleGoogleLogin()
+                                }} disabled={googleLoading}
                                     className="w-full flex items-center justify-center hover:scale-[1.02] gap-2.5 border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-60 disabled:cursor-not-allowed text-slate-700 font-medium text-sm py-2.5 rounded-lg transition-all duration-150 shadow-sm">
                                     {googleLoading ? <Loader2 size={14} className="animate-spin" /> : (
                                         <svg width="16" height="16" viewBox="0 0 48 48">
