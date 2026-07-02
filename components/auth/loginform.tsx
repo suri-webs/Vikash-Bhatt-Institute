@@ -1,7 +1,6 @@
 "use client";
 
-import axios from "axios"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { useGoogleLogin } from "@react-oauth/google"
@@ -10,12 +9,18 @@ import {
     AlertCircle, BookOpen, Users, Trophy, Star, CheckCircle2,
 } from "lucide-react"
 import Link from "next/link"
-import { getServerUrl } from "../utils/config"
 import { toast } from "react-toastify"
+import { loginAction } from "@/app/actions"
 
 export default function Login() {
     const router = useRouter()
-    const { login } = useAuth()
+    const { login, isLoggedIn } = useAuth()
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            router.push("/profile")
+        }
+    }, [isLoggedIn, router])
 
     const [formData, setFormData] = useState({ gmail: "", password: "" })
     const [loading, setLoading] = useState(false)
@@ -32,20 +37,17 @@ export default function Login() {
         setLoading(true)
         setError("")
         try {
-            const response = await axios.post(
-                `${getServerUrl()}/login`,
-                {
-                    gmail: formData.gmail,   
-                    password: formData.password,
-                },
-                {
-                    withCredentials: true,
-                }
-            )
-            const { user } = response.data
-            login(user)
-            toast.success("Login successful! Welcome back 🎉")
-            router.push("/profile")
+            const res = await loginAction({
+                gmail: formData.gmail,   
+                password: formData.password,
+            })
+            if (res.success && res.user) {
+                login(res.user)
+                toast.success("Login successful! Welcome back 🎉")
+                router.push("/profile")
+            } else {
+                setError(res.message || "Invalid email or password. Please try again.")
+            }
         } catch (err) {
             setError("Invalid email or password. Please try again.")
         } finally {
@@ -57,17 +59,13 @@ export default function Login() {
         onSuccess: async (tokenResponse) => {
             setGoogleLoading(true)
             try {
-                const res = await axios.post(
-                    `${getServerUrl()}/login`,
-                    { googleToken: tokenResponse.access_token },
-                    { withCredentials: true }  
-                )
-                if (res.data.success) {
-                    login(res.data.user)
+                const res = await loginAction({ googleToken: tokenResponse.access_token })
+                if (res.success && res.user) {
+                    login(res.user)
                     toast.success("Login successful! Welcome back")
                     router.push("/profile")
                 } else {
-                    toast.error(res.data.message || "Google sign-in failed")
+                    toast.error(res.message || "Google sign-in failed")
                 }
             } catch {
                 toast.error("Google sign-in failed")

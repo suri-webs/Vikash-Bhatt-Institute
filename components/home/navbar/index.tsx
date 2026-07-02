@@ -12,8 +12,7 @@ import { NavMobileDrawer } from "./Navmobiledrawer";
 import { LogoutDialog } from "./Logoutdialog";
 import { SearchBar } from "./Searchbar";
 import { toast } from "react-toastify";
-import { getServerUrl } from "@/components/utils/config";
-import axios from "axios";
+import { logoutAction } from "@/app/actions";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -23,49 +22,34 @@ export default function Navbar() {
     const [enquiryOpen, setEnquiryOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [logoutOpen, setLogoutOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 10);
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
-
-    useEffect(() => {
-        if (pathname === "/about") {
-            setActiveLink("/about");
-        } else if (pathname === "/") {
-            setActiveLink("/");
-        }
-    }, [pathname]);
-
-    useEffect(() => {
-        if (pathname !== "/") return;
-
-        const sectionIds = navLinks
-            .filter((l) => l.sectionId)
-            .map((l) => l.sectionId as string);
-
-        const observers: IntersectionObserver[] = [];
-
-        sectionIds.forEach((id) => {
-            const el = document.getElementById(id);
-            if (!el) return;
-
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting) setActiveLink(`/#${id}`);
-                },
-                { threshold: 0.4 }
-            );
-
-            observer.observe(el);
-            observers.push(observer);
-        });
-
         const handleScroll = () => {
-            if (window.scrollY < 100) setActiveLink("/");
+            setScrolled(window.scrollY > 20);
         };
         window.addEventListener("scroll", handleScroll);
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.2,
+        };
+
+        const observers = navLinks.map((link) => {
+            const el = document.getElementById(link.href.replace("/#", ""));
+            if (!el) return null;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && pathname === "/") {
+                        setActiveLink(link.href);
+                    }
+                });
+            }, observerOptions);
+            observer.observe(el);
+            return observer;
+        }).filter(Boolean) as IntersectionObserver[];
 
         return () => {
             observers.forEach((o) => o.disconnect());
@@ -75,9 +59,7 @@ export default function Navbar() {
 
     const handleLogoutConfirm = async () => {
         try {
-         await axios.post(
-                `${getServerUrl()}/logout`
-            )
+            await logoutAction();
             logout();
             toast.success("Logged out successfully");
         } catch (error) {

@@ -96,7 +96,7 @@ const categories: Category[] = [
                 level: "Senior",
                 duration: "1 Year",
                 image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=600&q=80",
-                link: "/courses/senior-science"
+                link: "/#courses/senior-science"
             }
         ]
     },

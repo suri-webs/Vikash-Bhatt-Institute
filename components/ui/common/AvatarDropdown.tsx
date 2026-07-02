@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import { Avatar, AvatarFallback } from "../avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -53,6 +53,14 @@ export function AvatarDropdown({
         <DropdownMenu open={open} onOpenChange={setOpen}>
             <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
                 <Avatar className="h-9 w-9">
+                    {user.avatar && (
+                        <AvatarImage
+                            src={user.avatar}
+                            alt={user.username}
+                            referrerPolicy="no-referrer"
+                            className="object-cover"
+                        />
+                    )}
                     <AvatarFallback
                         className={`${getAvatarColor(user.username)} text-white font-semibold text-sm`}
                     >

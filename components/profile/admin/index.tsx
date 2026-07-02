@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { getServerUrl } from "@/components/utils/config";
 import { DeleteDialog } from "./DeleteDialog";
 import { EditDialog } from "./EditDialog";
 import { AdminCard } from "./AdminCard";
@@ -11,6 +9,7 @@ import { SearchBar } from "./SearchBar";
 import { StudentGrid } from "./StudentGrid";
 import { toast } from "react-toastify";
 import { StatTiles } from "./StatTilesCard";
+import { getUsersAction, updateUserAction, deleteUserAction } from "@/app/actions";
 
 export interface User {
     _id: string;
@@ -51,13 +50,17 @@ export default function AdminProfile() {
     });
 
     useEffect(() => {
-        axios.get(`${getServerUrl()}/users`, { withCredentials: true })
-            .then((r) => {
-                setUsers(r.data.users);
-                const studentCount = (r.data.users as User[]).filter(
-                    (u) => !u.role || u.role === "student"
-                ).length;
-                setTotal(studentCount);
+        getUsersAction()
+            .then((res) => {
+                if (res.success && res.users) {
+                    setUsers(res.users);
+                    const studentCount = (res.users as User[]).filter(
+                        (u) => !u.role || u.role === "student"
+                    ).length;
+                    setTotal(studentCount);
+                } else {
+                    toast.error(res.message || "Failed to load students");
+                }
             })
             .catch(() => toast.error("Failed to load students"));
     }, []);
@@ -65,26 +68,28 @@ export default function AdminProfile() {
     const handleSave = async (updated: User) => {
         setSaveError(null);
         try {
-            const res = await axios.put(
-                `${getServerUrl()}/users`,
-                {
-                    id: updated._id,
-                    username: updated.username,
-                    rollNumber: updated.rollNumber,
-                    classIn: updated.classIn,
-                    batch: updated.batch,
-                    gmail: updated.gmail,
-                    ...(updated.avatar ? { avatar: updated.avatar } : {}),
-                },
-                { withCredentials: true }
-            );
-            const saved: User = res.data?.user ?? updated;
-            setUsers((prev) => prev.map((u) => (u._id === saved._id ? saved : u)));
-            setEditTarget(null);
-            setSaveError(null);
-            toast.success(`${saved.username}'s profile updated`);
+            const res = await updateUserAction({
+                id: updated._id,
+                username: updated.username,
+                rollNumber: updated.rollNumber,
+                classIn: updated.classIn,
+                batch: updated.batch,
+                gmail: updated.gmail,
+                ...(updated.avatar ? { avatar: updated.avatar } : {}),
+            });
+            if (res.success && res.user) {
+                const saved: User = res.user;
+                setUsers((prev) => prev.map((u) => (u._id === saved._id ? saved : u)));
+                setEditTarget(null);
+                setSaveError(null);
+                toast.success(`${saved.username}'s profile updated`);
+            } else {
+                const msg = res.message || "Update failed";
+                setSaveError(msg);
+                toast.error(msg);
+            }
         } catch (e: any) {
-            const msg = e?.response?.data?.message ?? e?.message ?? "Update failed";
+            const msg = e?.message ?? "Update failed";
             setSaveError(msg);
             toast.error(msg);
         }
@@ -92,14 +97,15 @@ export default function AdminProfile() {
 
     const handleDelete = async (user: User) => {
         try {
-            await axios.delete(`${getServerUrl()}/users`, {
-                data: { rollNumber: user.rollNumber },
-                withCredentials: true,
-            });
-            setUsers((p) => p.filter((u) => u._id !== user._id));
-            setTotal((p) => p - 1);
-            setDeleteTarget(null);
-            toast.success(`${user.username} has been removed`);
+            const res = await deleteUserAction(user.rollNumber);
+            if (res.success) {
+                setUsers((p) => p.filter((u) => u._id !== user._id));
+                setTotal((p) => p - 1);
+                setDeleteTarget(null);
+                toast.success(`${user.username} has been removed`);
+            } else {
+                toast.error(res.message || "Failed to delete student");
+            }
         } catch {
             toast.error("Failed to delete student");
         }

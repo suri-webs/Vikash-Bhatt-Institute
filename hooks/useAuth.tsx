@@ -69,7 +69,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setUserState(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("isLoggedIn", "true");
-    router.push("/");
   };
 
   const logout = () => {

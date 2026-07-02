@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { getServerUrl } from "@/components/utils/config";
+import { getResultsAction } from "@/app/actions";
 
 import {
     MoreHorizontal, Pencil, Trash2, FilePlus,
@@ -41,16 +40,17 @@ export function StudentCard({ user, onEdit, onDelete, onAddResult }: StudentCard
     const clr = getColor(user.username ?? "U");
 
     const [totalResults, setTotalResults] = useState(0);
+    const [imgError, setImgError] = useState(false);
 
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const res = await axios.get(
-                    `${getServerUrl()}/results?rollNumber=${user.rollNumber}`,
-                    { withCredentials: true }
-                );
-
-                setTotalResults(res.data.results?.length ?? 0);
+                const res = await getResultsAction(user.rollNumber);
+                if (res.success && res.results) {
+                    setTotalResults(res.results.length);
+                } else {
+                    setTotalResults(0);
+                }
             } catch {
                 setTotalResults(0);
             }
@@ -101,12 +101,14 @@ export function StudentCard({ user, onEdit, onDelete, onAddResult }: StudentCard
             <div className="flex flex-col items-center px-4 pb-3 -mt-1">
                 {/* Avatar */}
                 <div className="w-16 h-16 relative rounded-full overflow-hidden border-[3px] border-white shadow-md bg-gray-100 flex items-center justify-center">
-                    {user.avatar ? (
+                    {user.avatar && !imgError ? (
                         <Image
                             src={user.avatar}
                             alt={user.username}
                             className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
                             fill
+                            onError={() => setImgError(true)}
                         />
                     ) : (
                         <div

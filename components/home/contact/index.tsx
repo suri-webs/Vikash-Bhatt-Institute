@@ -14,7 +14,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from '@/components/ui/card';
-import { getServerUrl } from '@/components/utils/config';
+import { createEnquiryAction } from '@/app/actions';
 
 type FormData = {
     name: string;
@@ -82,15 +82,10 @@ export default function Contact() {
         setError(null);
 
         try {
-            const res = await fetch(`${getServerUrl()}enquiry`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ...form, source: "contact-page" }),
-            });
-            const data = await res.json();
+            const res = await createEnquiryAction({ ...form, source: "contact-page" });
 
-            if (!data.success) {
-                setError(data.message || "Something went wrong. Please try again.");
+            if (!res.success) {
+                setError(res.message || "Something went wrong. Please try again.");
                 return;
             }
 

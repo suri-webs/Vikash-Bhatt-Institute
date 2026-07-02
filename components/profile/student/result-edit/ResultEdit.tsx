@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { getServerUrl } from "@/components/utils/config";
 import { Search, FilePlus, FileText, Award } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,6 +10,7 @@ import { User } from "../../admin";
 import { IResult } from "@/components/utils/types/result/type";
 import AddResultDialog from "./AddResultDialog";
 import SubjectCard from "./SubjectCard";
+import { getResultsAction, createResultAction, deleteResultAction } from "@/app/actions";
 
 interface Props {
     user: User | null;
@@ -33,11 +32,12 @@ export default function ResultEdit({ user }: Props) {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const res = await axios.get(
-                    `${getServerUrl()}/results?rollNumber=${user.rollNumber}`,
-                    { withCredentials: true }
-                );
-                setResults(res.data.results ?? []);
+                const res = await getResultsAction(user.rollNumber);
+                if (res.success && res.results) {
+                    setResults(res.results);
+                } else {
+                    toast.error(res.message || "Failed to load results");
+                }
             } catch {
                 toast.error("Failed to load results");
             } finally {
@@ -56,24 +56,36 @@ export default function ResultEdit({ user }: Props) {
             return;
         }
         try {
-            const res = await axios.post(
-                `${getServerUrl()}/results`,
-                { rollNumber: user?.rollNumber, subject, week, url, month, marksScored, totalMarks },
-                { withCredentials: true }
-            );
-            setResults((prev) => [...prev, res.data.result]);
-            setDialogOpen(false);
-            toast.success(`Result added for ${subject}`);
+            const res = await createResultAction({
+                rollNumber: user?.rollNumber,
+                subject,
+                week,
+                url,
+                month,
+                marksScored,
+                totalMarks,
+            });
+            if (res.success && res.result) {
+                setResults((prev) => [...prev, res.result]);
+                setDialogOpen(false);
+                toast.success(`Result added for ${subject}`);
+            } else {
+                toast.error(res.message || "Failed to add result");
+            }
         } catch (err: any) {
-            toast.error(err?.response?.data?.message ?? "Failed to add result");
+            toast.error(err?.message ?? "Failed to add result");
         }
     }
 
     async function handleDelete(id: string) {
         try {
-            await axios.delete(`${getServerUrl()}/results`, { data: { id }, withCredentials: true });
-            setResults((prev) => prev.filter((r) => r._id !== id));
-            toast.success("Result deleted");
+            const res = await deleteResultAction(id);
+            if (res.success) {
+                setResults((prev) => prev.filter((r) => r._id !== id));
+                toast.success("Result deleted");
+            } else {
+                toast.error(res.message || "Failed to delete result");
+            }
         } catch {
             toast.error("Failed to delete result");
         }
@@ -101,7 +113,7 @@ export default function ResultEdit({ user }: Props) {
 
                     <div className="px-6 pb-6 -mt-12 flex flex-col sm:flex-row sm:items-end gap-4">
                         <Avatar className="w-24 h-24 rounded-full border-4 border-white shadow-md shrink-0">
-                            <AvatarImage src={user.avatar} alt={user.username} className="object-cover" />
+                            <AvatarImage src={user.avatar} alt={user.username} className="object-cover" referrerPolicy="no-referrer" />
                             <AvatarFallback className="bg-indigo-500 text-white text-3xl font-bold">
                                 {user.username?.charAt(0).toUpperCase()}
                             </AvatarFallback>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react"
-import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { useGoogleLogin } from "@react-oauth/google"
@@ -10,8 +9,8 @@ import {
     ArrowRight, Loader2, AlertCircle, CheckCircle2, GraduationCap,
 } from "lucide-react"
 import { toast } from "react-toastify"
-import { getServerUrl } from "@/components/utils/config"
 import Link from "next/link"
+import { loginAction, registerAction } from "@/app/actions"
 
 interface FormData {
     username: string
@@ -136,7 +135,7 @@ function FormFooter() {
 }
 
 /* ── Main ── */
-export default function RegistrationForm() {
+export default function AuthForm() {
     const router = useRouter()
     const { setUser } = useAuth()
 
@@ -155,15 +154,15 @@ export default function RegistrationForm() {
         onSuccess: async (tokenResponse) => {
             setGoogleLoading(true)
             try {
-                const res = await axios.post(`${getServerUrl()}/login`, {
+                const res = await loginAction({
                     googleToken: tokenResponse.access_token,
                 })
-                if (res.data.success) {
-                    if (setUser) setUser(res.data.user)
+                if (res.success) {
+                    if (setUser) setUser(res.user)
                     toast.success("Login successful! Welcome back 🎉")
                     router.push("/")
                 } else {
-                    toast.error(res.data.message || "Google sign-in failed")
+                    toast.error(res.message || "Google sign-in failed")
                 }
             } catch {
                 toast.error("Google sign-in failed ❌")
@@ -179,34 +178,25 @@ export default function RegistrationForm() {
         setLoading(true)
         setError("")
         try {
-            const res = await axios.post(
-                `${getServerUrl()}/users`,
-                { ...formData, role: "student" },
-                { headers: { "Content-Type": "application/json" } }
-            )
-            if (res.data.success) {
+            const res = await registerAction({ ...formData, role: "student" })
+            if (res.success) {
                 toast.success("Registration successful 🎉")
-                const loginRes = await axios.post(
-                    `${getServerUrl()}/login`,
-                    { gmail: formData.gmail, password: formData.password },
-                    { headers: { "Content-Type": "application/json" } }
-                )
-                if (loginRes.data.success) {
-                    if (setUser) setUser(loginRes.data.user)
+                const loginRes = await loginAction({
+                    gmail: formData.gmail,
+                    password: formData.password,
+                })
+                if (loginRes.success) {
+                    if (setUser) setUser(loginRes.user)
                     toast.success("Login successful! Welcome back 🎉")
                     router.push("/")
                 } else {
                     setSuccess(true)
                 }
             } else {
-                toast.error(res.data.error || "Something went wrong")
+                toast.error(res.message || "Something went wrong")
             }
         } catch (err: any) {
-            if (err.response?.data?.error?.includes("duplicate key")) {
-                toast.error("Username or Email already exists ❌")
-            } else {
-                toast.error("Something went wrong ❌")
-            }
+            toast.error("Something went wrong ❌")
         } finally {
             setLoading(false)
         }
