@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-const API_BASE_URL = process.env.API_URL || "http://localhost:8080/api";
+const API_BASE_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://vikas-bhatt-classes-server.onrender.com/api";
 
 function parseSetCookie(cookieStr: string) {
     const parts = cookieStr.split(';');
